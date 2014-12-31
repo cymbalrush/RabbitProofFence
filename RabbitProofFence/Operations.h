@@ -32,4 +32,5 @@
 #import "LinearErrorRetryPolicy.h"
 #import "DFIdentityOperation.h"
 #import "DFOperation+Graph.h"
+#import "DFNetworkOperation.h"
 #import "RandomBackoffErrorRetryPolicy.h"

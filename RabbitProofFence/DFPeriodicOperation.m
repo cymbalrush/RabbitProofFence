@@ -65,7 +65,7 @@
         [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
         self.operationObservationToken = nil;
         self.error = operation.error;
-        self.output = [self processOutput:operation.output];
+        self.output = operation.output;
         self.executingOperation = nil;
         self.scheduledSyncNumber ++;
         NSUInteger scheduledSyncNumber = self.scheduledSyncNumber;

@@ -506,7 +506,7 @@
         [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
         self.operationObservationToken = nil;
         self.error = operation.error;
-        self.output = [self processOutput:operation.output];
+        self.output = operation.output;
         self.executingOperation = nil;
         self.executedOnce = YES;
         BOOL finished = NO;
@@ -571,7 +571,7 @@
             return;
         }
         if (self.error) {
-            self.output = [self processOutput:nil];
+            self.output = [DFVoidObject new];
             [self done];
         }
         else {
@@ -585,12 +585,12 @@
                 }
                 dispatch_block_t block = ^(void) {
                     if ((self.state == OperationStateExecuting) && [self isDone]) {
-                        self.output = [self processOutput:nil];
+                        self.output = [DFVoidObject new];
                         [self done];
                     }
                     else if ([self canExecute]) {
                         if (![self next]) {
-                            self.output = [self processOutput:nil];
+                            self.output = [DFVoidObject new];
                             [self done];
                         }
                     }

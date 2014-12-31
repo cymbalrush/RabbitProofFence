@@ -74,7 +74,7 @@
             });
             return;
         }
-        self.output = [self processOutput:nil];
+        self.output = [DFVoidObject new];
         [self done];
     };
     [self safelyExecuteBlock:block];

@@ -1109,11 +1109,6 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     return (self.state == OperationStateDone);
 }
 
-- (id)processOutput:(id)output
-{
-    return (self.processOutput != nil) ? self.processOutput(output, self) : output;
-}
-
 - (void)execute
 {
     __block id output = nil;
@@ -1143,10 +1138,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
             }
             if (!self.isCancelled) {
                 if (self.error) {
-                    output = [self processOutput:[DFVoidObject new]];
-                }
-                else {
-                    output = [self processOutput:output];
+                    output = [DFVoidObject new];
                 }
                 self.output = output;
             }

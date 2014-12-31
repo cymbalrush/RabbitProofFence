@@ -92,8 +92,6 @@
 
 - (void)breakRefCycleForExecutionObj:(Execution_Class *)executionObj;
 
-- (id)processOutput:(id)output;
-
 - (void)done;
 
 @end

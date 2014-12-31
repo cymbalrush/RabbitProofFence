@@ -97,7 +97,7 @@
         if (self.state == OperationStateDone) {
             return;
         }
-        self.output = [self processOutput:changedValue];
+        self.output = changedValue;
     };
     [self safelyExecuteBlock:block];
 }

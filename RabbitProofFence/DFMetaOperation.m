@@ -131,7 +131,7 @@
         }
         [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
         self.operationObservationToken = nil;
-        self.output = [self processOutput:operation.output];
+        self.output = operation.output;
         self.error = operation.error;
         self.executingOperation = nil;
         [self done];
@@ -238,7 +238,7 @@
                 return;
             }
         }
-        self.output = [self processOutput:nil];
+        self.output = [DFVoidObject new];
         [self done];
     };
     [self safelyExecuteBlock:block];

@@ -10,8 +10,8 @@
 
 @interface DFNetworkOperation : DFOperation
 
-@property (nonatomic, strong) NSURLRequest *request;
+@property (strong, nonatomic) NSURLRequest *request;
 
-@property (nonatomic, strong) NSString *method;
+@property (readonly, nonatomic) NSString *output;
 
 @end

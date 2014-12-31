@@ -66,7 +66,7 @@
     if (executionObj.executionBlock) {
         @try {
             [self prepareExecutionObj:executionObj];
-            self.accumulator = [self processOutput:[executionObj execute]];
+            self.accumulator = [executionObj execute];
         }
         @catch (NSException *exception) {
             self.error = NSErrorFromException(exception);

@@ -74,7 +74,7 @@
                     [self done];
                 }
                 else {
-                    self.output = [self processOutput:output];
+                    self.output = output;
                 }
             }
             @catch (DFOperationValueTerminationException *exception) {
@@ -102,7 +102,7 @@
             [self generateNext];
             return;
         }
-        self.output = [self processOutput:nil];
+        self.output = [DFVoidObject new];
         [self done];
     };
     [self safelyExecuteBlock:block];

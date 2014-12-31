@@ -46,3 +46,4 @@
 + (DictionarySequenceGenerator *)sequenceGenerator;
 
 @end
+

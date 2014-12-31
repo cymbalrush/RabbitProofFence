@@ -40,9 +40,6 @@ NSArray *portNamesFromBlockArgs(const char *blockBody);
 //queue which runs this operation
 @property (strong, nonatomic) NSOperationQueue *queue;
 
-//process output or introduce side effects
-@property (copy, nonatomic) id (^processOutput)(id output, id<Operation> operation);
-
 //start queue
 + (void)startQueue;
 

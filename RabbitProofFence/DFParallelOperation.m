@@ -140,7 +140,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
                 DFOperation *runningOperation = info.operation;
                 if (runningOperation.state == OperationStateDone) {
                     self.error = runningOperation.error;
-                    self.output = [self processOutput:runningOperation.output];
+                    self.output = runningOperation.output;
                     [self.operationsInProgress removeObjectForKey:key];
                 }
                 else {
@@ -150,7 +150,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
         }
         else {
             self.error = error;
-            self.output = [self processOutput:output];
+            self.output = output;
             [self.operationsInProgress removeObjectForKey:operationIndex];
         }
         self.executedOnce = YES;
@@ -163,7 +163,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
 {
     dispatch_block_t block = ^(void) {
         if (!operation) {
-            self.output = [self processOutput:nil];
+            self.output = [DFVoidObject new];
             [self done];
             return;
         }
@@ -290,7 +290,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
             return;
         }
         if (self.error) {
-            self.output = [self processOutput:nil];
+            self.output = [DFVoidObject new];
             [self done];
         }
         else {
@@ -304,7 +304,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
                 }
                 dispatch_block_t block = ^(void) {
                     if ((self.state == OperationStateExecuting) && [self isDone]) {
-                        self.output = [self processOutput:nil];
+                        self.output = [DFVoidObject new];
                         [self done];
                     }
                     else if ([self canExecute]) {

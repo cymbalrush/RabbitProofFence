@@ -77,7 +77,7 @@
     if (executionObj.executionBlock) {
         @try {
             [self prepareExecutionObj:executionObj];
-            self.output = [self processOutput:[executionObj execute]];
+            self.output = [executionObj execute];
         }
         @catch (NSException *exception) {
             self.error = NSErrorFromException(exception);

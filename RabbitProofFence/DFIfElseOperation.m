@@ -88,7 +88,6 @@
             }
         }
         else {
-            self.output = [self processOutput:nil];
             [self done];
         }
     };

@@ -87,7 +87,7 @@
             }
         }
         self.error = operation.error;
-        self.output = [self processOutput:operation.output];
+        self.output = operation.output;
         [self done];
     };
     [self safelyExecuteBlock:block];
@@ -105,7 +105,7 @@
                 return;
             }
         }
-        self.output = [self processOutput:nil];
+        self.output = [DFVoidObject new];
         [self done];
     };
     [self safelyExecuteBlock:block];

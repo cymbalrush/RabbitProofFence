@@ -33,7 +33,7 @@
     if (executionObj.executionBlock) {
         [self prepareExecutionObj:executionObj];
         @try {
-            self.output = [self processOutput:[executionObj execute]];
+            self.output = [executionObj execute];
         }
         @catch (NSException *exception) {
             self.error = NSErrorFromException(exception);

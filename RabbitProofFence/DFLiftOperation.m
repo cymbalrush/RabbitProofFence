@@ -67,7 +67,7 @@
                 }
             }
             if (!self.isCancelled) {
-                self.output = [self processOutput:self.object];
+                self.output = self.object;
             }
             [self done];
         }

@@ -26,6 +26,9 @@
 
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
+    if ([super respondsToSelector:aSelector]) {
+        return YES;
+    }
     return NO;
 }
 
@@ -35,6 +38,18 @@
     @throw [DFVoidObjectException exceptionWithName:NSStringFromClass([DFVoidObjectException class])
                                              reason:reason
                                            userInfo:nil];
+}
+
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
+{
+    NSString *reason = [NSString stringWithFormat:@"Void, the answer to all questions."];
+    @throw [DFVoidObjectException exceptionWithName:NSStringFromClass([DFVoidObjectException class])
+                                             reason:reason
+                                           userInfo:nil];
+    return nil;
+
+    
 }
 
 

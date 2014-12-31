@@ -10,6 +10,7 @@
 #import "Operations.h"
 #import "DFOperation+Graph.h"
 #import "DFWorkspace.h"
+#import "DFVoidObject.h"
 
 @interface ViewController ()
 
@@ -97,11 +98,43 @@
         NameOperation(and);
         return and;
     } forName:@"And"];
+   
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFNetworkOperation *network = [DFNetworkOperation new];
+        NameOperation(network);
+        return network;
+    } forName:@"Network"];
+    
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFOperation *urlConverter = OperationFromBlock([DFBackgroundOperation class], ^(NSString *text) {
+            return [NSURLRequest requestWithURL:[NSURL URLWithString:text]] ;
+        });
+        NameOperation(urlConverter);
+        return urlConverter;
+    } forName:@"URLConverter"];
+    
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFOperation *arraySelector = OperationFromBlock([DFBackgroundOperation class], ^(NSArray *array, NSNumber *index) {
+            NSUInteger idx = [index integerValue];
+            return array[idx] ;
+        });
+        NameOperation(arraySelector);
+        return arraySelector;
+    } forName:@"ArraySelector"];
+    
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFOperation *flattenInput = [DFFlattenOperation new];
+        NameOperation(flattenInput);
+        return flattenInput;
+    } forName:@"Flatten"];
     
     DFWorkspace *ws = [DFWorkspace workspaceWithBounds:self.view.bounds];
 
     [self.view addSubview:ws];
     ws.center = (CGPoint){CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds)};
+    
+   DFVoidObject *obj = [DFVoidObject new];
+    [(id)obj intValue];
 }
 
 - (void)didReceiveMemoryWarning {
