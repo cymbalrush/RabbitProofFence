@@ -153,7 +153,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
             self.output = output;
             [self.operationsInProgress removeObjectForKey:operationIndex];
         }
-        self.executedOnce = YES;
+        //self.executedOnce = YES;
         [self startOperations];
     };
     [self safelyExecuteBlock:block];

@@ -17,8 +17,6 @@
 
 @property (strong, nonatomic) NSMutableDictionary *reactiveConnections;
 
-@property (assign, nonatomic) BOOL executedOnce;
-
 @end
 
 @implementation DFReactiveOperation
@@ -328,7 +326,7 @@
             result = YES;
         }
         else if (self.isExecuting && !self.isExecutingOperation) {
-            __block BOOL done = self.executedOnce;
+            __block BOOL done = (self.executionCount > 0);
             [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 ReactiveConnectionInfo *info = obj;
                 done = NO;
@@ -508,7 +506,6 @@
         self.error = operation.error;
         self.output = operation.output;
         self.executingOperation = nil;
-        self.executedOnce = YES;
         BOOL finished = NO;
         if ([self isDone]) {
             finished = YES;

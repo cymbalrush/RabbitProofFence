@@ -13,6 +13,8 @@
 
 @property (strong, nonatomic) NSPredicate *predicate;
 
+@property (assign, nonatomic) NSUInteger executionCount;
+
 - (BOOL)retry;
 
 @end

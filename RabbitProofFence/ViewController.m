@@ -128,13 +128,17 @@
         return flattenInput;
     } forName:@"Flatten"];
     
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFDelayOperation *delay = [DFDelayOperation new];
+        NameOperation(delay);
+        return delay;
+    } forName:@"Delay"];
+    
     DFWorkspace *ws = [DFWorkspace workspaceWithBounds:self.view.bounds];
 
     [self.view addSubview:ws];
     ws.center = (CGPoint){CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds)};
     
-   DFVoidObject *obj = [DFVoidObject new];
-    [(id)obj intValue];
 }
 
 - (void)didReceiveMemoryWarning {

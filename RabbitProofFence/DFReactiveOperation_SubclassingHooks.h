@@ -14,8 +14,6 @@
 
 @property (strong, nonatomic) NSMutableDictionary *reactiveConnections;
 
-@property (assign, nonatomic) BOOL executedOnce;
-
 - (void)reactiveConnectionPropertyChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation;
 
 - (void)reactiveConnectionStateChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation;

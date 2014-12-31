@@ -14,6 +14,8 @@
 
 @property (strong, nonatomic) NSPredicate *predicate;
 
+@property (assign, nonatomic) NSUInteger executionCount;
+
 @end
 
 @implementation DFLoopOperation
@@ -120,6 +122,7 @@
         }
         if (operation) {
             [self startOperation:operation];
+            self.executionCount ++;
             return YES;
         }
     }
@@ -127,6 +130,7 @@
         if ([self.predicate evaluateWithObject:self]) {
             DFOperation *newOperation = [self.operation clone];
             [self startOperation:newOperation];
+            self.executionCount ++;
             return YES;
         }
     }

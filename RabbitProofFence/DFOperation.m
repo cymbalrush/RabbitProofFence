@@ -1136,12 +1136,10 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
             if (!self.error && error) {
                 self.error = error;
             }
-            if (!self.isCancelled) {
-                if (self.error) {
-                    output = [DFVoidObject new];
-                }
-                self.output = output;
+            if (self.isCancelled || self.error) {
+                output = [DFVoidObject new];
             }
+            self.output = output;
             [self done];
         }
     };
