@@ -27,7 +27,7 @@
 #import "DFFilterOperation.h"
 #import "DFAndOperation.h"
 #import "DFAnyOperation.h"
-#import "DFSequenceGenerator.h"
+#import "DFGenerator.h"
 #import "DFConnectorOperation.h"
 #import "LinearErrorRetryPolicy.h"
 #import "DFIdentityOperation.h"

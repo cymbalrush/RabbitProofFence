@@ -1,5 +1,5 @@
 //
-//  OperationInfo.m
+//  DependentOperationInfo.m
 //  vf-hollywood
 //
 //  Created by Sinha, Gyanendra on 6/23/14.
@@ -13,9 +13,9 @@
 
 - (void)clean
 {
-    if (self.observationToken) {
-        [self.operation safelyRemoveObserverWithBlockToken:self.observationToken];
-        self.observationToken = nil;
+    if (self.stateObservationToken) {
+        [self.operation safelyRemoveObserverWithBlockToken:self.stateObservationToken];
+        self.stateObservationToken = nil;
     }
 }
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Conde Nast. All rights reserved.
 //
 
-#import "DFSequenceGenerator.h"
+#import "DFGenerator.h"
 #import "DFBackgroundOperation.h"
 #import "DFMetaOperation_SubclassingHooks.h"
 #import "DFVoidObject.h"
@@ -19,15 +19,13 @@
 
 @end
 
-@interface DFSequenceGenerator ()
+@interface DFGenerator ()
 
-@property (strong, nonatomic) Execution_Class *valueGeneratorObj;
-
-@property (assign, nonatomic) BOOL terminate;
+@property (assign) BOOL terminate;
 
 @end
 
-@implementation DFSequenceGenerator
+@implementation DFGenerator
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {
@@ -42,13 +40,9 @@
                                                           userInfo:nil];
 }
 
-- (instancetype)init
++ (instancetype)generator
 {
-    self = [super init];
-    if (self) {
-        self.output = [DFVoidObject new];
-    }
-    return self;
+    return [self new];
 }
 
 - (instancetype)initWithGeneratorBlock:(id)generatorBlock ports:(NSArray *)ports
@@ -62,7 +56,7 @@
     return self;
 }
 
-- (void)generateNext
+- (void)next
 {
     Execution_Class *executionObj = self.executionObj;
     dispatch_block_t block = ^(void) {
@@ -92,6 +86,11 @@
     [self safelyExecuteBlock:block];
 }
 
+- (void)stop
+{
+    self.terminate = YES;
+}
+
 - (void)main
 {
     dispatch_block_t block = ^(void) {
@@ -99,10 +98,9 @@
             return;
         }
         if (!self.error) {
-            [self generateNext];
+            [self next];
             return;
         }
-        self.output = [DFVoidObject new];
         [self done];
     };
     [self safelyExecuteBlock:block];
@@ -110,24 +108,24 @@
 
 @end
 
-@interface ArraySequenceGenerator ()
+@interface ArrayGenerator ()
 
 @property (assign, nonatomic) NSUInteger index;
 
 @end
 
-@implementation ArraySequenceGenerator
+@implementation ArrayGenerator
 
-+ (ArraySequenceGenerator *)sequenceGenerator
++ (ArrayGenerator *)generator
 {
-    ArraySequenceGenerator *generator = OperationFromBlock(self, ^(NSArray *array, ArraySequenceGenerator *selfRef){
+    ArrayGenerator *generator = OperationFromBlock(self, ^(NSArray *array, ArrayGenerator *selfRef){
         id output = nil;
         NSUInteger index = selfRef.index;
-        if ((![array isKindOfClass:[NSArray class]]) || ([array count] == 0) || (index > ([array count] - 1))) {
+        if ((array.count == 0) || (index > (array.count - 1))) {
             selfRef.terminate = YES;
         }
         else {
-            output = [array objectAtIndex:index];
+            output = array[index];
             index ++;
         }
         selfRef.index = index;
@@ -142,7 +140,7 @@
 
 @end
 
-@interface DictionarySequenceGenerator ()
+@interface DictionaryGenerator ()
 
 @property (assign, nonatomic) NSUInteger index;
 
@@ -150,11 +148,11 @@
 
 @end
 
-@implementation DictionarySequenceGenerator
+@implementation DictionaryGenerator
 
-+ (DictionarySequenceGenerator *)sequenceGenerator
++ (DictionaryGenerator *)generator
 {
-    DictionarySequenceGenerator *generator = OperationFromBlock(self, ^(NSDictionary *dictionary, DictionarySequenceGenerator *selfRef){
+    DictionaryGenerator *generator = OperationFromBlock(self, ^(NSDictionary *dictionary, DictionaryGenerator *selfRef){
         NSUInteger index = selfRef.index;
         NSArray *keys = selfRef.keys;
         KeyValue *output = nil;
@@ -162,11 +160,11 @@
             keys = [dictionary allKeys];
             selfRef.keys = keys;
         }
-        if ([keys count] == 0 || (index > ([keys count] - 1))) {
+        if (keys.count == 0 || (index > (keys.count - 1))) {
             selfRef.terminate = YES;
         }
         else {
-            id key = [keys objectAtIndex:index];
+            id key = keys[index];
             id value = dictionary[key];
             output = [KeyValue new];
             output.key = key;
@@ -180,4 +178,60 @@
 }
 
 @end
+
+@interface SetGenerator ()
+
+@property (assign, nonatomic) NSUInteger index;
+
+@property (strong, nonatomic) NSArray *values;
+
+@end
+
+@implementation SetGenerator
+
++ (SetGenerator *)generator
+{
+    SetGenerator *generator = OperationFromBlock(self, ^(NSSet *set, SetGenerator *selfRef){
+        NSUInteger index = selfRef.index;
+        NSArray *values = selfRef.values;
+        id output = nil;
+        if (!values) {
+            values = [set allObjects];
+            selfRef.values = values;
+        }
+        if ([values count] == 0 || (index > (values.count - 1))) {
+            selfRef.terminate = YES;
+        }
+        else {
+            output = values[index];
+            index ++;
+        }
+        selfRef.index = index;
+        return output;
+    });
+    return generator;
+}
+
+@end
+
+@implementation SequenceGenerator
+
++ (instancetype)generator
+{
+    SequenceGenerator *generator = OperationFromBlock([DFGenerator class], ^(NSNumber *i, NSNumber *j, NSNumber *inc, DFGenerator *selfRef) {
+        NSInteger value = [i integerValue];
+        if (!isVoid(selfRef.output)) {
+            value = [selfRef.output integerValue] + [inc integerValue];
+        }
+        if (value >= [j integerValue]) {
+            selfRef.terminate = YES;
+        }
+        return @(value);
+        
+    });
+    return generator;
+}
+
+@end
+
 

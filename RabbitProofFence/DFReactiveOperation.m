@@ -9,7 +9,7 @@
 #import "DFReactiveOperation.h"
 #import "DFMetaOperation_SubclassingHooks.h"
 #import "ReactiveConnectionInfo.h"
-#import "DFSequenceGenerator.h"
+#import "DFGenerator.h"
 #import "DFLoopOperation_SubclassingHooks.h"
 #import "ExtNil.h"
 
@@ -44,7 +44,7 @@
         [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             NSString *toProperty = key;
-            NSString *fromProperty = info.connectedProperty;
+            NSString *fromProperty = info.fromPort;
             DFOperation *connectedOperation = info.operation;
             NSValue *pointerKey = [NSValue valueWithPointer:(__bridge const void *)(connectedOperation)];
             //check if object is already present
@@ -68,7 +68,7 @@
         [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             NSString *toProperty = key;
-            NSString *fromProperty = info.connectedProperty;
+            NSString *fromProperty = info.fromPort;
             DFOperation *connectedOperation = info.operation;
             [newReactiveOperation addReactiveDependency:connectedOperation withBindings:@{toProperty : fromProperty}];
         }];
@@ -106,7 +106,7 @@
     return freePorts;
 }
 
-- (ReactiveConnectionInfo *)newInfo
+- (ReactiveConnectionInfo *)reactiveConnectionInfo
 {
     return [ReactiveConnectionInfo new];
 }
@@ -150,6 +150,9 @@
 
 - (NSDictionary *)addReactiveDependency:(DFOperation *)operation withBindings:(NSDictionary *)bindings
 {
+    if (!operation || operation == self) {
+        return nil;
+    }
     __block NSDictionary *validBindings = nil;
     dispatch_queue_t observationQueue = [[self class] operationObservationHandlingQueue];
     //operation connected reactively is not a dependency
@@ -182,12 +185,12 @@
             }];
             
             //create info for operation
-            ReactiveConnectionInfo *info = [self newInfo];
+            ReactiveConnectionInfo *info = [self reactiveConnectionInfo];
             info.operation = operation;
             info.operationState = operation.state;
             info.stateObservationToken = stateObservationToken;
             info.propertyObservationToken = propertyObservationToken;
-            info.connectedProperty = connectedProperty;
+            info.fromPort = connectedProperty;
             info.connectionCapacity = self.connectionCapacity;
             //check operation input, to see if it has value
             if (operation.state == OperationStateExecuting || operation.state == OperationStateDone) {
@@ -254,15 +257,15 @@
         ReactiveConnectionInfo *info = obj;
         DFOperation *operation = info.operation;
         OperationState operationState = info.operationState;
-        if ([operation isKindOfClass:[DFSequenceGenerator class]] &&
+        if ([operation isKindOfClass:[DFGenerator class]] &&
             (operationState == OperationStateExecuting) &&
             [info.inputs count] == 0) {
             @weakify(operation);
             dispatch_queue_t startQueue = [[self class] operationStartQueue];
             dispatch_async(startQueue, ^{
                 @strongify(operation);
-                DFSequenceGenerator *generator = (DFSequenceGenerator *)operation;
-                [generator generateNext];
+                DFGenerator *generator = (DFGenerator *)operation;
+                [generator next];
             });
         }
     }];
@@ -272,7 +275,7 @@
 {
     __block BOOL result = NO;
     dispatch_block_t block = ^(void) {
-        result = [self retry];
+        result = [self execute];
         if (result) {
             [self generateNextValues];
         }
@@ -383,7 +386,7 @@
         [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             NSString *connectionInPort = key;
-            NSString *connectionOutPort = info.connectedProperty;
+            NSString *connectionOutPort = info.fromPort;
             if ([connectionInPort isEqualToString:inPort] && [connectionOutPort isEqualToString:outPort]) {
                 result = YES;
                 *stop = YES;
@@ -411,12 +414,12 @@
 {
     __block NSMutableDictionary *bindings = [NSMutableDictionary dictionary];
     dispatch_block_t block = ^(void) {
-        [[self reactiveConnections] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             DFOperation *connectedOperation = info.operation;
             if (connectedOperation == operation) {
                 NSString *connectedToProperty = key;
-                NSString *connectedFromProperty = info.connectedProperty;
+                NSString *connectedFromProperty = info.fromPort;
                 bindings[connectedToProperty] = connectedFromProperty;
             }
         }];
@@ -501,11 +504,9 @@
         if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
             return;
         }
-        [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
-        self.operationObservationToken = nil;
         self.error = operation.error;
         self.output = operation.output;
-        self.executingOperation = nil;
+        self.executingOperationInfo = nil;
         BOOL finished = NO;
         if ([self isDone]) {
             finished = YES;
@@ -568,7 +569,6 @@
             return;
         }
         if (self.error) {
-            self.output = [DFVoidObject new];
             [self done];
         }
         else {
@@ -582,12 +582,10 @@
                 }
                 dispatch_block_t block = ^(void) {
                     if ((self.state == OperationStateExecuting) && [self isDone]) {
-                        self.output = [DFVoidObject new];
                         [self done];
                     }
                     else if ([self canExecute]) {
                         if (![self next]) {
-                            self.output = [DFVoidObject new];
                             [self done];
                         }
                     }

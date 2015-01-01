@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern BOOL isVoid(id obj);
+
 @interface DFVoidObject : NSProxy
 
 + (instancetype)new;

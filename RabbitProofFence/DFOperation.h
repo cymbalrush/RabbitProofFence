@@ -24,6 +24,7 @@ extern NSString * const DFOperationExceptionMethodNotSupported;
 extern NSString * const DFOperationExceptionIncorrectParameter;
 extern const int DFOperationExceptionEncounteredErrorCode;
 extern NSString *setterFromProperty(NSString *property);
+extern void methodNotSupported();
 
 #define OPERATION_INVALID_PORT 
 

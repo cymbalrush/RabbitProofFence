@@ -28,7 +28,7 @@
     return self;
 }
 
-- (BOOL)retry
+- (BOOL)execute
 {
     if ([self.executionObj numberOfPorts] == 0) {
         return NO;

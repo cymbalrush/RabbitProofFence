@@ -33,26 +33,26 @@
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 - (instancetype)initWithOperation:(DFOperation *)operation
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 - (instancetype)initWithRetryBlock:(id)retryBlock ports:(NSArray *)ports
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 - (instancetype)initWithMapBlock:(id)mapBlock ports:(NSArray *)ports
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 + (instancetype)flattenOperation
@@ -68,7 +68,7 @@
     return [super initWithMapBlock:mapBlock ports:@[@keypath(self.input)]];
 }
 
-- (ReactiveConnectionInfo *)newInfo
+- (ReactiveConnectionInfo *)reactiveConnectionInfo
 {
     return [FlattenInputInfo new];
 }

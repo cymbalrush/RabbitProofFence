@@ -130,13 +130,13 @@
         return NO;
     }
     NSTimeInterval waitInterval = retryPolicy.waitInterval;
-    DFOperation *newOperation = [self.executingOperation clone];
+    DFOperation *newOperation = [self.operation clone];
     [retryPolicy retried];
     if (waitInterval == 0) {
         [self startOperation:newOperation];
     }
     else {
-        self.executingOperation = nil;
+        self.executingOperationInfo = nil;
         //retry after wait interval
         NSLog(@"%@ Error Retrying after %f, cause : %@",self, waitInterval, error);
         @weakify(self);
@@ -167,12 +167,10 @@
         if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
             return;
         }
-        [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
-        self.operationObservationToken = nil;
-        self.executingOperation = nil;
+        self.executingOperationInfo = nil;
         if (![self willRetryOperationForError:operation.error]) {
             self.error = operation.error;
-            self.output = [self processOutput:operation.output];
+            self.output = operation.output;
             [self done];
         }
     };

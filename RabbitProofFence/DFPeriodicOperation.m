@@ -62,11 +62,9 @@
             return;
         }
         //remove observation token
-        [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
-        self.operationObservationToken = nil;
         self.error = operation.error;
         self.output = operation.output;
-        self.executingOperation = nil;
+        self.executingOperationInfo = nil;
         self.scheduledSyncNumber ++;
         NSUInteger scheduledSyncNumber = self.scheduledSyncNumber;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, self.waitInterval * NSEC_PER_SEC);
@@ -80,7 +78,7 @@
             }
             dispatch_block_t block = ^(void) {
                 if (self.state == OperationStateExecuting && (scheduledSyncNumber == self.scheduledSyncNumber)) {
-                    if (![self retry]) {
+                    if (![self execute]) {
                         [self done];
                     }
                 }
@@ -105,7 +103,7 @@
                 if ((self.state == OperationStateExecuting) &&
                     !self.isExecutingOperation &&
                     (scheduledSyncNumber == self.scheduledSyncNumber)) {
-                    if (![self retry]) {
+                    if (![self execute]) {
                         [self done];
                     }
                 }

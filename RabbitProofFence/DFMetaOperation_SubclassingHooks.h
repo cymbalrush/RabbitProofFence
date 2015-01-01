@@ -7,15 +7,14 @@
 //
 
 #import "DFMetaOperation.h"
+#import "OperationInfo.h"
 #import "DFOperation_SubclassingHooks.h"
 
 @interface DFMetaOperation ()
 
 @property (strong, nonatomic) DFOperation *operation;
 
-@property (strong, nonatomic) DFOperation *executingOperation;
-
-@property (strong, nonatomic) AMBlockToken *operationObservationToken;
+@property (strong, nonatomic) OperationInfo *executingOperationInfo;
 
 @property (readonly, nonatomic) BOOL isExecutingOperation;
 

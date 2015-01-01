@@ -44,11 +44,12 @@
     return self;
 }
 
-- (void)execute
+- (BOOL)execute
 {
-      dispatch_block_t block = ^(void) {
+    __block BOOL result = NO;
+    dispatch_block_t block = ^(void) {
         if (self.state == OperationStateExecuting) {
-            if (!self.error) {
+            if (!self.error && !self.isCancelled) {
                 if (self.object) {
                     NSMutableArray *ports = [self.inputPorts mutableCopy];
                     [ports removeObject:@keypath(self.object)];
@@ -64,15 +65,15 @@
                         }
                         @catch (NSException *exception) {}
                     }];
+                    self.output = self.object;
+                    result = YES;
                 }
-            }
-            if (!self.isCancelled) {
-                self.output = self.object;
             }
             [self done];
         }
     };
     [self safelyExecuteBlock:block];
+    return result;
 }
 
 @end

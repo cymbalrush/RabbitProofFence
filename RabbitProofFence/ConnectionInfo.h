@@ -1,5 +1,5 @@
 //
-//  DependentOperationInfo.h
+//  OperationInfo
 //  vf-hollywood
 //
 //  Created by Sinha, Gyanendra on 6/23/14.
@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NSObject+BlockObservation.h"
 
 @class DFOperation;
 
-@interface DependentOperationInfo : NSObject
+@interface ConnectionInfo : NSObject
 
 @property (strong, nonatomic) DFOperation *operation;
 
-@property (strong, nonatomic) NSMutableDictionary *bindings;
+@property (strong, nonatomic) NSString *fromPort;
+
+@property (strong, nonatomic) NSString *toPort;
 
 @end

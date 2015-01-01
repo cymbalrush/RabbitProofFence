@@ -22,8 +22,8 @@
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 + (instancetype)aggregator
@@ -33,20 +33,20 @@
 
 - (instancetype)initWithOperation:(DFOperation *)operation
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 - (instancetype)initWithOperation:(DFOperation *)operation predicate:(NSPredicate *)predicate
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 - (instancetype)initWithRetryBlock:(id)retryBlock ports:(NSArray *)ports
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 - (instancetype)init
@@ -71,7 +71,7 @@
     [super addReactiveDependency:operation withBindings:@{@keypath(self.input) : @keypath(operation.output)}];
 }
 
-- (BOOL)retry
+- (BOOL)execute
 {
     Execution_Class *executionObj = self.executionObj;
     if (executionObj.executionBlock) {

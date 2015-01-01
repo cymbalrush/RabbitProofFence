@@ -29,7 +29,7 @@
 		927E133B1A0C6DF3002DC6FB /* NSMethodSignature+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E13321A0C6DF3002DC6FB /* NSMethodSignature+EXT.m */; };
 		927E134D1A0C7D74002DC6FB /* UIColor+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E134C1A0C7D74002DC6FB /* UIColor+FlatUI.m */; };
 		928E1EAD1A16E0DF0055D2AD /* Execution_Class.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E6D1A16E0DF0055D2AD /* Execution_Class.m */; };
-		928E1EAE1A16E0DF0055D2AD /* DependentOperationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E6F1A16E0DF0055D2AD /* DependentOperationInfo.m */; };
+		928E1EAE1A16E0DF0055D2AD /* OperationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E6F1A16E0DF0055D2AD /* OperationInfo.m */; };
 		928E1EAF1A16E0DF0055D2AD /* DFOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E711A16E0DF0055D2AD /* DFOperation.m */; };
 		928E1EB01A16E0DF0055D2AD /* DFLiftOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E741A16E0DF0055D2AD /* DFLiftOperation.m */; };
 		928E1EB11A16E0DF0055D2AD /* DFBackgroundOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E761A16E0DF0055D2AD /* DFBackgroundOperation.m */; };
@@ -40,7 +40,7 @@
 		928E1EB61A16E0DF0055D2AD /* DFRetryableOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E821A16E0DF0055D2AD /* DFRetryableOperation.m */; };
 		928E1EB71A16E0DF0055D2AD /* DFVoidObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E831A16E0DF0055D2AD /* DFVoidObject.m */; };
 		928E1EB81A16E0DF0055D2AD /* DFConnectorOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E851A16E0DF0055D2AD /* DFConnectorOperation.m */; };
-		928E1EB91A16E0DF0055D2AD /* DFSequenceGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E871A16E0DF0055D2AD /* DFSequenceGenerator.m */; };
+		928E1EB91A16E0DF0055D2AD /* DFGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E871A16E0DF0055D2AD /* DFGenerator.m */; };
 		928E1EBA1A16E0DF0055D2AD /* DFLoopOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E891A16E0DF0055D2AD /* DFLoopOperation.m */; };
 		928E1EBB1A16E0DF0055D2AD /* DFPeriodicOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E8C1A16E0DF0055D2AD /* DFPeriodicOperation.m */; };
 		928E1EBC1A16E0DF0055D2AD /* DFDelayOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E8E1A16E0DF0055D2AD /* DFDelayOperation.m */; };
@@ -56,7 +56,7 @@
 		928E1EC61A16E0DF0055D2AD /* DFParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EA31A16E0DF0055D2AD /* DFParallelOperation.m */; };
 		928E1EC71A16E0DF0055D2AD /* DFReduceOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EA61A16E0DF0055D2AD /* DFReduceOperation.m */; };
 		928E1EC81A16E0DF0055D2AD /* DFTryCatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EA81A16E0DF0055D2AD /* DFTryCatchOperation.m */; };
-		928E1EC91A16E0DF0055D2AD /* OperationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EAB1A16E0DF0055D2AD /* OperationInfo.m */; };
+		928E1EC91A16E0DF0055D2AD /* ConnectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EAB1A16E0DF0055D2AD /* ConnectionInfo.m */; };
 		928E1ED71A16E1210055D2AD /* DFNode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 928E1ECC1A16E1210055D2AD /* DFNode.xib */; };
 		928E1ED81A16E1210055D2AD /* DFPort_Input.xib in Resources */ = {isa = PBXBuildFile; fileRef = 928E1ECD1A16E1210055D2AD /* DFPort_Input.xib */; };
 		928E1ED91A16E1210055D2AD /* DFPort_Output.xib in Resources */ = {isa = PBXBuildFile; fileRef = 928E1ECE1A16E1210055D2AD /* DFPort_Output.xib */; };
@@ -77,6 +77,7 @@
 		92B9D54B1A1EFC9F00D18BCB /* DFValueNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9D54A1A1EFC9F00D18BCB /* DFValueNode.m */; };
 		92CCF80F1A53A54F004628FF /* DFTakeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF80E1A53A54F004628FF /* DFTakeOperation.m */; };
 		92CCF8121A53A72A004628FF /* DFDropOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF8111A53A72A004628FF /* DFDropOperation.m */; };
+		92CCF8181A545F00004628FF /* DFTakeWhile.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF8171A545F00004628FF /* DFTakeWhile.m */; };
 		92E584D01A184A7500E52A54 /* DFWorkspace.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92E584CE1A184A7500E52A54 /* DFWorkspace.xib */; };
 		92E584D11A184A7500E52A54 /* DFWorkspaceBlockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92E584CF1A184A7500E52A54 /* DFWorkspaceBlockCell.xib */; };
 		92E584D41A184DD300E52A54 /* DFGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92E584D31A184DD300E52A54 /* DFGridView.m */; };
@@ -143,8 +144,8 @@
 		928E1E6B1A16E0DF0055D2AD /* StreamOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamOperation.h; sourceTree = "<group>"; };
 		928E1E6C1A16E0DF0055D2AD /* Execution_Class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Execution_Class.h; sourceTree = "<group>"; };
 		928E1E6D1A16E0DF0055D2AD /* Execution_Class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Execution_Class.m; sourceTree = "<group>"; };
-		928E1E6E1A16E0DF0055D2AD /* DependentOperationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DependentOperationInfo.h; sourceTree = "<group>"; };
-		928E1E6F1A16E0DF0055D2AD /* DependentOperationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DependentOperationInfo.m; sourceTree = "<group>"; };
+		928E1E6E1A16E0DF0055D2AD /* OperationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationInfo.h; sourceTree = "<group>"; };
+		928E1E6F1A16E0DF0055D2AD /* OperationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationInfo.m; sourceTree = "<group>"; };
 		928E1E701A16E0DF0055D2AD /* DFOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFOperation.h; sourceTree = "<group>"; };
 		928E1E711A16E0DF0055D2AD /* DFOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFOperation.m; sourceTree = "<group>"; };
 		928E1E721A16E0DF0055D2AD /* DFOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFOperation_SubclassingHooks.h; sourceTree = "<group>"; };
@@ -167,8 +168,8 @@
 		928E1E831A16E0DF0055D2AD /* DFVoidObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFVoidObject.m; sourceTree = "<group>"; };
 		928E1E841A16E0DF0055D2AD /* DFConnectorOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFConnectorOperation.h; sourceTree = "<group>"; };
 		928E1E851A16E0DF0055D2AD /* DFConnectorOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFConnectorOperation.m; sourceTree = "<group>"; };
-		928E1E861A16E0DF0055D2AD /* DFSequenceGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFSequenceGenerator.h; sourceTree = "<group>"; };
-		928E1E871A16E0DF0055D2AD /* DFSequenceGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFSequenceGenerator.m; sourceTree = "<group>"; };
+		928E1E861A16E0DF0055D2AD /* DFGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGenerator.h; sourceTree = "<group>"; };
+		928E1E871A16E0DF0055D2AD /* DFGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFGenerator.m; sourceTree = "<group>"; };
 		928E1E881A16E0DF0055D2AD /* DFLoopOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLoopOperation.h; sourceTree = "<group>"; };
 		928E1E891A16E0DF0055D2AD /* DFLoopOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFLoopOperation.m; sourceTree = "<group>"; };
 		928E1E8A1A16E0DF0055D2AD /* DFLoopOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLoopOperation_SubclassingHooks.h; sourceTree = "<group>"; };
@@ -203,8 +204,8 @@
 		928E1EA71A16E0DF0055D2AD /* DFTryCatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTryCatchOperation.h; sourceTree = "<group>"; };
 		928E1EA81A16E0DF0055D2AD /* DFTryCatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTryCatchOperation.m; sourceTree = "<group>"; };
 		928E1EA91A16E0DF0055D2AD /* DFTryCatchOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTryCatchOperation_SubclassingHooks.h; sourceTree = "<group>"; };
-		928E1EAA1A16E0DF0055D2AD /* OperationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationInfo.h; sourceTree = "<group>"; };
-		928E1EAB1A16E0DF0055D2AD /* OperationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationInfo.m; sourceTree = "<group>"; };
+		928E1EAA1A16E0DF0055D2AD /* ConnectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionInfo.h; sourceTree = "<group>"; };
+		928E1EAB1A16E0DF0055D2AD /* ConnectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionInfo.m; sourceTree = "<group>"; };
 		928E1EAC1A16E0DF0055D2AD /* Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operations.h; sourceTree = "<group>"; };
 		928E1ECC1A16E1210055D2AD /* DFNode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFNode.xib; sourceTree = "<group>"; };
 		928E1ECD1A16E1210055D2AD /* DFPort_Input.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFPort_Input.xib; sourceTree = "<group>"; };
@@ -240,6 +241,8 @@
 		92CCF80E1A53A54F004628FF /* DFTakeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTakeOperation.m; sourceTree = "<group>"; };
 		92CCF8101A53A72A004628FF /* DFDropOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFDropOperation.h; sourceTree = "<group>"; };
 		92CCF8111A53A72A004628FF /* DFDropOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFDropOperation.m; sourceTree = "<group>"; };
+		92CCF8161A545F00004628FF /* DFTakeWhile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTakeWhile.h; sourceTree = "<group>"; };
+		92CCF8171A545F00004628FF /* DFTakeWhile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTakeWhile.m; sourceTree = "<group>"; };
 		92E584CE1A184A7500E52A54 /* DFWorkspace.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFWorkspace.xib; sourceTree = "<group>"; };
 		92E584CF1A184A7500E52A54 /* DFWorkspaceBlockCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFWorkspaceBlockCell.xib; sourceTree = "<group>"; };
 		92E584D21A184DD300E52A54 /* DFGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGridView.h; sourceTree = "<group>"; };
@@ -373,8 +376,12 @@
 				928E1E6B1A16E0DF0055D2AD /* StreamOperation.h */,
 				928E1E6C1A16E0DF0055D2AD /* Execution_Class.h */,
 				928E1E6D1A16E0DF0055D2AD /* Execution_Class.m */,
-				928E1E6E1A16E0DF0055D2AD /* DependentOperationInfo.h */,
-				928E1E6F1A16E0DF0055D2AD /* DependentOperationInfo.m */,
+				928E1EAA1A16E0DF0055D2AD /* ConnectionInfo.h */,
+				928E1EAB1A16E0DF0055D2AD /* ConnectionInfo.m */,
+				928E1E8F1A16E0DF0055D2AD /* ReactiveConnectionInfo.h */,
+				928E1E901A16E0DF0055D2AD /* ReactiveConnectionInfo.m */,
+				928E1E6E1A16E0DF0055D2AD /* OperationInfo.h */,
+				928E1E6F1A16E0DF0055D2AD /* OperationInfo.m */,
 				928E1E701A16E0DF0055D2AD /* DFOperation.h */,
 				928E1E711A16E0DF0055D2AD /* DFOperation.m */,
 				92B9D5461A1EF9D100D18BCB /* DFIdentityOperation.h */,
@@ -399,8 +406,8 @@
 				928E1E821A16E0DF0055D2AD /* DFRetryableOperation.m */,
 				928E1E841A16E0DF0055D2AD /* DFConnectorOperation.h */,
 				928E1E851A16E0DF0055D2AD /* DFConnectorOperation.m */,
-				928E1E861A16E0DF0055D2AD /* DFSequenceGenerator.h */,
-				928E1E871A16E0DF0055D2AD /* DFSequenceGenerator.m */,
+				928E1E861A16E0DF0055D2AD /* DFGenerator.h */,
+				928E1E871A16E0DF0055D2AD /* DFGenerator.m */,
 				928E1E881A16E0DF0055D2AD /* DFLoopOperation.h */,
 				928E1E891A16E0DF0055D2AD /* DFLoopOperation.m */,
 				928E1E8A1A16E0DF0055D2AD /* DFLoopOperation_SubclassingHooks.h */,
@@ -408,8 +415,6 @@
 				928E1E8C1A16E0DF0055D2AD /* DFPeriodicOperation.m */,
 				928E1E8D1A16E0DF0055D2AD /* DFDelayOperation.h */,
 				928E1E8E1A16E0DF0055D2AD /* DFDelayOperation.m */,
-				928E1E8F1A16E0DF0055D2AD /* ReactiveConnectionInfo.h */,
-				928E1E901A16E0DF0055D2AD /* ReactiveConnectionInfo.m */,
 				928E1E911A16E0DF0055D2AD /* DFReactiveOperation.h */,
 				928E1E921A16E0DF0055D2AD /* DFReactiveOperation.m */,
 				928E1E931A16E0DF0055D2AD /* DFReactiveOperation_SubclassingHooks.h */,
@@ -435,8 +440,6 @@
 				928E1EA71A16E0DF0055D2AD /* DFTryCatchOperation.h */,
 				928E1EA81A16E0DF0055D2AD /* DFTryCatchOperation.m */,
 				928E1EA91A16E0DF0055D2AD /* DFTryCatchOperation_SubclassingHooks.h */,
-				928E1EAA1A16E0DF0055D2AD /* OperationInfo.h */,
-				928E1EAB1A16E0DF0055D2AD /* OperationInfo.m */,
 				928E1EAC1A16E0DF0055D2AD /* Operations.h */,
 				9270DFC31A4A8280009E0038 /* DFNetworkOperation.h */,
 				9270DFC41A4A8280009E0038 /* DFNetworkOperation.m */,
@@ -444,6 +447,8 @@
 				92CCF80E1A53A54F004628FF /* DFTakeOperation.m */,
 				92CCF8101A53A72A004628FF /* DFDropOperation.h */,
 				92CCF8111A53A72A004628FF /* DFDropOperation.m */,
+				92CCF8161A545F00004628FF /* DFTakeWhile.h */,
+				92CCF8171A545F00004628FF /* DFTakeWhile.m */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -609,7 +614,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				928E1EAE1A16E0DF0055D2AD /* DependentOperationInfo.m in Sources */,
+				928E1EAE1A16E0DF0055D2AD /* OperationInfo.m in Sources */,
 				927E134D1A0C7D74002DC6FB /* UIColor+FlatUI.m in Sources */,
 				928E1EC11A16E0DF0055D2AD /* DFAnyOperation.m in Sources */,
 				928E1EBA1A16E0DF0055D2AD /* DFLoopOperation.m in Sources */,
@@ -621,7 +626,7 @@
 				928E1EB41A16E0DF0055D2AD /* DFMetaOperation.m in Sources */,
 				928E1EC31A16E0DF0055D2AD /* DFIfElseOperation.m in Sources */,
 				927E133B1A0C6DF3002DC6FB /* NSMethodSignature+EXT.m in Sources */,
-				928E1EB91A16E0DF0055D2AD /* DFSequenceGenerator.m in Sources */,
+				928E1EB91A16E0DF0055D2AD /* DFGenerator.m in Sources */,
 				928E1EDA1A16E1210055D2AD /* UIView+DebugObject.m in Sources */,
 				927E133A1A0C6DF3002DC6FB /* NSInvocation+EXT.m in Sources */,
 				928E1EB71A16E0DF0055D2AD /* DFVoidObject.m in Sources */,
@@ -653,6 +658,7 @@
 				927E13351A0C6DF3002DC6FB /* EXTNil.m in Sources */,
 				928E1EE21A16E12C0055D2AD /* BlockDescription.m in Sources */,
 				927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */,
+				92CCF8181A545F00004628FF /* DFTakeWhile.m in Sources */,
 				928E1EB51A16E0DF0055D2AD /* DFCompositeOperation.m in Sources */,
 				927E13341A0C6DF3002DC6FB /* EXTConcreteProtocol.m in Sources */,
 				928E1EBB1A16E0DF0055D2AD /* DFPeriodicOperation.m in Sources */,
@@ -663,7 +669,7 @@
 				928E1EBC1A16E0DF0055D2AD /* DFDelayOperation.m in Sources */,
 				92CCF80F1A53A54F004628FF /* DFTakeOperation.m in Sources */,
 				927E128B1A0C6D8B002DC6FB /* main.m in Sources */,
-				928E1EC91A16E0DF0055D2AD /* OperationInfo.m in Sources */,
+				928E1EC91A16E0DF0055D2AD /* ConnectionInfo.m in Sources */,
 				928E1EBD1A16E0DF0055D2AD /* ReactiveConnectionInfo.m in Sources */,
 				92E584D41A184DD300E52A54 /* DFGridView.m in Sources */,
 				928E1EE31A16E12C0055D2AD /* NSObject+BlockObservation.m in Sources */,

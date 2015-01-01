@@ -9,6 +9,10 @@
 #import "DFVoidObject.h"
 #import "ExtRuntimeExtensions.h"
 
+BOOL isVoid(id obj) {
+    return [obj isKindOfClass:[DFVoidObject class]];
+}
+
 @interface DFVoidObjectException : NSException
 
 @end
@@ -40,6 +44,11 @@
                                            userInfo:nil];
 }
 
+
+- (BOOL)isKindOfClass:(Class)class
+{
+    return [class isEqual:[DFVoidObject class]];
+}
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
 {

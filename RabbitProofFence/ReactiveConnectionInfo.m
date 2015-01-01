@@ -40,20 +40,20 @@
 
 - (void)clean
 {
-    if (self.propertyObservationToken) {
-        [self.operation safelyRemoveObserverWithBlockToken:self.propertyObservationToken];
-        self.propertyObservationToken = nil;
-    }
     if (self.stateObservationToken) {
         [self.operation safelyRemoveObserverWithBlockToken:self.stateObservationToken];
         self.stateObservationToken = nil;
+    }
+    if (self.propertyObservationToken) {
+        [self.operation safelyRemoveObserverWithBlockToken:self.propertyObservationToken];
+        self.propertyObservationToken = nil;
     }
     [self.inputs removeAllObjects];
 }
 
 - (NSString *)debugDescription
 {
-    return [NSString stringWithFormat:@"\n{property:%@ \n inputs: %@ \n operation:%@ \n}", self.connectedProperty,
+    return [NSString stringWithFormat:@"\n{property:%@ \n inputs: %@ \n operation:%@ \n}", self.fromPort,
             self.inputs,
             self.operation];
 }

@@ -1,18 +1,15 @@
 //
-//  DFFilterOperation.m
-//  vf-hollywood
+//  DFTakeWhile.m
+//  RabbitProofFence
 //
-//  Created by Sinha, Gyanendra on 6/23/14.
-//  Copyright (c) 2014 Conde Nast. All rights reserved.
+//  Created by Sinha, Gyanendra on 12/31/14.
+//  Copyright (c) 2014 Sinha, Gyanendra. All rights reserved.
 //
 
-#import "DFFilterOperation.h"
+#import "DFTakeWhile.h"
 #import "DFReactiveOperation_SubclassingHooks.h"
-#import "DFVoidObject.h"
 
-@implementation DFFilterOperation
-
-@dynamic input;
+@implementation DFTakeWhile
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {
@@ -47,14 +44,14 @@
     return self;
 }
 
-- (instancetype)initWithFilterBlock:(BOOL (^)(id input))filterBlock
+- (instancetype)initWithTakeWhileBlock:(BOOL (^)(id input))takeWhileBlock
 {
     self = [self init];
     if (self) {
         //do a copy
-        BOOL (^newFilterBlock)(id input) = [filterBlock copy];
-        id (^ wrappingBlock)(id input) = ^(id input) {
-            return @(newFilterBlock(input));
+        BOOL (^newTakeWhileBlock)(id input) = [takeWhileBlock copy];
+        id (^wrappingBlock)(id input) = ^(id input) {
+            return @(newTakeWhileBlock(input));
         };
         self.executionObj = [[self class] executionObjFromBlock:wrappingBlock];
         self.executionObj.executionBlock = wrappingBlock;
@@ -62,14 +59,10 @@
     return self;
 }
 
-- (void)connectWithOperation:(DFOperation *)operation
-{
-    [super addReactiveDependency:operation withBindings:@{@keypath(self.input) : @keypath(operation.output)}];
-}
-
 - (BOOL)execute
 {
     Execution_Class *executionObj = self.executionObj;
+    BOOL result = NO;
     if (executionObj.executionBlock) {
         @try {
             [self prepareExecutionObj:executionObj];
@@ -77,6 +70,7 @@
             if ([wrappedValue boolValue]) {
                 self.executionCount ++;
                 self.output = [executionObj valueForArgAtIndex:0];
+                result = YES;
             }
         }
         @catch (NSException *exception) {
@@ -85,11 +79,8 @@
         @finally {
             [self breakRefCycleForExecutionObj:executionObj];
         }
-        if (!self.error) {
-            return YES;
-        }
     }
-    return NO;
+    return result;
 }
 
 @end

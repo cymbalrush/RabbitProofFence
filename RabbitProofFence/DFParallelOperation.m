@@ -136,11 +136,11 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
             NSArray *keys = [[self.operationsInProgress allKeys] sortedArrayUsingSelector:@selector(compare:)];
             [keys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 NSNumber *key = obj;
-                OperationInfo *info = self.operationsInProgress[key];
-                DFOperation *runningOperation = info.operation;
-                if (runningOperation.state == OperationStateDone) {
-                    self.error = runningOperation.error;
-                    self.output = runningOperation.output;
+                ConnectionInfo *info = self.operationsInProgress[key];
+                DFOperation *executingOperation = info.operation;
+                if (executingOperation.state == OperationStateDone) {
+                    self.error = executingOperation.error;
+                    self.output = executingOperation.output;
                     [self.operationsInProgress removeObjectForKey:key];
                 }
                 else {
@@ -163,7 +163,6 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
 {
     dispatch_block_t block = ^(void) {
         if (!operation) {
-            self.output = [DFVoidObject new];
             [self done];
             return;
         }
@@ -174,7 +173,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
         AMBlockToken *observationToken = [self startObservingOperation:operation];
         OperationInfo *info = [OperationInfo new];
         info.operation = operation;
-        info.observationToken = observationToken;
+        info.stateObservationToken = observationToken;
         NSUInteger operationIndex = self.currentOperationIndex;
         //start operation
         [self.operationsInProgress setObject:info forKey:@(operationIndex)];
@@ -224,9 +223,9 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
             NSUInteger operationsToStart = [self operationsToStart];
             if (operationsToStart > 0) {
                 for (int i = 0; i < operationsToStart; i++) {
-                    if (![self retry]) {
+                    if (![self execute]) {
                         //all executing operations have finished
-                        if ([self.operationsInProgress count] == 0) {
+                        if (self.operationsInProgress.count == 0) {
                             result = NO;
                             return;
                         }
@@ -247,7 +246,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
     [super suspend];
     dispatch_block_t block = ^(void) {
         [self.operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            OperationInfo *info = obj;
+            ConnectionInfo *info = obj;
             if (info.operation) {
                 [(DFOperation *)info.operation suspend];
             }
@@ -261,7 +260,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
     [super resume];
     dispatch_block_t block = ^(void) {
         [self.operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            OperationInfo *info = obj;
+            ConnectionInfo *info = obj;
             if (info.operation) {
                 [(DFOperation *)info.operation resume];
             }
@@ -277,6 +276,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
         [self.operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             OperationInfo *info = obj;
             [info clean];
+            [info.operation cancelRecursively];
         }];
     };
     [self safelyExecuteBlock:block];

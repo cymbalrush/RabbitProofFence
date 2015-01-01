@@ -15,6 +15,4 @@
 
 @property (assign, nonatomic) NSUInteger executionCount;
 
-- (BOOL)retry;
-
 @end

@@ -67,7 +67,7 @@
     return result;
 }
 
-- (BOOL)retry
+- (BOOL)execute
 {
     __block BOOL result = NO;
     dispatch_block_t block = ^(void) {

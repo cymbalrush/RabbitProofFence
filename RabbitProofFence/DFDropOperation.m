@@ -24,17 +24,18 @@
     } ports:@[@keypath(self.input), @keypath(self.n)]];
 }
 
-- (BOOL)retry
+- (BOOL)execute
 {
+    if (self.i > 0) {
+        self.i --;
+        return YES;
+    }
     Execution_Class *executionObj = self.executionObj;
     if (executionObj.executionBlock) {
         [self prepareExecutionObj:executionObj];
         @try {
             id output = [executionObj execute];
-            if (self.i > 0) {
-                self.output = output;
-                self.i --;
-            }
+            self.output = output;
         }
         @catch (NSException *exception) {
             self.error = NSErrorFromException(exception);

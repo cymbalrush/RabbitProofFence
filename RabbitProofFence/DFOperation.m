@@ -9,7 +9,7 @@
 #import "DFOperation.h"
 #import "BlockDescription.h"
 #import "Execution_Class.h"
-#import "DependentOperationInfo.h"
+#import "ConnectionInfo.h"
 #import "NSObject+BlockObservation.h"
 #import "EXTScope.h"
 #import "EXTKeyPathCoding.h"
@@ -84,6 +84,12 @@ NSString *setterFromProperty(NSString *property)
     return [NSString stringWithFormat:@"set%@%@:",  [[property substringToIndex:1] uppercaseString], [property substringFromIndex:1]];
 }
 
+void methodNotSupported()
+{
+    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
+    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+}
+
 @interface DFOperation ()
 
 @property (assign, nonatomic) OperationState state;
@@ -92,7 +98,7 @@ NSString *setterFromProperty(NSString *property)
 
 @property (strong, nonatomic) id output;
 
-@property (strong, nonatomic) NSMutableArray *operationBindings;
+@property (strong, nonatomic) NSMutableDictionary *connections;
 
 @property (strong, nonatomic) NSMutableDictionary *propertySet;
 
@@ -445,11 +451,12 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     if (self) {
         _stateLock = OS_SPINLOCK_INIT;
         _operationLock = [NSRecursiveLock new];
-        _operationBindings = [NSMutableArray new];
+        _connections = [NSMutableDictionary new];
         _propertiesSet = [NSMutableSet new];
         _outputConnections = [NSMutableArray array];
         _queue = [[self class] operationQueue];
         _execludedPorts = [NSMutableSet setWithObject:@keypath(self.selfRef)];
+        _output = [DFVoidObject new];
     }
     return self;
 }
@@ -643,27 +650,25 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
 
 - (NSDictionary *)addDependency:(DFOperation *)operation withBindings:(NSDictionary *)bindings
 {
+    if (!operation || operation == self) {
+        return nil;
+    }
     [self addDependency:operation];
     __block NSDictionary *validBindings = nil;
     dispatch_block_t block = ^(void) {
         NSSet *filteredKeys = [self validBindingsForOperation:operation bindings:bindings];
-        if ([filteredKeys count] > 0) {
-            NSDictionary *validBindings = [bindings dictionaryWithValuesForKeys:[filteredKeys allObjects]];
-            //associate bindings and operation
-            NSUInteger index = [self indexOfOperation:operation array:self.operationBindings];
-            if (index != NSNotFound) {
-                DependentOperationInfo *info = [self.operationBindings objectAtIndex:index];
-                [info.bindings addEntriesFromDictionary:bindings];
-            }
-            else {
-                DependentOperationInfo *info = [[DependentOperationInfo alloc] init];
-                info.bindings = [NSMutableDictionary dictionaryWithDictionary:validBindings];
-                info.operation = operation;
-                [self.operationBindings addObject:info];
-            }
-        }
+        [filteredKeys enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+            NSString *toPort = obj;
+            NSString *fromPort = bindings[toPort];
+            //create info for operation
+            ConnectionInfo *info = [ConnectionInfo new];
+            info.operation = operation;
+            info.fromPort = fromPort;
+            info.toPort = toPort;
+            self.connections[toPort] = info;
+        }];
         validBindings = [bindings dictionaryWithValuesForKeys:[filteredKeys allObjects]];
-    };
+     };
     [self safelyExecuteBlock:block];
     return validBindings;
 }
@@ -682,12 +687,14 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     [super removeDependency:operation];
     dispatch_block_t block = ^(void) {
         if ([operation isKindOfClass:[DFOperation class]]) {
-            //if operation is dependent
-            NSUInteger index = [self indexOfOperation:(DFOperation *)operation array:self.operationBindings];
-            if (index != NSNotFound) {
-                //if there was a binding we remove it
-                [self.operationBindings removeObjectAtIndex:index];
-            }
+            NSMutableArray *connectionsToRemove = [NSMutableArray array];
+            [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                ConnectionInfo *info = obj;
+                if ([info.operation isEqual:operation]) {
+                    [connectionsToRemove addObject:key];
+                }
+            }];
+            [self.connections removeObjectsForKeys:connectionsToRemove];
         }
     };
     [self safelyExecuteBlock:block];
@@ -695,12 +702,15 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
 
 - (NSDictionary *)bindingsForOperation:(DFOperation *)operation
 {
-    __block NSDictionary *bindings = nil;
+    __block NSMutableDictionary *bindings = [NSMutableDictionary dictionary];
     dispatch_block_t block = ^(void) {
-        [self.operationBindings enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            DependentOperationInfo *info = obj;
-            if (info.operation == operation) {
-                bindings = [info.bindings copy];
+        [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            ConnectionInfo *info = obj;
+            DFOperation *connectedOperation = info.operation;
+            if (connectedOperation == operation) {
+                NSString *connectedToProperty = key;
+                NSString *connectedFromProperty = info.fromPort;
+                bindings[connectedToProperty] = connectedFromProperty;
             }
         }];
     };
@@ -739,16 +749,10 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
 - (void)executeBindings
 {
     //loop through dependent operation bindings
-    [self.operationBindings enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        DependentOperationInfo *info = obj;
+    [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        ConnectionInfo *info = obj;
         DFOperation *operation = info.operation;
-        NSDictionary *bindings = info.bindings;
-        [bindings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            //set property
-            NSString *toProperty = key;
-            NSString *fromProperty = obj;
-            [self setValue:[operation valueForKey:fromProperty] forKey:toProperty];
-        }];
+        [self setValue:[operation valueForKey:info.fromPort] forKey:info.toPort];
     }];
 }
 
@@ -826,12 +830,9 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     __block NSMutableArray *freePorts = nil;
     dispatch_block_t block = ^() {
         freePorts = [self.inputPorts mutableCopy];
-        [self.operationBindings enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            DependentOperationInfo *info = obj;
-            NSDictionary *bindings = info.bindings;
-            [freePorts removeObjectsInArray:[bindings allKeys]];
+        [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [freePorts removeObject:key];
         }];
-        [freePorts removeObjectsInArray:[self.execludedPorts allObjects]];
     };
     [self safelyExecuteBlock:block];
     return freePorts;
@@ -1109,9 +1110,10 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     return (self.state == OperationStateDone);
 }
 
-- (void)execute
+- (BOOL)execute
 {
     __block id output = nil;
+    __block BOOL result = NO;
     NSError *error = nil;
     if (!self.error) {
         __block Execution_Class *executionObj = nil;
@@ -1136,14 +1138,15 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
             if (!self.error && error) {
                 self.error = error;
             }
-            if (self.isCancelled || self.error) {
-                output = [DFVoidObject new];
+            if (!(self.isCancelled || self.error)) {
+                self.output = output;
+                result = YES;
             }
-            self.output = output;
             [self done];
         }
     };
     [self safelyExecuteBlock:block];
+    return result;
 }
 
 - (void)main

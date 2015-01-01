@@ -77,9 +77,7 @@
         if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
             return;
         }
-        [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
-        self.operationObservationToken = nil;
-        self.executingOperation = nil;
+        self.executingOperationInfo = nil;
         if (operation == self.tryOperation) {
             if (self.errorBlock && self.errorBlock(operation.error)) {
                 [self startOperation:self.catchOperation];

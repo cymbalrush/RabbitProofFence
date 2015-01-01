@@ -13,8 +13,8 @@
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {
-    NSString *reason = [NSString stringWithFormat:@"Method not supported"];
-    @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
+    methodNotSupported();
+    return nil;
 }
 
 - (instancetype)init
@@ -41,10 +41,8 @@
             [self execute];
             
         };
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self.delay doubleValue] * NSEC_PER_SEC)),
-                       dispatch_get_main_queue(),
-                       block);
-        
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self.delay doubleValue] * NSEC_PER_SEC)), queue, block);
     }
 }
 

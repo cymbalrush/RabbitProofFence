@@ -60,7 +60,7 @@
     [self safelyExecuteBlock:block];
 }
 
-- (BOOL)retry
+- (BOOL)execute
 {
     Execution_Class *executionObj = self.executionObj;
     if (executionObj.executionBlock) {

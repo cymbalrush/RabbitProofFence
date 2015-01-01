@@ -78,7 +78,6 @@ NSString * const DFCoreDataOperationQueueName = @"com.operations.coreDataOperati
             }];
         }
         else {
-            self.output = [self processOutput:nil];
             [self done];
         }
     };

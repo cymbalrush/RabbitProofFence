@@ -7,7 +7,7 @@
 //
 
 #import "DFOperation.h"
-#import "DependentOperationInfo.h"
+#import "OperationInfo.h"
 #import "Execution_Class.h"
 #import "metamacros.h"
 #import "EXTKeyPathCoding.h"
@@ -84,7 +84,7 @@
 
 - (void)executeBindings;
 
-- (void)execute;
+- (BOOL)execute;
 
 - (void)prepareForExecution;
 

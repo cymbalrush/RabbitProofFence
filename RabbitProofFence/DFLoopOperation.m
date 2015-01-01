@@ -105,7 +105,7 @@
     return self.executionObj.executionBlock;
 }
 
-- (BOOL)retry
+- (BOOL)execute
 {
     if (self.retryBlock) {
         Execution_Class *executionObj = self.executionObj;
@@ -143,13 +143,11 @@
         if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
             return;
         }
-        [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
-        self.operationObservationToken = nil;
         self.error = operation.error;
         self.output = operation.output;
-        self.executingOperation = nil;
+        self.executingOperationInfo = nil;
         //if it's suspended then don't retry
-        if (![self retry]) {
+        if (![self execute]) {
             [self done];
         }
     };
@@ -163,11 +161,10 @@
             return;
         }
         if (!self.error) {
-            if ([self retry]) {
+            if ([self execute]) {
                 return;
             }
         }
-        self.output = [DFVoidObject new];
         [self done];
     };
     [self safelyExecuteBlock:block];

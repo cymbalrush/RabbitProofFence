@@ -22,7 +22,7 @@
 
 - (BOOL)canExecute;
 
-- (ReactiveConnectionInfo *)newInfo;
+- (ReactiveConnectionInfo *)reactiveConnectionInfo;
 
 - (BOOL)isDone;
 

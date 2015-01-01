@@ -9,14 +9,13 @@
 #import "DFMetaOperation.h"
 #import "DFBackgroundOperation.h"
 #import "DFOperation_SubclassingHooks.h"
+#import "OperationInfo.h"
 
 @interface DFMetaOperation ()
 
-@property (strong, nonatomic) AMBlockToken *operationObservationToken;
-
 @property (strong, nonatomic) DFOperation *operation;
 
-@property (strong, nonatomic) DFOperation *executingOperation;
+@property (strong, nonatomic) OperationInfo *executingOperationInfo;
 
 @property (readonly, nonatomic) BOOL isExecutingOperation;
 
@@ -91,11 +90,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [self.executingOperation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
-}
-
 - (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFMetaOperation *newMetaOperation = nil;
@@ -120,7 +114,7 @@
 
 - (BOOL)isExecutingOperation
 {
-    return (self.executingOperation != nil);
+    return (self.executingOperationInfo != nil);
 }
 
 - (void)operation:(DFOperation *)operation stateChanged:(id)changedValue
@@ -129,11 +123,9 @@
         if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
             return;
         }
-        [operation safelyRemoveObserverWithBlockToken:self.operationObservationToken];
-        self.operationObservationToken = nil;
         self.output = operation.output;
         self.error = operation.error;
-        self.executingOperation = nil;
+        self.executingOperationInfo = nil;
         [self done];
     };
     [self safelyExecuteBlock:block];
@@ -176,8 +168,10 @@
         [self prepareOperation:operation];
         [operation setQueuePriorityRecursively:self.queuePriority];
         //start observing
-        self.operationObservationToken = [self startObservingOperation:operation];
-        self.executingOperation = operation;
+        OperationInfo *info = [OperationInfo new];
+        info.operation = operation;
+        info.stateObservationToken = [self startObservingOperation:operation];
+        self.executingOperationInfo = info;
         if (self.isSuspended) {
             [operation suspend];
         }
@@ -191,7 +185,7 @@
 {
     [super suspend];
     dispatch_block_t block = ^() {
-        [self.executingOperation suspend];
+        [self.executingOperationInfo.operation suspend];
     };
     [self safelyExecuteBlock:block];
 }
@@ -200,7 +194,7 @@
 {
     [super resume];
     dispatch_block_t block = ^() {
-        [self.executingOperation resume];
+        [self.executingOperationInfo.operation resume];
     };
     [self safelyExecuteBlock:block];
 }
@@ -209,11 +203,8 @@
 {
     __block DFOperation *executingOperation = nil;
     dispatch_block_t block = ^() {
-        executingOperation = self.executingOperation;
-        if (self.operationObservationToken) {
-            [self.executingOperation removeObserverWithBlockToken:self.operationObservationToken];
-            self.operationObservationToken = nil;
-        }
+        executingOperation = self.executingOperationInfo.operation;
+        self.executingOperationInfo = nil;
         if (self.state == OperationStateExecuting) {
             [self done];
         }
@@ -238,7 +229,6 @@
                 return;
             }
         }
-        self.output = [DFVoidObject new];
         [self done];
     };
     [self safelyExecuteBlock:block];
@@ -247,7 +237,7 @@
 - (void)done
 {
     [super done];
-    self.executingOperation = nil;
+    self.executingOperationInfo = nil;
 }
 
 @end

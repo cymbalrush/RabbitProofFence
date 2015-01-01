@@ -76,7 +76,7 @@
     } forName:@"IntegerConverter"];
     
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
-        ArraySequenceGenerator *seq = [ArraySequenceGenerator sequenceGenerator];
+        ArrayGenerator *seq = [ArrayGenerator generator];
         NameOperation(seq);
         return seq;
     } forName:@"ArraySequence"];
@@ -133,6 +133,24 @@
         NameOperation(delay);
         return delay;
     } forName:@"Delay"];
+    
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFGenerator *forSeq =  OperationFromBlock([DFGenerator class], ^(NSNumber *i, NSNumber *j, NSNumber *inc, DFGenerator *selfRef) {
+            NSInteger value = [i integerValue];
+            if (!isVoid(selfRef.output)) {
+                value = [selfRef.output integerValue] + [inc integerValue];
+            }
+            if (value >= [j integerValue]) {
+                [selfRef stop];
+            }
+            return @(value);
+            
+        });
+        [forSeq setValue:@(1) forKey:@"inc"];
+
+        NameOperation(forSeq);
+        return forSeq;
+    } forName:@"For"];
     
     DFWorkspace *ws = [DFWorkspace workspaceWithBounds:self.view.bounds];
 

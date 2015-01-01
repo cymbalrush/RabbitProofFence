@@ -253,7 +253,7 @@
                  clockwise:YES];
     
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.fillColor = [[UIColor carrotColor] CGColor];
+    shapeLayer.fillColor = toPort.connectionLayer.strokeColor;
     shapeLayer.path = [path CGPath];
     [CATransaction begin];
     [CATransaction setDisableActions:YES];

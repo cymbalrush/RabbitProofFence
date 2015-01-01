@@ -9,24 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "NSObject+BlockObservation.h"
 #import "DFOperation.h"
+#import "ConnectionInfo.h"
 
 @class DFOperation;
 
-@interface ReactiveConnectionInfo : NSObject
-
-@property (strong, nonatomic) DFOperation *operation;
+@interface ReactiveConnectionInfo : ConnectionInfo
 
 @property (assign, nonatomic) OperationState operationState;
 
-@property (nonatomic, assign) int connectionCapacity;
+@property (assign, nonatomic) int connectionCapacity;
 
-@property (strong, nonatomic) NSMutableArray *inputs;
-
-@property (strong, nonatomic) AMBlockToken *propertyObservationToken;
+@property (readonly, nonatomic) NSMutableArray *inputs;
 
 @property (strong, nonatomic) AMBlockToken *stateObservationToken;
 
-@property (strong, nonatomic) NSString *connectedProperty;
+@property (strong, nonatomic) AMBlockToken *propertyObservationToken;
 
 - (void)clean;
 

@@ -1,5 +1,5 @@
 //
-//  OperationInfo
+//  DependentOperationInfo.h
 //  vf-hollywood
 //
 //  Created by Sinha, Gyanendra on 6/23/14.
@@ -15,7 +15,7 @@
 
 @property (strong, nonatomic) DFOperation *operation;
 
-@property (strong, nonatomic) AMBlockToken *observationToken;
+@property (strong, nonatomic) AMBlockToken *stateObservationToken;
 
 - (void)clean;
 
