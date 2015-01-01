@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Sinha, Gyanendra. All rights reserved.
 //
 
-#import "DFTakeWhile.h"
+#import "DFTakeWhileOperation.h"
 #import "DFReactiveOperation_SubclassingHooks.h"
 
-@implementation DFTakeWhile
+@implementation DFTakeWhileOperation
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {

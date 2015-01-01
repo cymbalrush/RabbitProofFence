@@ -273,75 +273,59 @@
 
 - (BOOL)next
 {
-    __block BOOL result = NO;
-    dispatch_block_t block = ^(void) {
-        result = [self execute];
-        if (result) {
-            [self generateNextValues];
-        }
-    };
-    [self safelyExecuteBlock:block];
+    BOOL result = [super next];
+    if (result) {
+        [self generateNextValues];
+    }
     return result;
 }
 
 - (BOOL)isReadyToExecute
 {
     __block BOOL ready = YES;
-    dispatch_block_t block = ^(void) {
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ReactiveConnectionInfo *info = obj;
-            OperationState state = info.operationState;
-            //if there is no operation associated with
-            ready = (state == OperationStateExecuting || state == OperationStateDone);
-            if (ready) {
-                NSMutableArray *inputValues = info.inputs;
-                ready = ([inputValues count] > 0);
-            }
-            if (!ready) {
-                *stop = YES;
-            }
-        }];
-    };
-    [self safelyExecuteBlock:block];
+    [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        ReactiveConnectionInfo *info = obj;
+        OperationState state = info.operationState;
+        //if there is no operation associated with
+        ready = (state == OperationStateExecuting || state == OperationStateDone);
+        if (ready) {
+            NSMutableArray *inputValues = info.inputs;
+            ready = ([inputValues count] > 0);
+        }
+        if (!ready) {
+            *stop = YES;
+        }
+    }];
     return ready;
 }
 
 - (BOOL)canExecute
 {
-    __block BOOL result = NO;
-    dispatch_block_t block = ^(void) {
-        if (self.isExecuting && !self.isExecutingOperation) {
-            result = [self isReadyToExecute];
-        }
-        else {
-            result = NO;
-        }
-    };
-    [self safelyExecuteBlock:block];
+    BOOL result = NO;
+    if (self.isExecuting && !self.isExecutingOperation) {
+        result = [self isReadyToExecute];
+    }
     return result;
 }
 
 - (BOOL)isDone
 {
-    __block BOOL result = NO;
-    dispatch_block_t block = ^(void) {
-        if (self.state == OperationStateDone) {
-            result = YES;
-        }
-        else if (self.isExecuting && !self.isExecutingOperation) {
-            __block BOOL done = (self.executionCount > 0);
-            [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                ReactiveConnectionInfo *info = obj;
-                done = NO;
-                if ((info.operationState == OperationStateDone) && ([info.inputs count] == 0)) {
-                    done = YES;
-                    *stop = YES;
-                }
-            }];
-            result = done;
-        }
-    };
-    [self safelyExecuteBlock:block];
+    BOOL result = NO;
+    if (self.state == OperationStateDone) {
+        result = YES;
+    }
+    else if (self.isExecuting && !self.isExecutingOperation) {
+        __block BOOL done = (self.executionCount > 0) || (self.connections.count == 0);
+        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            ReactiveConnectionInfo *info = obj;
+            done = NO;
+            if ((info.operationState == OperationStateDone) && ([info.inputs count] == 0)) {
+                done = YES;
+                *stop = YES;
+            }
+        }];
+        result = done;
+    }
     return result;
 }
 
@@ -448,54 +432,48 @@
 
 - (void)prepareExecutionObj:(Execution_Class *)executionObj
 {
-    dispatch_block_t block = ^(void) {
-        [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *property = obj;
-            ReactiveConnectionInfo *info = [self.reactiveConnections objectForKey:property];
-            id value = nil;
-            if (info) {
-                //take the first input and assign
-                value = info.inputs[0];
-                [info.inputs removeObjectAtIndex:0];
-            }
-            else {
-                value = [self valueForKey:property];
-            }
-             value = (value == [EXTNil null]) ? nil : value;
-            [executionObj setValue:value atArgIndex:idx];
-        }];
-    };
-    [self safelyExecuteBlock:block];
+    [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *property = obj;
+        ReactiveConnectionInfo *info = [self.reactiveConnections objectForKey:property];
+        id value = nil;
+        if (info) {
+            //take the first input and assign
+            value = info.inputs[0];
+            [info.inputs removeObjectAtIndex:0];
+        }
+        else {
+            value = [self valueForKey:property];
+        }
+         value = (value == [EXTNil null]) ? nil : value;
+        [executionObj setValue:value atArgIndex:idx];
+    }];
 }
 
 - (void)prepareOperation:(DFOperation *)operation
 {
-    dispatch_block_t block = ^(void) {
-        if (self.retryBlock) {
-            return;
+    if (self.retryBlock) {
+        return;
+    }
+    NSDictionary *mapping = [[self class] freePortsToOperationMapping:operation];
+    [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *property = obj;
+        NSSet *operations = [mapping objectForKey:property];
+        ReactiveConnectionInfo *info = self.reactiveConnections[property];
+        id value = nil;
+        if (info) {
+            //take the first input and assign
+            value = info.inputs[0];
+            [info.inputs removeObjectAtIndex:0];
         }
-        NSDictionary *mapping = [[self class] freePortsToOperationMapping:operation];
-        [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *property = obj;
-            NSSet *operations = [mapping objectForKey:property];
-            ReactiveConnectionInfo *info = self.reactiveConnections[property];
-            id value = nil;
-            if (info) {
-                //take the first input and assign
-                value = info.inputs[0];
-                [info.inputs removeObjectAtIndex:0];
-            }
-            else {
-                value = [self valueForKey:property];
-            }
-            value = (value == [EXTNil null]) ? nil : value;
-            [operations enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-                DFOperation *operation = obj;
-                [operation setValue:value forKey:property];
-            }];
+        else {
+            value = [self valueForKey:property];
+        }
+        value = (value == [EXTNil null]) ? nil : value;
+        [operations enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+            DFOperation *operation = obj;
+            [operation setValue:value forKey:property];
         }];
-    };
-    [self safelyExecuteBlock:block];
+    }];
 }
 
 - (void)operation:(DFOperation *)operation stateChanged:(id)changedValue

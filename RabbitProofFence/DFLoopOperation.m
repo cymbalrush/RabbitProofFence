@@ -122,7 +122,6 @@
         }
         if (operation) {
             [self startOperation:operation];
-            self.executionCount ++;
             return YES;
         }
     }
@@ -130,7 +129,6 @@
         if ([self.predicate evaluateWithObject:self]) {
             DFOperation *newOperation = [self.operation clone];
             [self startOperation:newOperation];
-            self.executionCount ++;
             return YES;
         }
     }
@@ -147,11 +145,20 @@
         self.output = operation.output;
         self.executingOperationInfo = nil;
         //if it's suspended then don't retry
-        if (![self execute]) {
+        if (![self next]) {
             [self done];
         }
     };
     [self safelyExecuteBlock:block];
+}
+
+- (BOOL)next
+{
+    BOOL result = [self execute];
+    if (result) {
+        self.executionCount ++;
+    }
+    return result;
 }
 
 - (void)main
@@ -161,7 +168,7 @@
             return;
         }
         if (!self.error) {
-            if ([self execute]) {
+            if ([self next]) {
                 return;
             }
         }

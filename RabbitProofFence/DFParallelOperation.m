@@ -98,26 +98,15 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
 
 - (BOOL)isExecutingOperation
 {
-    __block BOOL result = NO;
-    dispatch_block_t block = ^(void) {
-        result = ([self.operationsInProgress count] > 0);
-    };
-    [self safelyExecuteBlock:block];
-    return result;
+    return ([self.operationsInProgress count] > 0);
 }
 
 - (BOOL)canExecute
 {
-    __block BOOL result = NO;
-    dispatch_block_t block = ^(void) {
-        if ([self isExecuting] && ([self.operationsInProgress count] < self.maxConcurrentOperations)) {
-            result = [self isReadyToExecute];
-        }
-        else {
-            result = NO;
-        }
-    };
-    [self safelyExecuteBlock:block];
+    BOOL result = NO;
+    if ([self isExecuting] && ([self.operationsInProgress count] < self.maxConcurrentOperations)) {
+        result = [self isReadyToExecute];
+    }
     return result;
 }
 
@@ -130,7 +119,7 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
         NSNumber *operationIndex = @(operation.operationIndex);
         //this will remove observation
         NSError *error = operation.error;
-        id output = [self outputForFinishedOperation:operation];
+        id output = operation.output;
         if (self.outputInOrder) {
             //produce output in order
             NSArray *keys = [[self.operationsInProgress allKeys] sortedArrayUsingSelector:@selector(compare:)];
@@ -153,7 +142,6 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
             self.output = output;
             [self.operationsInProgress removeObjectForKey:operationIndex];
         }
-        //self.executedOnce = YES;
         [self startOperations];
     };
     [self safelyExecuteBlock:block];
@@ -187,14 +175,6 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
     [self safelyExecuteBlock:block];
 }
 
-- (id)outputForFinishedOperation:(DFOperation *)operation
-{
-    if (self.processOutputForFinishedOperation) {
-        return self.processOutputForFinishedOperation(operation);
-    }
-    return operation.output;
-}
-
 - (void)startOperations
 {
     //if operation is suspended then return
@@ -217,27 +197,24 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
 
 - (BOOL)next
 {
-    __block BOOL result = YES;
-    dispatch_block_t block = ^(void) {
-        if ([self canExecute]) {
-            NSUInteger operationsToStart = [self operationsToStart];
-            if (operationsToStart > 0) {
-                for (int i = 0; i < operationsToStart; i++) {
-                    if (![self execute]) {
-                        //all executing operations have finished
-                        if (self.operationsInProgress.count == 0) {
-                            result = NO;
-                            return;
-                        }
+    BOOL result = YES;
+    if ([self canExecute]) {
+        NSUInteger operationsToStart = [self operationsToStart];
+        if (operationsToStart > 0) {
+            for (int i = 0; i < operationsToStart; i++) {
+                if ([self execute]) {
+                    self.executionCount ++;
+                    [self generateNextValues];
+                }
+                else {
+                    if (self.operationsInProgress.count == 0) {
+                        result = NO;
                     }
-                    else {
-                        [self generateNextValues];
-                    }
+                    break;
                 }
             }
         }
-    };
-    [self safelyExecuteBlock:block];
+    }
     return result;
 }
 
@@ -290,7 +267,6 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
             return;
         }
         if (self.error) {
-            self.output = [DFVoidObject new];
             [self done];
         }
         else {
@@ -304,7 +280,6 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
                 }
                 dispatch_block_t block = ^(void) {
                     if ((self.state == OperationStateExecuting) && [self isDone]) {
-                        self.output = [DFVoidObject new];
                         [self done];
                     }
                     else if ([self canExecute]) {

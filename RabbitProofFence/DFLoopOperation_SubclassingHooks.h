@@ -15,4 +15,6 @@
 
 @property (assign, nonatomic) NSUInteger executionCount;
 
+- (BOOL)next;
+
 @end

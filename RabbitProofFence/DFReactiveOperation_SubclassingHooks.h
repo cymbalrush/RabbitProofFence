@@ -26,8 +26,6 @@
 
 - (BOOL)isDone;
 
-- (BOOL)next;
-
 - (BOOL)hasReactiveBindings;
 
 - (void)generateNextValues;

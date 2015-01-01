@@ -77,7 +77,7 @@
 		92B9D54B1A1EFC9F00D18BCB /* DFValueNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9D54A1A1EFC9F00D18BCB /* DFValueNode.m */; };
 		92CCF80F1A53A54F004628FF /* DFTakeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF80E1A53A54F004628FF /* DFTakeOperation.m */; };
 		92CCF8121A53A72A004628FF /* DFDropOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF8111A53A72A004628FF /* DFDropOperation.m */; };
-		92CCF8181A545F00004628FF /* DFTakeWhile.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF8171A545F00004628FF /* DFTakeWhile.m */; };
+		92CCF8181A545F00004628FF /* DFTakeWhileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF8171A545F00004628FF /* DFTakeWhileOperation.m */; };
 		92E584D01A184A7500E52A54 /* DFWorkspace.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92E584CE1A184A7500E52A54 /* DFWorkspace.xib */; };
 		92E584D11A184A7500E52A54 /* DFWorkspaceBlockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92E584CF1A184A7500E52A54 /* DFWorkspaceBlockCell.xib */; };
 		92E584D41A184DD300E52A54 /* DFGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92E584D31A184DD300E52A54 /* DFGridView.m */; };
@@ -241,8 +241,8 @@
 		92CCF80E1A53A54F004628FF /* DFTakeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTakeOperation.m; sourceTree = "<group>"; };
 		92CCF8101A53A72A004628FF /* DFDropOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFDropOperation.h; sourceTree = "<group>"; };
 		92CCF8111A53A72A004628FF /* DFDropOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFDropOperation.m; sourceTree = "<group>"; };
-		92CCF8161A545F00004628FF /* DFTakeWhile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTakeWhile.h; sourceTree = "<group>"; };
-		92CCF8171A545F00004628FF /* DFTakeWhile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTakeWhile.m; sourceTree = "<group>"; };
+		92CCF8161A545F00004628FF /* DFTakeWhileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTakeWhileOperation.h; sourceTree = "<group>"; };
+		92CCF8171A545F00004628FF /* DFTakeWhileOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTakeWhileOperation.m; sourceTree = "<group>"; };
 		92E584CE1A184A7500E52A54 /* DFWorkspace.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFWorkspace.xib; sourceTree = "<group>"; };
 		92E584CF1A184A7500E52A54 /* DFWorkspaceBlockCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFWorkspaceBlockCell.xib; sourceTree = "<group>"; };
 		92E584D21A184DD300E52A54 /* DFGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGridView.h; sourceTree = "<group>"; };
@@ -384,9 +384,9 @@
 				928E1E6F1A16E0DF0055D2AD /* OperationInfo.m */,
 				928E1E701A16E0DF0055D2AD /* DFOperation.h */,
 				928E1E711A16E0DF0055D2AD /* DFOperation.m */,
+				928E1E721A16E0DF0055D2AD /* DFOperation_SubclassingHooks.h */,
 				92B9D5461A1EF9D100D18BCB /* DFIdentityOperation.h */,
 				92B9D5471A1EF9D100D18BCB /* DFIdentityOperation.m */,
-				928E1E721A16E0DF0055D2AD /* DFOperation_SubclassingHooks.h */,
 				928E1E731A16E0DF0055D2AD /* DFLiftOperation.h */,
 				928E1E741A16E0DF0055D2AD /* DFLiftOperation.m */,
 				928E1E751A16E0DF0055D2AD /* DFBackgroundOperation.h */,
@@ -447,8 +447,8 @@
 				92CCF80E1A53A54F004628FF /* DFTakeOperation.m */,
 				92CCF8101A53A72A004628FF /* DFDropOperation.h */,
 				92CCF8111A53A72A004628FF /* DFDropOperation.m */,
-				92CCF8161A545F00004628FF /* DFTakeWhile.h */,
-				92CCF8171A545F00004628FF /* DFTakeWhile.m */,
+				92CCF8161A545F00004628FF /* DFTakeWhileOperation.h */,
+				92CCF8171A545F00004628FF /* DFTakeWhileOperation.m */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -658,7 +658,7 @@
 				927E13351A0C6DF3002DC6FB /* EXTNil.m in Sources */,
 				928E1EE21A16E12C0055D2AD /* BlockDescription.m in Sources */,
 				927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */,
-				92CCF8181A545F00004628FF /* DFTakeWhile.m in Sources */,
+				92CCF8181A545F00004628FF /* DFTakeWhileOperation.m in Sources */,
 				928E1EB51A16E0DF0055D2AD /* DFCompositeOperation.m in Sources */,
 				927E13341A0C6DF3002DC6FB /* EXTConcreteProtocol.m in Sources */,
 				928E1EBB1A16E0DF0055D2AD /* DFPeriodicOperation.m in Sources */,

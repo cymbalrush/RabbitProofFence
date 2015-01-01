@@ -62,11 +62,6 @@
     return self;
 }
 
-- (void)connectWithOperation:(DFOperation *)operation
-{
-    [super addReactiveDependency:operation withBindings:@{@keypath(self.input) : @keypath(operation.output)}];
-}
-
 - (BOOL)execute
 {
     Execution_Class *executionObj = self.executionObj;

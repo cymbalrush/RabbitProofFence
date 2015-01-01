@@ -14,7 +14,4 @@
 
 @property (assign, nonatomic) BOOL outputInOrder;
 
-//will be called when an operation finishes, can be used to modify output or to introduce side effects
-@property (copy, nonatomic) id(^processOutputForFinishedOperation)(DFOperation *operation);
-
 @end

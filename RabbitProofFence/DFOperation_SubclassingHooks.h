@@ -36,7 +36,7 @@
 
 @property (strong, nonatomic) NSMutableSet *execludedPorts;
 
-@property (readonly, nonatomic) NSMutableArray *operationBindings;
+@property (strong, nonatomic) NSMutableDictionary *connections;
 
 + (Execution_Class *)executionObjFromBlock:(id)block;
 

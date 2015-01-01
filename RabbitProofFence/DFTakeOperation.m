@@ -26,20 +26,17 @@
 
 - (BOOL)next
 {
-    __block BOOL result = YES;
-    dispatch_block_t block = ^(void) {
-        while ([self canExecute] && self.i > 0) {
-            self.i --;
-            result = [super next];
-            if (!result) {
-                break;
-            }
+    BOOL result = YES;
+    while ([self canExecute] && self.i > 0) {
+        self.i --;
+        result = [super next];
+        if (!result) {
+            break;
         }
-        if ([self isDone] || self.i == 0) {
-            result = NO;
-        }
-    };
-    [self safelyExecuteBlock:block];
+    }
+    if ([self isDone] || self.i == 0) {
+        result = NO;
+    }
     return result;
 }
 

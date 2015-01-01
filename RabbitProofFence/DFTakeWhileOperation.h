@@ -8,7 +8,7 @@
 
 #import "DFMapOperation.h"
 
-@interface DFTakeWhile : DFMapOperation
+@interface DFTakeWhileOperation : DFMapOperation
 
 @property (strong, nonatomic) id input;
 

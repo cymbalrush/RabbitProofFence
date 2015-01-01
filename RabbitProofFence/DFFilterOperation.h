@@ -14,6 +14,4 @@
 
 - (instancetype)initWithFilterBlock:(BOOL (^)(id input))filterBlock;
 
-- (void)connectWithOperation:(DFOperation *)operation;
-
 @end

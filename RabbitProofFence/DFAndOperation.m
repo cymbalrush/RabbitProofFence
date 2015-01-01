@@ -41,19 +41,16 @@
 
 - (BOOL)next
 {
-    __block BOOL result = YES;
-    dispatch_block_t block = ^(void) {
-        while ([self canExecute]) {
-            result = [super next];
-            if (!result) {
-                break;
-            }
+    BOOL result = YES;
+    while ([self canExecute]) {
+        result = [super next];
+        if (!result) {
+            break;
         }
-        if ([self isDone]) {
-            result = NO;
-        }
-    };
-    [self safelyExecuteBlock:block];
+    }
+    if ([self isDone]) {
+        result = NO;
+    }
     return result;
 }
 

@@ -44,10 +44,14 @@ BOOL isVoid(id obj) {
                                            userInfo:nil];
 }
 
-
 - (BOOL)isKindOfClass:(Class)class
 {
     return [class isEqual:[DFVoidObject class]];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"Void, the answer to all questions"];
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
