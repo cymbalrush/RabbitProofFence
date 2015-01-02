@@ -54,12 +54,16 @@
 
 - (DFNode *)visualRepresentation
 {
-    if ([self isKindOfClass:[DFIdentityOperation class]]) {
-        return [DFValueNode nodeWithInfo:[self info]];
-    }
-    else {
-        return [DFNode nodeWithInfo:[self info]];
-    }
+    DFNode *node = nil;
+    BOOL isIdentity = [self isKindOfClass:[DFIdentityOperation class]];
+    node = isIdentity ? [DFValueNode nodeWithInfo:[self info]] : [DFNode nodeWithInfo:[self info]];
+    NSArray *exludedPorts = [self.excludedPorts allObjects];
+    [exludedPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *portName = obj;
+        DFPort *port = [node portForName:portName];
+        [self groundPort:port];
+    }];
+    return node;
 }
 
 NS_INLINE NSUInteger levelForOperation(DFOperation *operation, NSArray *levels)
@@ -279,12 +283,6 @@ NS_INLINE DFNode *nodeForOperation(DFOperation *operation, NSArray *nodes)
                     [self connect:connectionLayer node:dependentNode toNode:node];
                 }
             }];
-            NSArray *exludedPorts = [operation.execludedPorts allObjects];
-            [exludedPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                NSString *portName = obj;
-                DFPort *port = [node portForName:portName];
-                [self groundPort:port];
-            }];
         }];
     }];
 }
@@ -294,7 +292,6 @@ NS_INLINE DFNode *nodeForOperation(DFOperation *operation, NSArray *nodes)
    return [operations sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         DFOperation *operation1 = obj1;
         DFOperation *operation2 = obj2;
-       
         return [@(operation1.dependencies.count) compare:@(operation2.dependencies.count)];
     }];
 }

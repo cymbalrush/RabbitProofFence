@@ -34,7 +34,7 @@
 
 @property (strong, nonatomic) NSMutableSet *propertiesSet;
 
-@property (strong, nonatomic) NSMutableSet *execludedPorts;
+@property (strong, nonatomic) NSMutableSet *excludedPorts;
 
 @property (strong, nonatomic) NSMutableDictionary *connections;
 

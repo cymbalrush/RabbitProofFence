@@ -120,7 +120,7 @@ void methodNotSupported()
 
 @property (assign, nonatomic) BOOL operationQueued;
 
-@property (strong, nonatomic) NSMutableSet *execludedPorts;
+@property (strong, nonatomic) NSMutableSet *excludedPorts;
 
 @property (strong, nonatomic) NSMutableArray *outputConnections;
 
@@ -455,7 +455,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
         _propertiesSet = [NSMutableSet new];
         _outputConnections = [NSMutableArray array];
         _queue = [[self class] operationQueue];
-        _execludedPorts = [NSMutableSet setWithObject:@keypath(self.selfRef)];
+        _excludedPorts = [NSMutableSet setWithObject:@keypath(self.selfRef)];
         _output = [DFVoidObject new];
     }
     return self;
@@ -545,21 +545,45 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     }];
 }
 
+- (void)commonCopy:(DFOperation *)operation
+{
+    [self breakRefCycleForExecutionObj:self.executionObj];
+    operation.executionObj = [self.executionObj copy];
+    operation.inputPorts = [self.inputPorts copy];
+    operation.name = [self.name copy];
+    operation.queue = self.queue;
+    operation.queuePriority = self.queuePriority;
+    NSMutableSet *excludedPorts = [self.excludedPorts copy];
+    operation.excludedPorts = excludedPorts;
+    //copy excluded port values
+    [[self class] copyExcludedPortValuesFromOperation:self toOperation:operation excludedPorts:excludedPorts];
+}
+
+NS_INLINE DFOperation *copyOperation(DFOperation *operation)
+{
+    DFOperation *newOperation = [[operation class] new];
+    newOperation.executionObj = [operation.executionObj copy];
+    newOperation.inputPorts = [operation.inputPorts copy];
+    newOperation.name = [operation.name copy];
+    newOperation.queue = operation.queue;
+    newOperation.queuePriority = operation.queuePriority;
+    NSMutableSet *excludedPorts = [operation.excludedPorts copy];
+    newOperation.excludedPorts = excludedPorts;
+    //copy excluded port values
+    [[operation class] copyExcludedPortValuesFromOperation:operation
+                                               toOperation:newOperation
+                                             excludedPorts:excludedPorts];
+    return newOperation;
+}
+
 - (instancetype)copyWithZone:(NSZone *)zone
 {
     __block DFOperation *operation = nil;
     dispatch_block_t block = ^(void) {
+        //brek ref cycle
         [self breakRefCycleForExecutionObj:self.executionObj];
-        operation = [[[self class] allocWithZone:zone] init];
-        operation.executionObj = [self.executionObj copyWithZone:zone];
-        operation.inputPorts = [self.inputPorts copyWithZone:zone];
-        operation.queue = self.queue;
-        operation.queuePriority = self.queuePriority;
-        NSMutableSet *excludedPorts = [self.execludedPorts copy];
-        operation.execludedPorts = excludedPorts;
-        //copy excluded port values
-        [[self class] copyExcludedPortValuesFromOperation:self toOperation:operation excludedPorts:excludedPorts];
-        //copy it
+        operation = copyOperation(self);
+        //copy dependencies
         [self.dependencies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             DFOperation *connectedOperation = obj;
             NSDictionary *bindings = [self bindingsForOperation:operation];
@@ -581,22 +605,14 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     __block DFOperation *operation = nil;
     dispatch_block_t block = ^(void) {
         [self breakRefCycleForExecutionObj:self.executionObj];
-        operation = [[[self class] alloc] init];
-        operation.executionObj = [self.executionObj copy];
-        operation.inputPorts = [self.inputPorts copy];
-        operation.queue = self.queue;
-        operation.queuePriority = self.queuePriority;
-        NSMutableSet *excludedPorts = [self.execludedPorts copy];
-        operation.execludedPorts = excludedPorts;
-        //copy excluded port values
-        [[self class] copyExcludedPortValuesFromOperation:self toOperation:operation excludedPorts:excludedPorts];
-        //copy it
+        operation = copyOperation(self);
+        //clone dependencies
         [self.dependencies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             DFOperation *connectedOperation = obj;
             NSDictionary *bindings = [self bindingsForOperation:connectedOperation];
             NSValue *key = [NSValue valueWithPointer:(__bridge const void *)(connectedOperation)];
             //check if object is already present
-            DFOperation *newOperation = [objToPointerMapping objectForKey:key];
+            DFOperation *newOperation = objToPointerMapping[key];
             if (!newOperation) {
                 newOperation = [connectedOperation clone:objToPointerMapping];
                 [objToPointerMapping setObject:newOperation forKey:key];
@@ -834,8 +850,8 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
             ConnectionInfo *info = obj;
             [freePorts removeObject:info.toPort];
         }];
-        if (self.execludedPorts.count > 0) {
-            [freePorts removeObjectsInArray:[self.execludedPorts allObjects]];
+        if (self.excludedPorts.count > 0) {
+            [freePorts removeObjectsInArray:[self.excludedPorts allObjects]];
         }
     };
     [self safelyExecuteBlock:block];
@@ -997,7 +1013,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     if ([port length] > 0) {
         dispatch_block_t block = ^(void) {
             if ([self.inputPorts containsObject:port]) {
-                [self.execludedPorts addObject:port];
+                [self.excludedPorts addObject:port];
             }
         };
         [self safelyExecuteBlock:block];
@@ -1011,7 +1027,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
            [ports enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                NSString *port = obj;
                if ([self.inputPorts containsObject:port]) {
-                   [self.execludedPorts addObject:port];
+                   [self.excludedPorts addObject:port];
                }
            }];
         };

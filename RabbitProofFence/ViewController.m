@@ -15,21 +15,21 @@
     [super viewDidLoad];
   
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
-        DFOperation *addOperation = OperationFromBlock([DFBackgroundOperation class], ^(NSNumber *x1, NSNumber *x2) {
+        DFOperation *add = OperationFromBlock([DFBackgroundOperation class], ^(NSNumber *x1, NSNumber *x2) {
             return @([x1 intValue] + [x2 intValue]);
             
         });
-        NameOperation(addOperation);
-        return addOperation;
+        NameOperation(add);
+        return add;
     } forName:@"Add"];
     
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
-        DFOperation *subOperation = OperationFromBlock([DFBackgroundOperation class], ^(NSNumber *x1, NSNumber *x2) {
+        DFOperation *sub = OperationFromBlock([DFBackgroundOperation class], ^(NSNumber *x1, NSNumber *x2) {
             return @([x1 intValue] - [x2 intValue]) ;
             
         });
-        NameOperation(subOperation);
-        return subOperation;
+        NameOperation(sub);
+        return sub;
     } forName:@"Subtract"];
     
     

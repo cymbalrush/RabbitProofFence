@@ -215,7 +215,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     //add node to gridview
     [self.gridView addNode:node];
     
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.3
                           delay:0.0
          usingSpringWithDamping:0.6
           initialSpringVelocity:0.0
@@ -235,7 +235,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     [self.nodes removeObject:node];
     [node reset];
     if (animate) {
-        [UIView animateWithDuration:0.5
+        [UIView animateWithDuration:0.3
                               delay:0.0
              usingSpringWithDamping:0.6
               initialSpringVelocity:0.0
@@ -269,6 +269,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
 
 - (void)executeNode:(DFNode *)node
 {
+    self.textView.text = @"";
     self.executingNode = node;
     [node prepare];
     [node execute];
