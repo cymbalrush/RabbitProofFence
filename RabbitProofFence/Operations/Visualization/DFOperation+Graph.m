@@ -16,6 +16,7 @@
 
 #import "NSArray+Utility.h"
 #import "UIView+DebugObject.h"
+#import "UIColor+Crayola.h"
 
 @implementation DFOperation (Graph)
 
@@ -44,7 +45,8 @@
 {
     DFNodeInfo *info = [DFNodeInfo new];
     info.name = self.name.length > 0 ? self.name : NSStringFromClass([self class]);
-    info.nodeColor = [self isKindOfClass:[DFReactiveOperation class]] ? [UIColor redColor] : [UIColor blueColor];
+    info.nodeColor = [self isKindOfClass:[DFReactiveOperation class]] ? [UIColor crayolaBdazzledBlueColor] :
+    [UIColor crayolaBlueVioletColor];
     info.inputPorts = [self inputPortsInfo];
     info.outputPorts = [self outputPortsInfo];
     return info;
@@ -200,7 +202,6 @@ NS_INLINE DFNode *nodeForOperation(DFOperation *operation, NSArray *nodes)
     connectionLayer.zPosition = 2;
     connectionLayer.lineWidth = 2;
     connectionLayer.fillColor = UIColor.clearColor.CGColor;
-    connectionLayer.strokeColor = [UIColor blueColor].CGColor;
     connectionLayer.allowsEdgeAntialiasing = YES;
     connectionLayer.lineCap = kCALineCapRound;
 }
@@ -225,6 +226,7 @@ NS_INLINE DFNode *nodeForOperation(DFOperation *operation, NSArray *nodes)
     CGPoint startPoint = [connectionLayer convertPoint:[node center] fromLayer:connectionLayer.superlayer];
     CGPoint targetPoint = [connectionLayer convertPoint:[toNode center] fromLayer:connectionLayer.superlayer];
     connectionLayer.path = [self pathFromPoint:startPoint toPoint:targetPoint];
+    connectionLayer.strokeColor = [node backgroundColor].CGColor;
 }
 
 - (void)groundPort:(DFPort *)port

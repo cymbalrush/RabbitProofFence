@@ -35,3 +35,8 @@
 #import "DFNetworkOperation.h"
 #import "RandomBackoffErrorRetryPolicy.h"
 #import "DFDelayOperation.h"
+#import "DFOperation+Graph.h"
+#import "DFNode.h"
+#import "DFWorkspace.h"
+
+

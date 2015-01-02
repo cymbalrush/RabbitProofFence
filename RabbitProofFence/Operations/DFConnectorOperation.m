@@ -11,9 +11,11 @@
 
 @interface DFConnectorOperation ()
 
-@property (nonatomic, weak) NSObject *object;
-@property (nonatomic, strong) NSString *property;
-@property (nonatomic, strong) AMBlockToken *propertyObservationToken;
+@property (weak, nonatomic) NSObject *object;
+
+@property (strong, nonatomic) NSString *property;
+
+@property (strong, nonatomic) AMBlockToken *propertyObservationToken;
 
 @end
 
@@ -42,7 +44,8 @@
     self = [super init];
     if (self) {
         _object = object;
-        _property = [property copy];
+        _property = property;
+        _useCurrentValue = NO;
     }
     return self;
 }
@@ -58,7 +61,7 @@
     dispatch_block_t block = ^() {
         newConnectorOperation = [super clone:objToPointerMapping];
         newConnectorOperation.object = self.object;
-        newConnectorOperation.property = [self.property copy];
+        newConnectorOperation.property = self.property;
         newConnectorOperation.useCurrentValue = self.useCurrentValue;
     };
     [self safelyExecuteBlock:block];
@@ -71,7 +74,7 @@
     dispatch_block_t block = ^() {
         newConnectorOperation = [super copyWithZone:zone];
         newConnectorOperation.object = self.object;
-        newConnectorOperation.property = [self.property copy];
+        newConnectorOperation.property = self.property;
         newConnectorOperation.useCurrentValue = self.useCurrentValue;
     };
     [self safelyExecuteBlock:block];

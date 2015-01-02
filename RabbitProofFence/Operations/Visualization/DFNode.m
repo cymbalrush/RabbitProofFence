@@ -24,6 +24,7 @@
 {
     DFNodeInfo *info = [[self class] new];
     info.name = [self.name copy];
+    info.nodeColor = self.nodeColor;
     info.inputPorts = [self.inputPorts map:^id(id obj, NSUInteger idx) {
         return [(NSObject *)obj copy];
     }];

@@ -151,13 +151,13 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     
     self.previewView.layer.borderWidth = 1.0;
     self.previewView.layer.borderColor = [[UIColor whiteColor] CGColor];
-    self.previewView.backgroundColor = [UIColor crayolaAquaPearlColor];
+    self.previewView.backgroundColor = [UIColor crayolaPacificBlueColor];
     
-    self.gridView.backgroundColor = [UIColor crayolaAquaPearlColor];
+    self.gridView.backgroundColor = [UIColor crayolaPacificBlueColor];
     
     self.tableView.layer.borderWidth = 1.0;
     self.tableView.layer.borderColor = [[UIColor whiteColor] CGColor];
-    self.tableView.backgroundColor = [UIColor crayolaAquaPearlColor];
+    self.tableView.backgroundColor = [UIColor crayolaPacificBlueColor];
 }
 
 - (void)toggleLeftPane
@@ -347,7 +347,7 @@ NS_INLINE NSArray *sortedKeys(NSDictionary *dictionary)
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DefaultCell" forIndexPath:indexPath];
-    cell.contentView.backgroundColor = [UIColor crayolaAquaPearlColor];
+    cell.contentView.backgroundColor = [UIColor crayolaPacificBlueColor];
     cell.textLabel.text = sortedKeys(self.creationBlocks)[indexPath.row];
     return cell;
 }

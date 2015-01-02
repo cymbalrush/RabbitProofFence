@@ -8,26 +8,8 @@
 
 #import "ViewController.h"
 #import "Operations.h"
-#import "DFOperation+Graph.h"
-#import "DFWorkspace.h"
-#import "DFVoidObject.h"
-
-@interface ViewController ()
-
-@property (strong, nonatomic) DFBackgroundOperation *op;
-
-@end
 
 @implementation ViewController
-
-+ (CGAffineTransform)translatedAndScaledTransformUsingViewRect:(CGRect)viewRect fromRect:(CGRect)fromRect {
-    
-    CGSize scales = CGSizeMake(viewRect.size.width/fromRect.size.width, viewRect.size.height/fromRect.size.height);
-    CGPoint offset = CGPointMake(CGRectGetMidX(viewRect) - CGRectGetMidX(fromRect), CGRectGetMidY(viewRect) - CGRectGetMidY(fromRect));
-    return CGAffineTransformMake(scales.width, 0, 0, scales.height, offset.x, offset.y);
-    
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];

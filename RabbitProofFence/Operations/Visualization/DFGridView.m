@@ -73,7 +73,7 @@
     connectionLayer.zPosition = 2;
     connectionLayer.lineWidth = 2;
     connectionLayer.fillColor = UIColor.clearColor.CGColor;
-    connectionLayer.strokeColor = [UIColor crayolaAquamarineColor].CGColor;
+    connectionLayer.strokeColor = [UIColor crayolaBrickRedColor].CGColor;
     connectionLayer.allowsEdgeAntialiasing = YES;
     connectionLayer.lineCap = kCALineCapRound;
 }
@@ -108,9 +108,7 @@
     [self setupLinePropertiesForLayer:connectionLayer];
     [self.zoomableView.layer addSublayer:connectionLayer];
     port.connectionLayer = connectionLayer;
-    if (port.node.isReactive) {
-        connectionLayer.strokeColor = [UIColor redColor].CGColor;
-    }
+   // connectionLayer.strokeColor = port.node.info.nodeColor.CGColor;
 }
 
 - (void)setOffset:(CGPoint)offset
@@ -156,11 +154,13 @@
         case UIGestureRecognizerStateChanged: {
             if (self.draggedObject) {
                 if ([self.draggedObject isKindOfClass:DFPort.class]) {
-                    CGPoint socketCenter = [self.zoomableView convertPoint:[(DFPort *)self.draggedObject socketCenter]
+                    DFPort *port = (DFPort *)self.draggedObject;
+                    CGPoint socketCenter = [self.zoomableView convertPoint:[port socketCenter]
                                                                   fromView:self.draggedObject];
                     
                     self.overlay.path = [self pathFromPoint:socketCenter toPoint:[self convertPoint:point
                                                                                            fromView:panGestureRecognizer.view]];
+                    
                     [self updateConnections];
                     return;
                 }
