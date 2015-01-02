@@ -9,7 +9,7 @@
 #import "DFCoreDataOperation.h"
 #import "DFOperation_SubclassingHooks.h"
 
-NSString * const DFCoreDataOperationQueueName = @"com.operations.coreDataOperationQueue";
+NSString * const DFCoreDataOperationQueueName = @"com.operations.coreDataQueue";
 
 @implementation DFCoreDataOperation
 

@@ -29,9 +29,9 @@ NSString * const DFOperationExceptionMethodNotSupported = @"DFOperationException
 NSString * const DFOperationExceptionIncorrectParameter = @"DFOperationExceptionIncorrectParameter";
 const int DFOperationExceptionEncounteredErrorCode = 1000;
 
-static char const * const OPERATION_SYNC_QUEUE = "com.operations.operationsSyncQueue";
-static char const * const OPERATION_START_QUEUE = "com.operations.operationsStartQueue";
-static char const * const OPERATION_OBSERVATION_HANDLING_QUEUE = "com.operations.operationObservationHandlingQueue";
+static char const * const OPERATION_SYNC_QUEUE = "com.operations.syncQueue";
+static char const * const OPERATION_START_QUEUE = "com.operations.startQueue";
+static char const * const OPERATION_OBSERVATION_HANDLING_QUEUE = "com.operations.observationHandlingQueue";
 
 NSArray *portNamesFromBlockArgs(const char *blockBody)
 {

@@ -8,7 +8,7 @@
 
 #import "DFBackgroundOperation.h"
 
-NSString * const DFBackgroundOperationQueueName = @"com.operations.backgroundOperationQueue";
+NSString * const DFBackgroundOperationQueueName = @"com.operations.backgroundQueue";
 
 @implementation DFBackgroundOperation
 
