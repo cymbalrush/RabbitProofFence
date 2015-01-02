@@ -7,80 +7,77 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92174BB71A56FD9A00E89343 /* BlockDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BA81A56FD9A00E89343 /* BlockDescription.m */; };
+		92174BB81A56FD9A00E89343 /* ConnectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BAA1A56FD9A00E89343 /* ConnectionInfo.m */; };
+		92174BB91A56FD9A00E89343 /* Execution_Class.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BAC1A56FD9A00E89343 /* Execution_Class.m */; };
+		92174BBA1A56FD9A00E89343 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BAE1A56FD9A00E89343 /* NSObject+BlockObservation.m */; };
+		92174BBB1A56FD9A00E89343 /* OperationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB01A56FD9A00E89343 /* OperationInfo.m */; };
+		92174BBC1A56FD9A00E89343 /* ReactiveConnectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB21A56FD9A00E89343 /* ReactiveConnectionInfo.m */; };
+		92174BBD1A56FD9A00E89343 /* UIColor+Crayola.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB41A56FD9A00E89343 /* UIColor+Crayola.m */; };
+		92174BBE1A56FD9A00E89343 /* UIView+DebugObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB61A56FD9A00E89343 /* UIView+DebugObject.m */; };
+		92174BD11A56FDB000E89343 /* DFGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BC01A56FDB000E89343 /* DFGridView.m */; };
+		92174BD21A56FDB000E89343 /* DFNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BC21A56FDB000E89343 /* DFNode.m */; };
+		92174BD31A56FDB000E89343 /* DFNode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92174BC31A56FDB000E89343 /* DFNode.xib */; };
+		92174BD41A56FDB000E89343 /* DFOperation+Graph.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BC51A56FDB000E89343 /* DFOperation+Graph.m */; };
+		92174BD51A56FDB000E89343 /* DFPort_Input.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92174BC61A56FDB000E89343 /* DFPort_Input.xib */; };
+		92174BD61A56FDB000E89343 /* DFPort_Output.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92174BC71A56FDB000E89343 /* DFPort_Output.xib */; };
+		92174BD71A56FDB000E89343 /* DFPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BC91A56FDB000E89343 /* DFPort.m */; };
+		92174BD81A56FDB000E89343 /* DFValueNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BCB1A56FDB000E89343 /* DFValueNode.m */; };
+		92174BD91A56FDB000E89343 /* DFValueNode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92174BCC1A56FDB000E89343 /* DFValueNode.xib */; };
+		92174BDA1A56FDB000E89343 /* DFWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BCE1A56FDB000E89343 /* DFWorkspace.m */; };
+		92174BDB1A56FDB000E89343 /* DFWorkspace.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92174BCF1A56FDB000E89343 /* DFWorkspace.xib */; };
+		92174BDC1A56FDB000E89343 /* DFWorkspaceBlockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92174BD01A56FDB000E89343 /* DFWorkspaceBlockCell.xib */; };
+		92174BE31A56FDC400E89343 /* ErrorRetryPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BDE1A56FDC400E89343 /* ErrorRetryPolicy.m */; };
+		92174BE41A56FDC400E89343 /* LinearErrorRetryPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BE01A56FDC400E89343 /* LinearErrorRetryPolicy.m */; };
+		92174BE51A56FDC400E89343 /* RandomBackoffErrorRetryPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BE21A56FDC400E89343 /* RandomBackoffErrorRetryPolicy.m */; };
+		92174C2A1A56FDF000E89343 /* DFAggregatorOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BE71A56FDF000E89343 /* DFAggregatorOperation.m */; };
+		92174C2B1A56FDF000E89343 /* DFAndOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BE91A56FDF000E89343 /* DFAndOperation.m */; };
+		92174C2C1A56FDF000E89343 /* DFAnyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BEB1A56FDF000E89343 /* DFAnyOperation.m */; };
+		92174C2D1A56FDF000E89343 /* DFBackgroundOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BED1A56FDF000E89343 /* DFBackgroundOperation.m */; };
+		92174C2E1A56FDF000E89343 /* DFCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BEF1A56FDF000E89343 /* DFCompositeOperation.m */; };
+		92174C2F1A56FDF000E89343 /* DFConnectorOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BF11A56FDF000E89343 /* DFConnectorOperation.m */; };
+		92174C301A56FDF000E89343 /* DFCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BF31A56FDF000E89343 /* DFCoreDataOperation.m */; };
+		92174C311A56FDF000E89343 /* DFDelayOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BF51A56FDF000E89343 /* DFDelayOperation.m */; };
+		92174C321A56FDF000E89343 /* DFDropOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BF71A56FDF000E89343 /* DFDropOperation.m */; };
+		92174C331A56FDF000E89343 /* DFFilterOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BF91A56FDF000E89343 /* DFFilterOperation.m */; };
+		92174C341A56FDF000E89343 /* DFFlattenOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BFB1A56FDF000E89343 /* DFFlattenOperation.m */; };
+		92174C351A56FDF000E89343 /* DFGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BFD1A56FDF000E89343 /* DFGenerator.m */; };
+		92174C361A56FDF000E89343 /* DFIdentityOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BFF1A56FDF000E89343 /* DFIdentityOperation.m */; };
+		92174C371A56FDF000E89343 /* DFIfElseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C011A56FDF000E89343 /* DFIfElseOperation.m */; };
+		92174C381A56FDF000E89343 /* DFLiftOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C031A56FDF000E89343 /* DFLiftOperation.m */; };
+		92174C391A56FDF000E89343 /* DFLoopOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C061A56FDF000E89343 /* DFLoopOperation.m */; };
+		92174C3A1A56FDF000E89343 /* DFMainOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C081A56FDF000E89343 /* DFMainOperation.m */; };
+		92174C3B1A56FDF000E89343 /* DFMapOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C0A1A56FDF000E89343 /* DFMapOperation.m */; };
+		92174C3C1A56FDF000E89343 /* DFMetaOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C0D1A56FDF000E89343 /* DFMetaOperation.m */; };
+		92174C3D1A56FDF000E89343 /* DFNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C0F1A56FDF000E89343 /* DFNetworkOperation.m */; };
+		92174C3E1A56FDF000E89343 /* DFOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C121A56FDF000E89343 /* DFOperation.m */; };
+		92174C3F1A56FDF000E89343 /* DFParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C151A56FDF000E89343 /* DFParallelOperation.m */; };
+		92174C401A56FDF000E89343 /* DFPeriodicOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C171A56FDF000E89343 /* DFPeriodicOperation.m */; };
+		92174C411A56FDF000E89343 /* DFReactiveOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C1A1A56FDF000E89343 /* DFReactiveOperation.m */; };
+		92174C421A56FDF000E89343 /* DFReduceOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C1C1A56FDF000E89343 /* DFReduceOperation.m */; };
+		92174C431A56FDF000E89343 /* DFRetryableOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C1E1A56FDF000E89343 /* DFRetryableOperation.m */; };
+		92174C441A56FDF000E89343 /* DFTakeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C201A56FDF000E89343 /* DFTakeOperation.m */; };
+		92174C451A56FDF000E89343 /* DFTakeWhileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C221A56FDF000E89343 /* DFTakeWhileOperation.m */; };
+		92174C461A56FDF000E89343 /* DFTryCatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C251A56FDF000E89343 /* DFTryCatchOperation.m */; };
+		92174C471A56FDF000E89343 /* DFVoidObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C271A56FDF000E89343 /* DFVoidObject.m */; };
+		92174C5F1A56FE1B00E89343 /* EXTADT.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C4A1A56FE1B00E89343 /* EXTADT.m */; };
+		92174C601A56FE1B00E89343 /* EXTConcreteProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C4C1A56FE1B00E89343 /* EXTConcreteProtocol.m */; };
+		92174C611A56FE1B00E89343 /* EXTNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C4F1A56FE1B00E89343 /* EXTNil.m */; };
+		92174C621A56FE1B00E89343 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C521A56FE1B00E89343 /* EXTRuntimeExtensions.m */; };
+		92174C631A56FE1B00E89343 /* EXTSafeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C541A56FE1B00E89343 /* EXTSafeCategory.m */; };
+		92174C641A56FE1B00E89343 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C561A56FE1B00E89343 /* EXTScope.m */; };
+		92174C651A56FE1B00E89343 /* EXTSelectorChecking.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C581A56FE1B00E89343 /* EXTSelectorChecking.m */; };
+		92174C661A56FE1B00E89343 /* NSInvocation+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C5C1A56FE1B00E89343 /* NSInvocation+EXT.m */; };
+		92174C671A56FE1B00E89343 /* NSMethodSignature+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C5E1A56FE1B00E89343 /* NSMethodSignature+EXT.m */; };
 		924ABE541A0D2FE900EF97F5 /* NSArray+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */; };
-		924ABE571A0D481200EF97F5 /* UIView+DebugObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 924ABE561A0D481200EF97F5 /* UIView+DebugObject.m */; };
-		924ABE5A1A0D4D9200EF97F5 /* DFWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 924ABE591A0D4D9200EF97F5 /* DFWorkspace.m */; };
-		924ABE5D1A0D5BD000EF97F5 /* DFOperation+Graph.m in Sources */ = {isa = PBXBuildFile; fileRef = 924ABE5C1A0D5BD000EF97F5 /* DFOperation+Graph.m */; };
-		9270DFC51A4A8280009E0038 /* DFNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9270DFC41A4A8280009E0038 /* DFNetworkOperation.m */; };
 		927E128B1A0C6D8B002DC6FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128A1A0C6D8B002DC6FB /* main.m */; };
 		927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128D1A0C6D8B002DC6FB /* AppDelegate.m */; };
 		927E12911A0C6D8B002DC6FB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E12901A0C6D8B002DC6FB /* ViewController.m */; };
 		927E12941A0C6D8B002DC6FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927E12921A0C6D8B002DC6FB /* Main.storyboard */; };
 		927E12991A0C6D8B002DC6FB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927E12971A0C6D8B002DC6FB /* LaunchScreen.xib */; };
 		927E12A51A0C6D8B002DC6FB /* RabbitProofFenceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E12A41A0C6D8B002DC6FB /* RabbitProofFenceTests.m */; };
-		927E13331A0C6DF3002DC6FB /* EXTADT.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E131E1A0C6DF3002DC6FB /* EXTADT.m */; };
-		927E13341A0C6DF3002DC6FB /* EXTConcreteProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E13201A0C6DF3002DC6FB /* EXTConcreteProtocol.m */; };
-		927E13351A0C6DF3002DC6FB /* EXTNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E13231A0C6DF3002DC6FB /* EXTNil.m */; };
-		927E13361A0C6DF3002DC6FB /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E13261A0C6DF3002DC6FB /* EXTRuntimeExtensions.m */; };
-		927E13371A0C6DF3002DC6FB /* EXTSafeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E13281A0C6DF3002DC6FB /* EXTSafeCategory.m */; };
-		927E13381A0C6DF3002DC6FB /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E132A1A0C6DF3002DC6FB /* EXTScope.m */; };
-		927E13391A0C6DF3002DC6FB /* EXTSelectorChecking.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E132C1A0C6DF3002DC6FB /* EXTSelectorChecking.m */; };
-		927E133A1A0C6DF3002DC6FB /* NSInvocation+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E13301A0C6DF3002DC6FB /* NSInvocation+EXT.m */; };
-		927E133B1A0C6DF3002DC6FB /* NSMethodSignature+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E13321A0C6DF3002DC6FB /* NSMethodSignature+EXT.m */; };
-		927E134D1A0C7D74002DC6FB /* UIColor+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E134C1A0C7D74002DC6FB /* UIColor+FlatUI.m */; };
-		928E1EAD1A16E0DF0055D2AD /* Execution_Class.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E6D1A16E0DF0055D2AD /* Execution_Class.m */; };
-		928E1EAE1A16E0DF0055D2AD /* OperationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E6F1A16E0DF0055D2AD /* OperationInfo.m */; };
-		928E1EAF1A16E0DF0055D2AD /* DFOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E711A16E0DF0055D2AD /* DFOperation.m */; };
-		928E1EB01A16E0DF0055D2AD /* DFLiftOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E741A16E0DF0055D2AD /* DFLiftOperation.m */; };
-		928E1EB11A16E0DF0055D2AD /* DFBackgroundOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E761A16E0DF0055D2AD /* DFBackgroundOperation.m */; };
-		928E1EB21A16E0DF0055D2AD /* DFCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E781A16E0DF0055D2AD /* DFCoreDataOperation.m */; };
-		928E1EB31A16E0DF0055D2AD /* DFMainOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E7A1A16E0DF0055D2AD /* DFMainOperation.m */; };
-		928E1EB41A16E0DF0055D2AD /* DFMetaOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E7C1A16E0DF0055D2AD /* DFMetaOperation.m */; };
-		928E1EB51A16E0DF0055D2AD /* DFCompositeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E7F1A16E0DF0055D2AD /* DFCompositeOperation.m */; };
-		928E1EB61A16E0DF0055D2AD /* DFRetryableOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E821A16E0DF0055D2AD /* DFRetryableOperation.m */; };
-		928E1EB71A16E0DF0055D2AD /* DFVoidObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E831A16E0DF0055D2AD /* DFVoidObject.m */; };
-		928E1EB81A16E0DF0055D2AD /* DFConnectorOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E851A16E0DF0055D2AD /* DFConnectorOperation.m */; };
-		928E1EB91A16E0DF0055D2AD /* DFGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E871A16E0DF0055D2AD /* DFGenerator.m */; };
-		928E1EBA1A16E0DF0055D2AD /* DFLoopOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E891A16E0DF0055D2AD /* DFLoopOperation.m */; };
-		928E1EBB1A16E0DF0055D2AD /* DFPeriodicOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E8C1A16E0DF0055D2AD /* DFPeriodicOperation.m */; };
-		928E1EBC1A16E0DF0055D2AD /* DFDelayOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E8E1A16E0DF0055D2AD /* DFDelayOperation.m */; };
-		928E1EBD1A16E0DF0055D2AD /* ReactiveConnectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E901A16E0DF0055D2AD /* ReactiveConnectionInfo.m */; };
-		928E1EBE1A16E0DF0055D2AD /* DFReactiveOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E921A16E0DF0055D2AD /* DFReactiveOperation.m */; };
-		928E1EBF1A16E0DF0055D2AD /* DFAggregatorOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E951A16E0DF0055D2AD /* DFAggregatorOperation.m */; };
-		928E1EC01A16E0DF0055D2AD /* DFAndOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E971A16E0DF0055D2AD /* DFAndOperation.m */; };
-		928E1EC11A16E0DF0055D2AD /* DFAnyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E991A16E0DF0055D2AD /* DFAnyOperation.m */; };
-		928E1EC21A16E0DF0055D2AD /* DFFilterOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E9B1A16E0DF0055D2AD /* DFFilterOperation.m */; };
-		928E1EC31A16E0DF0055D2AD /* DFIfElseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E9D1A16E0DF0055D2AD /* DFIfElseOperation.m */; };
-		928E1EC41A16E0DF0055D2AD /* DFMapOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1E9F1A16E0DF0055D2AD /* DFMapOperation.m */; };
-		928E1EC51A16E0DF0055D2AD /* DFFlattenOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EA11A16E0DF0055D2AD /* DFFlattenOperation.m */; };
-		928E1EC61A16E0DF0055D2AD /* DFParallelOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EA31A16E0DF0055D2AD /* DFParallelOperation.m */; };
-		928E1EC71A16E0DF0055D2AD /* DFReduceOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EA61A16E0DF0055D2AD /* DFReduceOperation.m */; };
-		928E1EC81A16E0DF0055D2AD /* DFTryCatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EA81A16E0DF0055D2AD /* DFTryCatchOperation.m */; };
-		928E1EC91A16E0DF0055D2AD /* ConnectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EAB1A16E0DF0055D2AD /* ConnectionInfo.m */; };
-		928E1ED71A16E1210055D2AD /* DFNode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 928E1ECC1A16E1210055D2AD /* DFNode.xib */; };
-		928E1ED81A16E1210055D2AD /* DFPort_Input.xib in Resources */ = {isa = PBXBuildFile; fileRef = 928E1ECD1A16E1210055D2AD /* DFPort_Input.xib */; };
-		928E1ED91A16E1210055D2AD /* DFPort_Output.xib in Resources */ = {isa = PBXBuildFile; fileRef = 928E1ECE1A16E1210055D2AD /* DFPort_Output.xib */; };
-		928E1EDA1A16E1210055D2AD /* UIView+DebugObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1ED01A16E1210055D2AD /* UIView+DebugObject.m */; };
-		928E1EDB1A16E1210055D2AD /* DFNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1ED21A16E1210055D2AD /* DFNode.m */; };
-		928E1EDC1A16E1210055D2AD /* DFOperation+Graph.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1ED41A16E1210055D2AD /* DFOperation+Graph.m */; };
-		928E1EDD1A16E1210055D2AD /* DFPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1ED61A16E1210055D2AD /* DFPort.m */; };
-		928E1EE21A16E12C0055D2AD /* BlockDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EDF1A16E12C0055D2AD /* BlockDescription.m */; };
-		928E1EE31A16E12C0055D2AD /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EE11A16E12C0055D2AD /* NSObject+BlockObservation.m */; };
-		928E1EEB1A16E13C0055D2AD /* ErrorRetryPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EE61A16E13C0055D2AD /* ErrorRetryPolicy.m */; };
-		928E1EEC1A16E13C0055D2AD /* LinearErrorRetryPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EE81A16E13C0055D2AD /* LinearErrorRetryPolicy.m */; };
-		928E1EED1A16E13C0055D2AD /* RandomBackoffErrorRetryPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 928E1EEA1A16E13C0055D2AD /* RandomBackoffErrorRetryPolicy.m */; };
 		928E1EEF1A16E2050055D2AD /* OperationAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 928E1EEE1A16E2050055D2AD /* OperationAssets.xcassets */; };
 		928E1EF11A16E23C0055D2AD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 928E1EF01A16E23C0055D2AD /* Images.xcassets */; };
-		92B9D5431A1BE56300D18BCB /* UIColor+Crayola.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9D5421A1BE56300D18BCB /* UIColor+Crayola.m */; };
-		92B9D5451A1E5DCC00D18BCB /* DFValueNode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92B9D5441A1E5DCC00D18BCB /* DFValueNode.xib */; };
-		92B9D5481A1EF9D100D18BCB /* DFIdentityOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9D5471A1EF9D100D18BCB /* DFIdentityOperation.m */; };
-		92B9D54B1A1EFC9F00D18BCB /* DFValueNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9D54A1A1EFC9F00D18BCB /* DFValueNode.m */; };
-		92CCF80F1A53A54F004628FF /* DFTakeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF80E1A53A54F004628FF /* DFTakeOperation.m */; };
-		92CCF8121A53A72A004628FF /* DFDropOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF8111A53A72A004628FF /* DFDropOperation.m */; };
-		92CCF8181A545F00004628FF /* DFTakeWhileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CCF8171A545F00004628FF /* DFTakeWhileOperation.m */; };
-		92E584D01A184A7500E52A54 /* DFWorkspace.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92E584CE1A184A7500E52A54 /* DFWorkspace.xib */; };
-		92E584D11A184A7500E52A54 /* DFWorkspaceBlockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92E584CF1A184A7500E52A54 /* DFWorkspaceBlockCell.xib */; };
-		92E584D41A184DD300E52A54 /* DFGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92E584D31A184DD300E52A54 /* DFGridView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,16 +91,139 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		92174BA71A56FD9A00E89343 /* BlockDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockDescription.h; path = Operations/Utility/BlockDescription.h; sourceTree = "<group>"; };
+		92174BA81A56FD9A00E89343 /* BlockDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlockDescription.m; path = Operations/Utility/BlockDescription.m; sourceTree = "<group>"; };
+		92174BA91A56FD9A00E89343 /* ConnectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectionInfo.h; path = Operations/Utility/ConnectionInfo.h; sourceTree = "<group>"; };
+		92174BAA1A56FD9A00E89343 /* ConnectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectionInfo.m; path = Operations/Utility/ConnectionInfo.m; sourceTree = "<group>"; };
+		92174BAB1A56FD9A00E89343 /* Execution_Class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Execution_Class.h; path = Operations/Utility/Execution_Class.h; sourceTree = "<group>"; };
+		92174BAC1A56FD9A00E89343 /* Execution_Class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Execution_Class.m; path = Operations/Utility/Execution_Class.m; sourceTree = "<group>"; };
+		92174BAD1A56FD9A00E89343 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+BlockObservation.h"; path = "Operations/Utility/NSObject+BlockObservation.h"; sourceTree = "<group>"; };
+		92174BAE1A56FD9A00E89343 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+BlockObservation.m"; path = "Operations/Utility/NSObject+BlockObservation.m"; sourceTree = "<group>"; };
+		92174BAF1A56FD9A00E89343 /* OperationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OperationInfo.h; path = Operations/Utility/OperationInfo.h; sourceTree = "<group>"; };
+		92174BB01A56FD9A00E89343 /* OperationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OperationInfo.m; path = Operations/Utility/OperationInfo.m; sourceTree = "<group>"; };
+		92174BB11A56FD9A00E89343 /* ReactiveConnectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReactiveConnectionInfo.h; path = Operations/Utility/ReactiveConnectionInfo.h; sourceTree = "<group>"; };
+		92174BB21A56FD9A00E89343 /* ReactiveConnectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReactiveConnectionInfo.m; path = Operations/Utility/ReactiveConnectionInfo.m; sourceTree = "<group>"; };
+		92174BB31A56FD9A00E89343 /* UIColor+Crayola.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Crayola.h"; path = "Operations/Utility/UIColor+Crayola.h"; sourceTree = "<group>"; };
+		92174BB41A56FD9A00E89343 /* UIColor+Crayola.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Crayola.m"; path = "Operations/Utility/UIColor+Crayola.m"; sourceTree = "<group>"; };
+		92174BB51A56FD9A00E89343 /* UIView+DebugObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+DebugObject.h"; path = "Operations/Utility/UIView+DebugObject.h"; sourceTree = "<group>"; };
+		92174BB61A56FD9A00E89343 /* UIView+DebugObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+DebugObject.m"; path = "Operations/Utility/UIView+DebugObject.m"; sourceTree = "<group>"; };
+		92174BBF1A56FDB000E89343 /* DFGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFGridView.h; path = Operations/Visualization/DFGridView.h; sourceTree = "<group>"; };
+		92174BC01A56FDB000E89343 /* DFGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFGridView.m; path = Operations/Visualization/DFGridView.m; sourceTree = "<group>"; };
+		92174BC11A56FDB000E89343 /* DFNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFNode.h; path = Operations/Visualization/DFNode.h; sourceTree = "<group>"; };
+		92174BC21A56FDB000E89343 /* DFNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFNode.m; path = Operations/Visualization/DFNode.m; sourceTree = "<group>"; };
+		92174BC31A56FDB000E89343 /* DFNode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DFNode.xib; path = Operations/Visualization/DFNode.xib; sourceTree = "<group>"; };
+		92174BC41A56FDB000E89343 /* DFOperation+Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DFOperation+Graph.h"; path = "Operations/Visualization/DFOperation+Graph.h"; sourceTree = "<group>"; };
+		92174BC51A56FDB000E89343 /* DFOperation+Graph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DFOperation+Graph.m"; path = "Operations/Visualization/DFOperation+Graph.m"; sourceTree = "<group>"; };
+		92174BC61A56FDB000E89343 /* DFPort_Input.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DFPort_Input.xib; path = Operations/Visualization/DFPort_Input.xib; sourceTree = "<group>"; };
+		92174BC71A56FDB000E89343 /* DFPort_Output.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DFPort_Output.xib; path = Operations/Visualization/DFPort_Output.xib; sourceTree = "<group>"; };
+		92174BC81A56FDB000E89343 /* DFPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFPort.h; path = Operations/Visualization/DFPort.h; sourceTree = "<group>"; };
+		92174BC91A56FDB000E89343 /* DFPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFPort.m; path = Operations/Visualization/DFPort.m; sourceTree = "<group>"; };
+		92174BCA1A56FDB000E89343 /* DFValueNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFValueNode.h; path = Operations/Visualization/DFValueNode.h; sourceTree = "<group>"; };
+		92174BCB1A56FDB000E89343 /* DFValueNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFValueNode.m; path = Operations/Visualization/DFValueNode.m; sourceTree = "<group>"; };
+		92174BCC1A56FDB000E89343 /* DFValueNode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DFValueNode.xib; path = Operations/Visualization/DFValueNode.xib; sourceTree = "<group>"; };
+		92174BCD1A56FDB000E89343 /* DFWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFWorkspace.h; path = Operations/Visualization/DFWorkspace.h; sourceTree = "<group>"; };
+		92174BCE1A56FDB000E89343 /* DFWorkspace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFWorkspace.m; path = Operations/Visualization/DFWorkspace.m; sourceTree = "<group>"; };
+		92174BCF1A56FDB000E89343 /* DFWorkspace.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DFWorkspace.xib; path = Operations/Visualization/DFWorkspace.xib; sourceTree = "<group>"; };
+		92174BD01A56FDB000E89343 /* DFWorkspaceBlockCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DFWorkspaceBlockCell.xib; path = Operations/Visualization/DFWorkspaceBlockCell.xib; sourceTree = "<group>"; };
+		92174BDD1A56FDC400E89343 /* ErrorRetryPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ErrorRetryPolicy.h; path = Operations/Retry/ErrorRetryPolicy.h; sourceTree = "<group>"; };
+		92174BDE1A56FDC400E89343 /* ErrorRetryPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ErrorRetryPolicy.m; path = Operations/Retry/ErrorRetryPolicy.m; sourceTree = "<group>"; };
+		92174BDF1A56FDC400E89343 /* LinearErrorRetryPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinearErrorRetryPolicy.h; path = Operations/Retry/LinearErrorRetryPolicy.h; sourceTree = "<group>"; };
+		92174BE01A56FDC400E89343 /* LinearErrorRetryPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LinearErrorRetryPolicy.m; path = Operations/Retry/LinearErrorRetryPolicy.m; sourceTree = "<group>"; };
+		92174BE11A56FDC400E89343 /* RandomBackoffErrorRetryPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RandomBackoffErrorRetryPolicy.h; path = Operations/Retry/RandomBackoffErrorRetryPolicy.h; sourceTree = "<group>"; };
+		92174BE21A56FDC400E89343 /* RandomBackoffErrorRetryPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RandomBackoffErrorRetryPolicy.m; path = Operations/Retry/RandomBackoffErrorRetryPolicy.m; sourceTree = "<group>"; };
+		92174BE61A56FDF000E89343 /* DFAggregatorOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFAggregatorOperation.h; path = Operations/DFAggregatorOperation.h; sourceTree = "<group>"; };
+		92174BE71A56FDF000E89343 /* DFAggregatorOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFAggregatorOperation.m; path = Operations/DFAggregatorOperation.m; sourceTree = "<group>"; };
+		92174BE81A56FDF000E89343 /* DFAndOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFAndOperation.h; path = Operations/DFAndOperation.h; sourceTree = "<group>"; };
+		92174BE91A56FDF000E89343 /* DFAndOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFAndOperation.m; path = Operations/DFAndOperation.m; sourceTree = "<group>"; };
+		92174BEA1A56FDF000E89343 /* DFAnyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFAnyOperation.h; path = Operations/DFAnyOperation.h; sourceTree = "<group>"; };
+		92174BEB1A56FDF000E89343 /* DFAnyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFAnyOperation.m; path = Operations/DFAnyOperation.m; sourceTree = "<group>"; };
+		92174BEC1A56FDF000E89343 /* DFBackgroundOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFBackgroundOperation.h; path = Operations/DFBackgroundOperation.h; sourceTree = "<group>"; };
+		92174BED1A56FDF000E89343 /* DFBackgroundOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFBackgroundOperation.m; path = Operations/DFBackgroundOperation.m; sourceTree = "<group>"; };
+		92174BEE1A56FDF000E89343 /* DFCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFCompositeOperation.h; path = Operations/DFCompositeOperation.h; sourceTree = "<group>"; };
+		92174BEF1A56FDF000E89343 /* DFCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFCompositeOperation.m; path = Operations/DFCompositeOperation.m; sourceTree = "<group>"; };
+		92174BF01A56FDF000E89343 /* DFConnectorOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFConnectorOperation.h; path = Operations/DFConnectorOperation.h; sourceTree = "<group>"; };
+		92174BF11A56FDF000E89343 /* DFConnectorOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFConnectorOperation.m; path = Operations/DFConnectorOperation.m; sourceTree = "<group>"; };
+		92174BF21A56FDF000E89343 /* DFCoreDataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFCoreDataOperation.h; path = Operations/DFCoreDataOperation.h; sourceTree = "<group>"; };
+		92174BF31A56FDF000E89343 /* DFCoreDataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFCoreDataOperation.m; path = Operations/DFCoreDataOperation.m; sourceTree = "<group>"; };
+		92174BF41A56FDF000E89343 /* DFDelayOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFDelayOperation.h; path = Operations/DFDelayOperation.h; sourceTree = "<group>"; };
+		92174BF51A56FDF000E89343 /* DFDelayOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFDelayOperation.m; path = Operations/DFDelayOperation.m; sourceTree = "<group>"; };
+		92174BF61A56FDF000E89343 /* DFDropOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFDropOperation.h; path = Operations/DFDropOperation.h; sourceTree = "<group>"; };
+		92174BF71A56FDF000E89343 /* DFDropOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFDropOperation.m; path = Operations/DFDropOperation.m; sourceTree = "<group>"; };
+		92174BF81A56FDF000E89343 /* DFFilterOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFFilterOperation.h; path = Operations/DFFilterOperation.h; sourceTree = "<group>"; };
+		92174BF91A56FDF000E89343 /* DFFilterOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFFilterOperation.m; path = Operations/DFFilterOperation.m; sourceTree = "<group>"; };
+		92174BFA1A56FDF000E89343 /* DFFlattenOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFFlattenOperation.h; path = Operations/DFFlattenOperation.h; sourceTree = "<group>"; };
+		92174BFB1A56FDF000E89343 /* DFFlattenOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFFlattenOperation.m; path = Operations/DFFlattenOperation.m; sourceTree = "<group>"; };
+		92174BFC1A56FDF000E89343 /* DFGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFGenerator.h; path = Operations/DFGenerator.h; sourceTree = "<group>"; };
+		92174BFD1A56FDF000E89343 /* DFGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFGenerator.m; path = Operations/DFGenerator.m; sourceTree = "<group>"; };
+		92174BFE1A56FDF000E89343 /* DFIdentityOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFIdentityOperation.h; path = Operations/DFIdentityOperation.h; sourceTree = "<group>"; };
+		92174BFF1A56FDF000E89343 /* DFIdentityOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFIdentityOperation.m; path = Operations/DFIdentityOperation.m; sourceTree = "<group>"; };
+		92174C001A56FDF000E89343 /* DFIfElseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFIfElseOperation.h; path = Operations/DFIfElseOperation.h; sourceTree = "<group>"; };
+		92174C011A56FDF000E89343 /* DFIfElseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFIfElseOperation.m; path = Operations/DFIfElseOperation.m; sourceTree = "<group>"; };
+		92174C021A56FDF000E89343 /* DFLiftOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFLiftOperation.h; path = Operations/DFLiftOperation.h; sourceTree = "<group>"; };
+		92174C031A56FDF000E89343 /* DFLiftOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFLiftOperation.m; path = Operations/DFLiftOperation.m; sourceTree = "<group>"; };
+		92174C041A56FDF000E89343 /* DFLoopOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFLoopOperation_SubclassingHooks.h; path = Operations/DFLoopOperation_SubclassingHooks.h; sourceTree = "<group>"; };
+		92174C051A56FDF000E89343 /* DFLoopOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFLoopOperation.h; path = Operations/DFLoopOperation.h; sourceTree = "<group>"; };
+		92174C061A56FDF000E89343 /* DFLoopOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFLoopOperation.m; path = Operations/DFLoopOperation.m; sourceTree = "<group>"; };
+		92174C071A56FDF000E89343 /* DFMainOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFMainOperation.h; path = Operations/DFMainOperation.h; sourceTree = "<group>"; };
+		92174C081A56FDF000E89343 /* DFMainOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFMainOperation.m; path = Operations/DFMainOperation.m; sourceTree = "<group>"; };
+		92174C091A56FDF000E89343 /* DFMapOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFMapOperation.h; path = Operations/DFMapOperation.h; sourceTree = "<group>"; };
+		92174C0A1A56FDF000E89343 /* DFMapOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFMapOperation.m; path = Operations/DFMapOperation.m; sourceTree = "<group>"; };
+		92174C0B1A56FDF000E89343 /* DFMetaOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFMetaOperation_SubclassingHooks.h; path = Operations/DFMetaOperation_SubclassingHooks.h; sourceTree = "<group>"; };
+		92174C0C1A56FDF000E89343 /* DFMetaOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFMetaOperation.h; path = Operations/DFMetaOperation.h; sourceTree = "<group>"; };
+		92174C0D1A56FDF000E89343 /* DFMetaOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFMetaOperation.m; path = Operations/DFMetaOperation.m; sourceTree = "<group>"; };
+		92174C0E1A56FDF000E89343 /* DFNetworkOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFNetworkOperation.h; path = Operations/DFNetworkOperation.h; sourceTree = "<group>"; };
+		92174C0F1A56FDF000E89343 /* DFNetworkOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFNetworkOperation.m; path = Operations/DFNetworkOperation.m; sourceTree = "<group>"; };
+		92174C101A56FDF000E89343 /* DFOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFOperation_SubclassingHooks.h; path = Operations/DFOperation_SubclassingHooks.h; sourceTree = "<group>"; };
+		92174C111A56FDF000E89343 /* DFOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFOperation.h; path = Operations/DFOperation.h; sourceTree = "<group>"; };
+		92174C121A56FDF000E89343 /* DFOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFOperation.m; path = Operations/DFOperation.m; sourceTree = "<group>"; };
+		92174C131A56FDF000E89343 /* DFParallelOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFParallelOperation_SubclassingHooks.h; path = Operations/DFParallelOperation_SubclassingHooks.h; sourceTree = "<group>"; };
+		92174C141A56FDF000E89343 /* DFParallelOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFParallelOperation.h; path = Operations/DFParallelOperation.h; sourceTree = "<group>"; };
+		92174C151A56FDF000E89343 /* DFParallelOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFParallelOperation.m; path = Operations/DFParallelOperation.m; sourceTree = "<group>"; };
+		92174C161A56FDF000E89343 /* DFPeriodicOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFPeriodicOperation.h; path = Operations/DFPeriodicOperation.h; sourceTree = "<group>"; };
+		92174C171A56FDF000E89343 /* DFPeriodicOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFPeriodicOperation.m; path = Operations/DFPeriodicOperation.m; sourceTree = "<group>"; };
+		92174C181A56FDF000E89343 /* DFReactiveOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFReactiveOperation_SubclassingHooks.h; path = Operations/DFReactiveOperation_SubclassingHooks.h; sourceTree = "<group>"; };
+		92174C191A56FDF000E89343 /* DFReactiveOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFReactiveOperation.h; path = Operations/DFReactiveOperation.h; sourceTree = "<group>"; };
+		92174C1A1A56FDF000E89343 /* DFReactiveOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFReactiveOperation.m; path = Operations/DFReactiveOperation.m; sourceTree = "<group>"; };
+		92174C1B1A56FDF000E89343 /* DFReduceOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFReduceOperation.h; path = Operations/DFReduceOperation.h; sourceTree = "<group>"; };
+		92174C1C1A56FDF000E89343 /* DFReduceOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFReduceOperation.m; path = Operations/DFReduceOperation.m; sourceTree = "<group>"; };
+		92174C1D1A56FDF000E89343 /* DFRetryableOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFRetryableOperation.h; path = Operations/DFRetryableOperation.h; sourceTree = "<group>"; };
+		92174C1E1A56FDF000E89343 /* DFRetryableOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFRetryableOperation.m; path = Operations/DFRetryableOperation.m; sourceTree = "<group>"; };
+		92174C1F1A56FDF000E89343 /* DFTakeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFTakeOperation.h; path = Operations/DFTakeOperation.h; sourceTree = "<group>"; };
+		92174C201A56FDF000E89343 /* DFTakeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFTakeOperation.m; path = Operations/DFTakeOperation.m; sourceTree = "<group>"; };
+		92174C211A56FDF000E89343 /* DFTakeWhileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFTakeWhileOperation.h; path = Operations/DFTakeWhileOperation.h; sourceTree = "<group>"; };
+		92174C221A56FDF000E89343 /* DFTakeWhileOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFTakeWhileOperation.m; path = Operations/DFTakeWhileOperation.m; sourceTree = "<group>"; };
+		92174C231A56FDF000E89343 /* DFTryCatchOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFTryCatchOperation_SubclassingHooks.h; path = Operations/DFTryCatchOperation_SubclassingHooks.h; sourceTree = "<group>"; };
+		92174C241A56FDF000E89343 /* DFTryCatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFTryCatchOperation.h; path = Operations/DFTryCatchOperation.h; sourceTree = "<group>"; };
+		92174C251A56FDF000E89343 /* DFTryCatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFTryCatchOperation.m; path = Operations/DFTryCatchOperation.m; sourceTree = "<group>"; };
+		92174C261A56FDF000E89343 /* DFVoidObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFVoidObject.h; path = Operations/DFVoidObject.h; sourceTree = "<group>"; };
+		92174C271A56FDF000E89343 /* DFVoidObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFVoidObject.m; path = Operations/DFVoidObject.m; sourceTree = "<group>"; };
+		92174C281A56FDF000E89343 /* Operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Operation.h; path = Operations/Operation.h; sourceTree = "<group>"; };
+		92174C291A56FDF000E89343 /* Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Operations.h; path = Operations/Operations.h; sourceTree = "<group>"; };
+		92174C481A56FDF900E89343 /* StreamOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StreamOperation.h; path = Operations/StreamOperation.h; sourceTree = "<group>"; };
+		92174C491A56FE1B00E89343 /* EXTADT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTADT.h; path = Ext/EXTADT.h; sourceTree = "<group>"; };
+		92174C4A1A56FE1B00E89343 /* EXTADT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTADT.m; path = Ext/EXTADT.m; sourceTree = "<group>"; };
+		92174C4B1A56FE1B00E89343 /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTConcreteProtocol.h; path = Ext/EXTConcreteProtocol.h; sourceTree = "<group>"; };
+		92174C4C1A56FE1B00E89343 /* EXTConcreteProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTConcreteProtocol.m; path = Ext/EXTConcreteProtocol.m; sourceTree = "<group>"; };
+		92174C4D1A56FE1B00E89343 /* EXTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTKeyPathCoding.h; path = Ext/EXTKeyPathCoding.h; sourceTree = "<group>"; };
+		92174C4E1A56FE1B00E89343 /* EXTNil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTNil.h; path = Ext/EXTNil.h; sourceTree = "<group>"; };
+		92174C4F1A56FE1B00E89343 /* EXTNil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTNil.m; path = Ext/EXTNil.m; sourceTree = "<group>"; };
+		92174C501A56FE1B00E89343 /* extobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = extobjc.h; path = Ext/extobjc.h; sourceTree = "<group>"; };
+		92174C511A56FE1B00E89343 /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = Ext/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
+		92174C521A56FE1B00E89343 /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTRuntimeExtensions.m; path = Ext/EXTRuntimeExtensions.m; sourceTree = "<group>"; };
+		92174C531A56FE1B00E89343 /* EXTSafeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTSafeCategory.h; path = Ext/EXTSafeCategory.h; sourceTree = "<group>"; };
+		92174C541A56FE1B00E89343 /* EXTSafeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTSafeCategory.m; path = Ext/EXTSafeCategory.m; sourceTree = "<group>"; };
+		92174C551A56FE1B00E89343 /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTScope.h; path = Ext/EXTScope.h; sourceTree = "<group>"; };
+		92174C561A56FE1B00E89343 /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTScope.m; path = Ext/EXTScope.m; sourceTree = "<group>"; };
+		92174C571A56FE1B00E89343 /* EXTSelectorChecking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTSelectorChecking.h; path = Ext/EXTSelectorChecking.h; sourceTree = "<group>"; };
+		92174C581A56FE1B00E89343 /* EXTSelectorChecking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTSelectorChecking.m; path = Ext/EXTSelectorChecking.m; sourceTree = "<group>"; };
+		92174C591A56FE1B00E89343 /* EXTSynthesize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTSynthesize.h; path = Ext/EXTSynthesize.h; sourceTree = "<group>"; };
+		92174C5A1A56FE1B00E89343 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metamacros.h; path = Ext/metamacros.h; sourceTree = "<group>"; };
+		92174C5B1A56FE1B00E89343 /* NSInvocation+EXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSInvocation+EXT.h"; path = "Ext/NSInvocation+EXT.h"; sourceTree = "<group>"; };
+		92174C5C1A56FE1B00E89343 /* NSInvocation+EXT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSInvocation+EXT.m"; path = "Ext/NSInvocation+EXT.m"; sourceTree = "<group>"; };
+		92174C5D1A56FE1B00E89343 /* NSMethodSignature+EXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMethodSignature+EXT.h"; path = "Ext/NSMethodSignature+EXT.h"; sourceTree = "<group>"; };
+		92174C5E1A56FE1B00E89343 /* NSMethodSignature+EXT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMethodSignature+EXT.m"; path = "Ext/NSMethodSignature+EXT.m"; sourceTree = "<group>"; };
 		924ABE521A0D2FE900EF97F5 /* NSArray+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Utility.h"; sourceTree = "<group>"; };
 		924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Utility.m"; sourceTree = "<group>"; };
-		924ABE551A0D481200EF97F5 /* UIView+DebugObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DebugObject.h"; sourceTree = "<group>"; };
-		924ABE561A0D481200EF97F5 /* UIView+DebugObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DebugObject.m"; sourceTree = "<group>"; };
-		924ABE581A0D4D9200EF97F5 /* DFWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFWorkspace.h; sourceTree = "<group>"; };
-		924ABE591A0D4D9200EF97F5 /* DFWorkspace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFWorkspace.m; sourceTree = "<group>"; };
-		924ABE5B1A0D5BD000EF97F5 /* DFOperation+Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFOperation+Graph.h"; sourceTree = "<group>"; };
-		924ABE5C1A0D5BD000EF97F5 /* DFOperation+Graph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFOperation+Graph.m"; sourceTree = "<group>"; };
-		9270DFC31A4A8280009E0038 /* DFNetworkOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFNetworkOperation.h; sourceTree = "<group>"; };
-		9270DFC41A4A8280009E0038 /* DFNetworkOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFNetworkOperation.m; sourceTree = "<group>"; };
 		927E12851A0C6D8B002DC6FB /* RabbitProofFence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RabbitProofFence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		927E12891A0C6D8B002DC6FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		927E128A1A0C6D8B002DC6FB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -116,137 +236,8 @@
 		927E129E1A0C6D8B002DC6FB /* RabbitProofFenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RabbitProofFenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		927E12A31A0C6D8B002DC6FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		927E12A41A0C6D8B002DC6FB /* RabbitProofFenceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RabbitProofFenceTests.m; sourceTree = "<group>"; };
-		927E131D1A0C6DF3002DC6FB /* EXTADT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTADT.h; sourceTree = "<group>"; };
-		927E131E1A0C6DF3002DC6FB /* EXTADT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTADT.m; sourceTree = "<group>"; };
-		927E131F1A0C6DF3002DC6FB /* EXTConcreteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTConcreteProtocol.h; sourceTree = "<group>"; };
-		927E13201A0C6DF3002DC6FB /* EXTConcreteProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTConcreteProtocol.m; sourceTree = "<group>"; };
-		927E13211A0C6DF3002DC6FB /* EXTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTKeyPathCoding.h; sourceTree = "<group>"; };
-		927E13221A0C6DF3002DC6FB /* EXTNil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTNil.h; sourceTree = "<group>"; };
-		927E13231A0C6DF3002DC6FB /* EXTNil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTNil.m; sourceTree = "<group>"; };
-		927E13241A0C6DF3002DC6FB /* extobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = extobjc.h; sourceTree = "<group>"; };
-		927E13251A0C6DF3002DC6FB /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTRuntimeExtensions.h; sourceTree = "<group>"; };
-		927E13261A0C6DF3002DC6FB /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTRuntimeExtensions.m; sourceTree = "<group>"; };
-		927E13271A0C6DF3002DC6FB /* EXTSafeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTSafeCategory.h; sourceTree = "<group>"; };
-		927E13281A0C6DF3002DC6FB /* EXTSafeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTSafeCategory.m; sourceTree = "<group>"; };
-		927E13291A0C6DF3002DC6FB /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTScope.h; sourceTree = "<group>"; };
-		927E132A1A0C6DF3002DC6FB /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTScope.m; sourceTree = "<group>"; };
-		927E132B1A0C6DF3002DC6FB /* EXTSelectorChecking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTSelectorChecking.h; sourceTree = "<group>"; };
-		927E132C1A0C6DF3002DC6FB /* EXTSelectorChecking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTSelectorChecking.m; sourceTree = "<group>"; };
-		927E132D1A0C6DF3002DC6FB /* EXTSynthesize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTSynthesize.h; sourceTree = "<group>"; };
-		927E132E1A0C6DF3002DC6FB /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
-		927E132F1A0C6DF3002DC6FB /* NSInvocation+EXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+EXT.h"; sourceTree = "<group>"; };
-		927E13301A0C6DF3002DC6FB /* NSInvocation+EXT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+EXT.m"; sourceTree = "<group>"; };
-		927E13311A0C6DF3002DC6FB /* NSMethodSignature+EXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMethodSignature+EXT.h"; sourceTree = "<group>"; };
-		927E13321A0C6DF3002DC6FB /* NSMethodSignature+EXT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMethodSignature+EXT.m"; sourceTree = "<group>"; };
-		927E134B1A0C7D74002DC6FB /* UIColor+FlatUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+FlatUI.h"; sourceTree = "<group>"; };
-		927E134C1A0C7D74002DC6FB /* UIColor+FlatUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+FlatUI.m"; sourceTree = "<group>"; };
-		928E1E6A1A16E0DF0055D2AD /* Operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operation.h; sourceTree = "<group>"; };
-		928E1E6B1A16E0DF0055D2AD /* StreamOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamOperation.h; sourceTree = "<group>"; };
-		928E1E6C1A16E0DF0055D2AD /* Execution_Class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Execution_Class.h; sourceTree = "<group>"; };
-		928E1E6D1A16E0DF0055D2AD /* Execution_Class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Execution_Class.m; sourceTree = "<group>"; };
-		928E1E6E1A16E0DF0055D2AD /* OperationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationInfo.h; sourceTree = "<group>"; };
-		928E1E6F1A16E0DF0055D2AD /* OperationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationInfo.m; sourceTree = "<group>"; };
-		928E1E701A16E0DF0055D2AD /* DFOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFOperation.h; sourceTree = "<group>"; };
-		928E1E711A16E0DF0055D2AD /* DFOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFOperation.m; sourceTree = "<group>"; };
-		928E1E721A16E0DF0055D2AD /* DFOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFOperation_SubclassingHooks.h; sourceTree = "<group>"; };
-		928E1E731A16E0DF0055D2AD /* DFLiftOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLiftOperation.h; sourceTree = "<group>"; };
-		928E1E741A16E0DF0055D2AD /* DFLiftOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFLiftOperation.m; sourceTree = "<group>"; };
-		928E1E751A16E0DF0055D2AD /* DFBackgroundOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFBackgroundOperation.h; sourceTree = "<group>"; };
-		928E1E761A16E0DF0055D2AD /* DFBackgroundOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFBackgroundOperation.m; sourceTree = "<group>"; };
-		928E1E771A16E0DF0055D2AD /* DFCoreDataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCoreDataOperation.h; sourceTree = "<group>"; };
-		928E1E781A16E0DF0055D2AD /* DFCoreDataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCoreDataOperation.m; sourceTree = "<group>"; };
-		928E1E791A16E0DF0055D2AD /* DFMainOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFMainOperation.h; sourceTree = "<group>"; };
-		928E1E7A1A16E0DF0055D2AD /* DFMainOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFMainOperation.m; sourceTree = "<group>"; };
-		928E1E7B1A16E0DF0055D2AD /* DFMetaOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFMetaOperation.h; sourceTree = "<group>"; };
-		928E1E7C1A16E0DF0055D2AD /* DFMetaOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFMetaOperation.m; sourceTree = "<group>"; };
-		928E1E7D1A16E0DF0055D2AD /* DFMetaOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFMetaOperation_SubclassingHooks.h; sourceTree = "<group>"; };
-		928E1E7E1A16E0DF0055D2AD /* DFCompositeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCompositeOperation.h; sourceTree = "<group>"; };
-		928E1E7F1A16E0DF0055D2AD /* DFCompositeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCompositeOperation.m; sourceTree = "<group>"; };
-		928E1E801A16E0DF0055D2AD /* DFVoidObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFVoidObject.h; sourceTree = "<group>"; };
-		928E1E811A16E0DF0055D2AD /* DFRetryableOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFRetryableOperation.h; sourceTree = "<group>"; };
-		928E1E821A16E0DF0055D2AD /* DFRetryableOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFRetryableOperation.m; sourceTree = "<group>"; };
-		928E1E831A16E0DF0055D2AD /* DFVoidObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFVoidObject.m; sourceTree = "<group>"; };
-		928E1E841A16E0DF0055D2AD /* DFConnectorOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFConnectorOperation.h; sourceTree = "<group>"; };
-		928E1E851A16E0DF0055D2AD /* DFConnectorOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFConnectorOperation.m; sourceTree = "<group>"; };
-		928E1E861A16E0DF0055D2AD /* DFGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGenerator.h; sourceTree = "<group>"; };
-		928E1E871A16E0DF0055D2AD /* DFGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFGenerator.m; sourceTree = "<group>"; };
-		928E1E881A16E0DF0055D2AD /* DFLoopOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLoopOperation.h; sourceTree = "<group>"; };
-		928E1E891A16E0DF0055D2AD /* DFLoopOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFLoopOperation.m; sourceTree = "<group>"; };
-		928E1E8A1A16E0DF0055D2AD /* DFLoopOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLoopOperation_SubclassingHooks.h; sourceTree = "<group>"; };
-		928E1E8B1A16E0DF0055D2AD /* DFPeriodicOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPeriodicOperation.h; sourceTree = "<group>"; };
-		928E1E8C1A16E0DF0055D2AD /* DFPeriodicOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPeriodicOperation.m; sourceTree = "<group>"; };
-		928E1E8D1A16E0DF0055D2AD /* DFDelayOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFDelayOperation.h; sourceTree = "<group>"; };
-		928E1E8E1A16E0DF0055D2AD /* DFDelayOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFDelayOperation.m; sourceTree = "<group>"; };
-		928E1E8F1A16E0DF0055D2AD /* ReactiveConnectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactiveConnectionInfo.h; sourceTree = "<group>"; };
-		928E1E901A16E0DF0055D2AD /* ReactiveConnectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactiveConnectionInfo.m; sourceTree = "<group>"; };
-		928E1E911A16E0DF0055D2AD /* DFReactiveOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFReactiveOperation.h; sourceTree = "<group>"; };
-		928E1E921A16E0DF0055D2AD /* DFReactiveOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFReactiveOperation.m; sourceTree = "<group>"; };
-		928E1E931A16E0DF0055D2AD /* DFReactiveOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFReactiveOperation_SubclassingHooks.h; sourceTree = "<group>"; };
-		928E1E941A16E0DF0055D2AD /* DFAggregatorOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAggregatorOperation.h; sourceTree = "<group>"; };
-		928E1E951A16E0DF0055D2AD /* DFAggregatorOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAggregatorOperation.m; sourceTree = "<group>"; };
-		928E1E961A16E0DF0055D2AD /* DFAndOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAndOperation.h; sourceTree = "<group>"; };
-		928E1E971A16E0DF0055D2AD /* DFAndOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAndOperation.m; sourceTree = "<group>"; };
-		928E1E981A16E0DF0055D2AD /* DFAnyOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFAnyOperation.h; sourceTree = "<group>"; };
-		928E1E991A16E0DF0055D2AD /* DFAnyOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFAnyOperation.m; sourceTree = "<group>"; };
-		928E1E9A1A16E0DF0055D2AD /* DFFilterOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFFilterOperation.h; sourceTree = "<group>"; };
-		928E1E9B1A16E0DF0055D2AD /* DFFilterOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFFilterOperation.m; sourceTree = "<group>"; };
-		928E1E9C1A16E0DF0055D2AD /* DFIfElseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFIfElseOperation.h; sourceTree = "<group>"; };
-		928E1E9D1A16E0DF0055D2AD /* DFIfElseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFIfElseOperation.m; sourceTree = "<group>"; };
-		928E1E9E1A16E0DF0055D2AD /* DFMapOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFMapOperation.h; sourceTree = "<group>"; };
-		928E1E9F1A16E0DF0055D2AD /* DFMapOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFMapOperation.m; sourceTree = "<group>"; };
-		928E1EA01A16E0DF0055D2AD /* DFFlattenOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFFlattenOperation.h; sourceTree = "<group>"; };
-		928E1EA11A16E0DF0055D2AD /* DFFlattenOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFFlattenOperation.m; sourceTree = "<group>"; };
-		928E1EA21A16E0DF0055D2AD /* DFParallelOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFParallelOperation.h; sourceTree = "<group>"; };
-		928E1EA31A16E0DF0055D2AD /* DFParallelOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFParallelOperation.m; sourceTree = "<group>"; };
-		928E1EA41A16E0DF0055D2AD /* DFParallelOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFParallelOperation_SubclassingHooks.h; sourceTree = "<group>"; };
-		928E1EA51A16E0DF0055D2AD /* DFReduceOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFReduceOperation.h; sourceTree = "<group>"; };
-		928E1EA61A16E0DF0055D2AD /* DFReduceOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFReduceOperation.m; sourceTree = "<group>"; };
-		928E1EA71A16E0DF0055D2AD /* DFTryCatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTryCatchOperation.h; sourceTree = "<group>"; };
-		928E1EA81A16E0DF0055D2AD /* DFTryCatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTryCatchOperation.m; sourceTree = "<group>"; };
-		928E1EA91A16E0DF0055D2AD /* DFTryCatchOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTryCatchOperation_SubclassingHooks.h; sourceTree = "<group>"; };
-		928E1EAA1A16E0DF0055D2AD /* ConnectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionInfo.h; sourceTree = "<group>"; };
-		928E1EAB1A16E0DF0055D2AD /* ConnectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionInfo.m; sourceTree = "<group>"; };
-		928E1EAC1A16E0DF0055D2AD /* Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operations.h; sourceTree = "<group>"; };
-		928E1ECC1A16E1210055D2AD /* DFNode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFNode.xib; sourceTree = "<group>"; };
-		928E1ECD1A16E1210055D2AD /* DFPort_Input.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFPort_Input.xib; sourceTree = "<group>"; };
-		928E1ECE1A16E1210055D2AD /* DFPort_Output.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFPort_Output.xib; sourceTree = "<group>"; };
-		928E1ECF1A16E1210055D2AD /* UIView+DebugObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DebugObject.h"; sourceTree = "<group>"; };
-		928E1ED01A16E1210055D2AD /* UIView+DebugObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DebugObject.m"; sourceTree = "<group>"; };
-		928E1ED11A16E1210055D2AD /* DFNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFNode.h; sourceTree = "<group>"; };
-		928E1ED21A16E1210055D2AD /* DFNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFNode.m; sourceTree = "<group>"; };
-		928E1ED31A16E1210055D2AD /* DFOperation+Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DFOperation+Graph.h"; sourceTree = "<group>"; };
-		928E1ED41A16E1210055D2AD /* DFOperation+Graph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DFOperation+Graph.m"; sourceTree = "<group>"; };
-		928E1ED51A16E1210055D2AD /* DFPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFPort.h; sourceTree = "<group>"; };
-		928E1ED61A16E1210055D2AD /* DFPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFPort.m; sourceTree = "<group>"; };
-		928E1EDE1A16E12C0055D2AD /* BlockDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockDescription.h; sourceTree = "<group>"; };
-		928E1EDF1A16E12C0055D2AD /* BlockDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockDescription.m; sourceTree = "<group>"; };
-		928E1EE01A16E12C0055D2AD /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BlockObservation.h"; sourceTree = "<group>"; };
-		928E1EE11A16E12C0055D2AD /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BlockObservation.m"; sourceTree = "<group>"; };
-		928E1EE51A16E13C0055D2AD /* ErrorRetryPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorRetryPolicy.h; sourceTree = "<group>"; };
-		928E1EE61A16E13C0055D2AD /* ErrorRetryPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorRetryPolicy.m; sourceTree = "<group>"; };
-		928E1EE71A16E13C0055D2AD /* LinearErrorRetryPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinearErrorRetryPolicy.h; sourceTree = "<group>"; };
-		928E1EE81A16E13C0055D2AD /* LinearErrorRetryPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinearErrorRetryPolicy.m; sourceTree = "<group>"; };
-		928E1EE91A16E13C0055D2AD /* RandomBackoffErrorRetryPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomBackoffErrorRetryPolicy.h; sourceTree = "<group>"; };
-		928E1EEA1A16E13C0055D2AD /* RandomBackoffErrorRetryPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomBackoffErrorRetryPolicy.m; sourceTree = "<group>"; };
 		928E1EEE1A16E2050055D2AD /* OperationAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = OperationAssets.xcassets; sourceTree = "<group>"; };
 		928E1EF01A16E23C0055D2AD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		92B9D5411A1BE56300D18BCB /* UIColor+Crayola.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Crayola.h"; sourceTree = "<group>"; };
-		92B9D5421A1BE56300D18BCB /* UIColor+Crayola.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Crayola.m"; sourceTree = "<group>"; };
-		92B9D5441A1E5DCC00D18BCB /* DFValueNode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFValueNode.xib; sourceTree = "<group>"; };
-		92B9D5461A1EF9D100D18BCB /* DFIdentityOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFIdentityOperation.h; sourceTree = "<group>"; };
-		92B9D5471A1EF9D100D18BCB /* DFIdentityOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFIdentityOperation.m; sourceTree = "<group>"; };
-		92B9D5491A1EFC9F00D18BCB /* DFValueNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFValueNode.h; sourceTree = "<group>"; };
-		92B9D54A1A1EFC9F00D18BCB /* DFValueNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFValueNode.m; sourceTree = "<group>"; };
-		92CCF80D1A53A54F004628FF /* DFTakeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTakeOperation.h; sourceTree = "<group>"; };
-		92CCF80E1A53A54F004628FF /* DFTakeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTakeOperation.m; sourceTree = "<group>"; };
-		92CCF8101A53A72A004628FF /* DFDropOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFDropOperation.h; sourceTree = "<group>"; };
-		92CCF8111A53A72A004628FF /* DFDropOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFDropOperation.m; sourceTree = "<group>"; };
-		92CCF8161A545F00004628FF /* DFTakeWhileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTakeWhileOperation.h; sourceTree = "<group>"; };
-		92CCF8171A545F00004628FF /* DFTakeWhileOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTakeWhileOperation.m; sourceTree = "<group>"; };
-		92E584CE1A184A7500E52A54 /* DFWorkspace.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFWorkspace.xib; sourceTree = "<group>"; };
-		92E584CF1A184A7500E52A54 /* DFWorkspaceBlockCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DFWorkspaceBlockCell.xib; sourceTree = "<group>"; };
-		92E584D21A184DD300E52A54 /* DFGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGridView.h; sourceTree = "<group>"; };
-		92E584D31A184DD300E52A54 /* DFGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFGridView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,17 +287,11 @@
 				927E12901A0C6D8B002DC6FB /* ViewController.m */,
 				924ABE521A0D2FE900EF97F5 /* NSArray+Utility.h */,
 				924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */,
-				927E134B1A0C7D74002DC6FB /* UIColor+FlatUI.h */,
-				927E134C1A0C7D74002DC6FB /* UIColor+FlatUI.m */,
 				927E12921A0C6D8B002DC6FB /* Main.storyboard */,
 				927E12971A0C6D8B002DC6FB /* LaunchScreen.xib */,
 				928E1EEE1A16E2050055D2AD /* OperationAssets.xcassets */,
 				928E1EF01A16E23C0055D2AD /* Images.xcassets */,
 				927E12881A0C6D8B002DC6FB /* Supporting Files */,
-				924ABE551A0D481200EF97F5 /* UIView+DebugObject.h */,
-				924ABE561A0D481200EF97F5 /* UIView+DebugObject.m */,
-				924ABE5B1A0D5BD000EF97F5 /* DFOperation+Graph.h */,
-				924ABE5C1A0D5BD000EF97F5 /* DFOperation+Graph.m */,
 			);
 			path = RabbitProofFence;
 			sourceTree = "<group>";
@@ -340,28 +325,28 @@
 		928E1E681A16E0B00055D2AD /* Ext */ = {
 			isa = PBXGroup;
 			children = (
-				927E131D1A0C6DF3002DC6FB /* EXTADT.h */,
-				927E131E1A0C6DF3002DC6FB /* EXTADT.m */,
-				927E131F1A0C6DF3002DC6FB /* EXTConcreteProtocol.h */,
-				927E13201A0C6DF3002DC6FB /* EXTConcreteProtocol.m */,
-				927E13211A0C6DF3002DC6FB /* EXTKeyPathCoding.h */,
-				927E13221A0C6DF3002DC6FB /* EXTNil.h */,
-				927E13231A0C6DF3002DC6FB /* EXTNil.m */,
-				927E13241A0C6DF3002DC6FB /* extobjc.h */,
-				927E13251A0C6DF3002DC6FB /* EXTRuntimeExtensions.h */,
-				927E13261A0C6DF3002DC6FB /* EXTRuntimeExtensions.m */,
-				927E13271A0C6DF3002DC6FB /* EXTSafeCategory.h */,
-				927E13281A0C6DF3002DC6FB /* EXTSafeCategory.m */,
-				927E13291A0C6DF3002DC6FB /* EXTScope.h */,
-				927E132A1A0C6DF3002DC6FB /* EXTScope.m */,
-				927E132B1A0C6DF3002DC6FB /* EXTSelectorChecking.h */,
-				927E132C1A0C6DF3002DC6FB /* EXTSelectorChecking.m */,
-				927E132D1A0C6DF3002DC6FB /* EXTSynthesize.h */,
-				927E132E1A0C6DF3002DC6FB /* metamacros.h */,
-				927E132F1A0C6DF3002DC6FB /* NSInvocation+EXT.h */,
-				927E13301A0C6DF3002DC6FB /* NSInvocation+EXT.m */,
-				927E13311A0C6DF3002DC6FB /* NSMethodSignature+EXT.h */,
-				927E13321A0C6DF3002DC6FB /* NSMethodSignature+EXT.m */,
+				92174C491A56FE1B00E89343 /* EXTADT.h */,
+				92174C4A1A56FE1B00E89343 /* EXTADT.m */,
+				92174C4B1A56FE1B00E89343 /* EXTConcreteProtocol.h */,
+				92174C4C1A56FE1B00E89343 /* EXTConcreteProtocol.m */,
+				92174C4D1A56FE1B00E89343 /* EXTKeyPathCoding.h */,
+				92174C4E1A56FE1B00E89343 /* EXTNil.h */,
+				92174C4F1A56FE1B00E89343 /* EXTNil.m */,
+				92174C501A56FE1B00E89343 /* extobjc.h */,
+				92174C511A56FE1B00E89343 /* EXTRuntimeExtensions.h */,
+				92174C521A56FE1B00E89343 /* EXTRuntimeExtensions.m */,
+				92174C531A56FE1B00E89343 /* EXTSafeCategory.h */,
+				92174C541A56FE1B00E89343 /* EXTSafeCategory.m */,
+				92174C551A56FE1B00E89343 /* EXTScope.h */,
+				92174C561A56FE1B00E89343 /* EXTScope.m */,
+				92174C571A56FE1B00E89343 /* EXTSelectorChecking.h */,
+				92174C581A56FE1B00E89343 /* EXTSelectorChecking.m */,
+				92174C591A56FE1B00E89343 /* EXTSynthesize.h */,
+				92174C5A1A56FE1B00E89343 /* metamacros.h */,
+				92174C5B1A56FE1B00E89343 /* NSInvocation+EXT.h */,
+				92174C5C1A56FE1B00E89343 /* NSInvocation+EXT.m */,
+				92174C5D1A56FE1B00E89343 /* NSMethodSignature+EXT.h */,
+				92174C5E1A56FE1B00E89343 /* NSMethodSignature+EXT.m */,
 			);
 			name = Ext;
 			sourceTree = "<group>";
@@ -369,86 +354,78 @@
 		928E1E691A16E0C50055D2AD /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				92174BE61A56FDF000E89343 /* DFAggregatorOperation.h */,
+				92174BE71A56FDF000E89343 /* DFAggregatorOperation.m */,
+				92174BE81A56FDF000E89343 /* DFAndOperation.h */,
+				92174BE91A56FDF000E89343 /* DFAndOperation.m */,
+				92174BEA1A56FDF000E89343 /* DFAnyOperation.h */,
+				92174BEB1A56FDF000E89343 /* DFAnyOperation.m */,
+				92174BEC1A56FDF000E89343 /* DFBackgroundOperation.h */,
+				92174BED1A56FDF000E89343 /* DFBackgroundOperation.m */,
+				92174BEE1A56FDF000E89343 /* DFCompositeOperation.h */,
+				92174BEF1A56FDF000E89343 /* DFCompositeOperation.m */,
+				92174BF01A56FDF000E89343 /* DFConnectorOperation.h */,
+				92174BF11A56FDF000E89343 /* DFConnectorOperation.m */,
+				92174BF21A56FDF000E89343 /* DFCoreDataOperation.h */,
+				92174BF31A56FDF000E89343 /* DFCoreDataOperation.m */,
+				92174BF41A56FDF000E89343 /* DFDelayOperation.h */,
+				92174BF51A56FDF000E89343 /* DFDelayOperation.m */,
+				92174BF61A56FDF000E89343 /* DFDropOperation.h */,
+				92174BF71A56FDF000E89343 /* DFDropOperation.m */,
+				92174BF81A56FDF000E89343 /* DFFilterOperation.h */,
+				92174BF91A56FDF000E89343 /* DFFilterOperation.m */,
+				92174BFA1A56FDF000E89343 /* DFFlattenOperation.h */,
+				92174BFB1A56FDF000E89343 /* DFFlattenOperation.m */,
+				92174BFC1A56FDF000E89343 /* DFGenerator.h */,
+				92174BFD1A56FDF000E89343 /* DFGenerator.m */,
+				92174BFE1A56FDF000E89343 /* DFIdentityOperation.h */,
+				92174BFF1A56FDF000E89343 /* DFIdentityOperation.m */,
+				92174C001A56FDF000E89343 /* DFIfElseOperation.h */,
+				92174C011A56FDF000E89343 /* DFIfElseOperation.m */,
+				92174C021A56FDF000E89343 /* DFLiftOperation.h */,
+				92174C031A56FDF000E89343 /* DFLiftOperation.m */,
+				92174C041A56FDF000E89343 /* DFLoopOperation_SubclassingHooks.h */,
+				92174C051A56FDF000E89343 /* DFLoopOperation.h */,
+				92174C061A56FDF000E89343 /* DFLoopOperation.m */,
+				92174C071A56FDF000E89343 /* DFMainOperation.h */,
+				92174C481A56FDF900E89343 /* StreamOperation.h */,
+				92174C081A56FDF000E89343 /* DFMainOperation.m */,
+				92174C091A56FDF000E89343 /* DFMapOperation.h */,
+				92174C0A1A56FDF000E89343 /* DFMapOperation.m */,
+				92174C0B1A56FDF000E89343 /* DFMetaOperation_SubclassingHooks.h */,
+				92174C0C1A56FDF000E89343 /* DFMetaOperation.h */,
+				92174C0D1A56FDF000E89343 /* DFMetaOperation.m */,
+				92174C0E1A56FDF000E89343 /* DFNetworkOperation.h */,
+				92174C0F1A56FDF000E89343 /* DFNetworkOperation.m */,
+				92174C101A56FDF000E89343 /* DFOperation_SubclassingHooks.h */,
+				92174C111A56FDF000E89343 /* DFOperation.h */,
+				92174C121A56FDF000E89343 /* DFOperation.m */,
+				92174C131A56FDF000E89343 /* DFParallelOperation_SubclassingHooks.h */,
+				92174C141A56FDF000E89343 /* DFParallelOperation.h */,
+				92174C151A56FDF000E89343 /* DFParallelOperation.m */,
+				92174C161A56FDF000E89343 /* DFPeriodicOperation.h */,
+				92174C171A56FDF000E89343 /* DFPeriodicOperation.m */,
+				92174C181A56FDF000E89343 /* DFReactiveOperation_SubclassingHooks.h */,
+				92174C191A56FDF000E89343 /* DFReactiveOperation.h */,
+				92174C1A1A56FDF000E89343 /* DFReactiveOperation.m */,
+				92174C1B1A56FDF000E89343 /* DFReduceOperation.h */,
+				92174C1C1A56FDF000E89343 /* DFReduceOperation.m */,
+				92174C1D1A56FDF000E89343 /* DFRetryableOperation.h */,
+				92174C1E1A56FDF000E89343 /* DFRetryableOperation.m */,
+				92174C1F1A56FDF000E89343 /* DFTakeOperation.h */,
+				92174C201A56FDF000E89343 /* DFTakeOperation.m */,
+				92174C211A56FDF000E89343 /* DFTakeWhileOperation.h */,
+				92174C221A56FDF000E89343 /* DFTakeWhileOperation.m */,
+				92174C231A56FDF000E89343 /* DFTryCatchOperation_SubclassingHooks.h */,
+				92174C241A56FDF000E89343 /* DFTryCatchOperation.h */,
+				92174C251A56FDF000E89343 /* DFTryCatchOperation.m */,
+				92174C261A56FDF000E89343 /* DFVoidObject.h */,
+				92174C271A56FDF000E89343 /* DFVoidObject.m */,
+				92174C281A56FDF000E89343 /* Operation.h */,
+				92174C291A56FDF000E89343 /* Operations.h */,
 				928E1EE41A16E12F0055D2AD /* Retry */,
 				928E1ECB1A16E0EA0055D2AD /* Utility */,
 				928E1ECA1A16E0E20055D2AD /* Visualization */,
-				928E1E6A1A16E0DF0055D2AD /* Operation.h */,
-				928E1E6B1A16E0DF0055D2AD /* StreamOperation.h */,
-				928E1E6C1A16E0DF0055D2AD /* Execution_Class.h */,
-				928E1E6D1A16E0DF0055D2AD /* Execution_Class.m */,
-				928E1EAA1A16E0DF0055D2AD /* ConnectionInfo.h */,
-				928E1EAB1A16E0DF0055D2AD /* ConnectionInfo.m */,
-				928E1E8F1A16E0DF0055D2AD /* ReactiveConnectionInfo.h */,
-				928E1E901A16E0DF0055D2AD /* ReactiveConnectionInfo.m */,
-				928E1E6E1A16E0DF0055D2AD /* OperationInfo.h */,
-				928E1E6F1A16E0DF0055D2AD /* OperationInfo.m */,
-				928E1E701A16E0DF0055D2AD /* DFOperation.h */,
-				928E1E711A16E0DF0055D2AD /* DFOperation.m */,
-				928E1E721A16E0DF0055D2AD /* DFOperation_SubclassingHooks.h */,
-				92B9D5461A1EF9D100D18BCB /* DFIdentityOperation.h */,
-				92B9D5471A1EF9D100D18BCB /* DFIdentityOperation.m */,
-				928E1E731A16E0DF0055D2AD /* DFLiftOperation.h */,
-				928E1E741A16E0DF0055D2AD /* DFLiftOperation.m */,
-				928E1E751A16E0DF0055D2AD /* DFBackgroundOperation.h */,
-				928E1E761A16E0DF0055D2AD /* DFBackgroundOperation.m */,
-				928E1E771A16E0DF0055D2AD /* DFCoreDataOperation.h */,
-				928E1E781A16E0DF0055D2AD /* DFCoreDataOperation.m */,
-				928E1E791A16E0DF0055D2AD /* DFMainOperation.h */,
-				928E1E7A1A16E0DF0055D2AD /* DFMainOperation.m */,
-				928E1E7B1A16E0DF0055D2AD /* DFMetaOperation.h */,
-				928E1E7C1A16E0DF0055D2AD /* DFMetaOperation.m */,
-				928E1E7D1A16E0DF0055D2AD /* DFMetaOperation_SubclassingHooks.h */,
-				928E1E7E1A16E0DF0055D2AD /* DFCompositeOperation.h */,
-				928E1E7F1A16E0DF0055D2AD /* DFCompositeOperation.m */,
-				928E1E801A16E0DF0055D2AD /* DFVoidObject.h */,
-				928E1E831A16E0DF0055D2AD /* DFVoidObject.m */,
-				928E1E811A16E0DF0055D2AD /* DFRetryableOperation.h */,
-				928E1E821A16E0DF0055D2AD /* DFRetryableOperation.m */,
-				928E1E841A16E0DF0055D2AD /* DFConnectorOperation.h */,
-				928E1E851A16E0DF0055D2AD /* DFConnectorOperation.m */,
-				928E1E861A16E0DF0055D2AD /* DFGenerator.h */,
-				928E1E871A16E0DF0055D2AD /* DFGenerator.m */,
-				928E1E881A16E0DF0055D2AD /* DFLoopOperation.h */,
-				928E1E891A16E0DF0055D2AD /* DFLoopOperation.m */,
-				928E1E8A1A16E0DF0055D2AD /* DFLoopOperation_SubclassingHooks.h */,
-				928E1E8B1A16E0DF0055D2AD /* DFPeriodicOperation.h */,
-				928E1E8C1A16E0DF0055D2AD /* DFPeriodicOperation.m */,
-				928E1E8D1A16E0DF0055D2AD /* DFDelayOperation.h */,
-				928E1E8E1A16E0DF0055D2AD /* DFDelayOperation.m */,
-				928E1E911A16E0DF0055D2AD /* DFReactiveOperation.h */,
-				928E1E921A16E0DF0055D2AD /* DFReactiveOperation.m */,
-				928E1E931A16E0DF0055D2AD /* DFReactiveOperation_SubclassingHooks.h */,
-				928E1E941A16E0DF0055D2AD /* DFAggregatorOperation.h */,
-				928E1E951A16E0DF0055D2AD /* DFAggregatorOperation.m */,
-				928E1E961A16E0DF0055D2AD /* DFAndOperation.h */,
-				928E1E971A16E0DF0055D2AD /* DFAndOperation.m */,
-				928E1E981A16E0DF0055D2AD /* DFAnyOperation.h */,
-				928E1E991A16E0DF0055D2AD /* DFAnyOperation.m */,
-				928E1E9A1A16E0DF0055D2AD /* DFFilterOperation.h */,
-				928E1E9B1A16E0DF0055D2AD /* DFFilterOperation.m */,
-				928E1E9C1A16E0DF0055D2AD /* DFIfElseOperation.h */,
-				928E1E9D1A16E0DF0055D2AD /* DFIfElseOperation.m */,
-				928E1E9E1A16E0DF0055D2AD /* DFMapOperation.h */,
-				928E1E9F1A16E0DF0055D2AD /* DFMapOperation.m */,
-				928E1EA01A16E0DF0055D2AD /* DFFlattenOperation.h */,
-				928E1EA11A16E0DF0055D2AD /* DFFlattenOperation.m */,
-				928E1EA21A16E0DF0055D2AD /* DFParallelOperation.h */,
-				928E1EA31A16E0DF0055D2AD /* DFParallelOperation.m */,
-				928E1EA41A16E0DF0055D2AD /* DFParallelOperation_SubclassingHooks.h */,
-				928E1EA51A16E0DF0055D2AD /* DFReduceOperation.h */,
-				928E1EA61A16E0DF0055D2AD /* DFReduceOperation.m */,
-				928E1EA71A16E0DF0055D2AD /* DFTryCatchOperation.h */,
-				928E1EA81A16E0DF0055D2AD /* DFTryCatchOperation.m */,
-				928E1EA91A16E0DF0055D2AD /* DFTryCatchOperation_SubclassingHooks.h */,
-				928E1EAC1A16E0DF0055D2AD /* Operations.h */,
-				9270DFC31A4A8280009E0038 /* DFNetworkOperation.h */,
-				9270DFC41A4A8280009E0038 /* DFNetworkOperation.m */,
-				92CCF80D1A53A54F004628FF /* DFTakeOperation.h */,
-				92CCF80E1A53A54F004628FF /* DFTakeOperation.m */,
-				92CCF8101A53A72A004628FF /* DFDropOperation.h */,
-				92CCF8111A53A72A004628FF /* DFDropOperation.m */,
-				92CCF8161A545F00004628FF /* DFTakeWhileOperation.h */,
-				92CCF8171A545F00004628FF /* DFTakeWhileOperation.m */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -456,28 +433,24 @@
 		928E1ECA1A16E0E20055D2AD /* Visualization */ = {
 			isa = PBXGroup;
 			children = (
-				92E584CE1A184A7500E52A54 /* DFWorkspace.xib */,
-				92E584CF1A184A7500E52A54 /* DFWorkspaceBlockCell.xib */,
-				928E1ECC1A16E1210055D2AD /* DFNode.xib */,
-				928E1ECD1A16E1210055D2AD /* DFPort_Input.xib */,
-				928E1ECE1A16E1210055D2AD /* DFPort_Output.xib */,
-				92B9D5441A1E5DCC00D18BCB /* DFValueNode.xib */,
-				928E1ECF1A16E1210055D2AD /* UIView+DebugObject.h */,
-				928E1ED01A16E1210055D2AD /* UIView+DebugObject.m */,
-				928E1ED11A16E1210055D2AD /* DFNode.h */,
-				928E1ED21A16E1210055D2AD /* DFNode.m */,
-				92B9D5491A1EFC9F00D18BCB /* DFValueNode.h */,
-				92B9D54A1A1EFC9F00D18BCB /* DFValueNode.m */,
-				928E1ED31A16E1210055D2AD /* DFOperation+Graph.h */,
-				928E1ED41A16E1210055D2AD /* DFOperation+Graph.m */,
-				928E1ED51A16E1210055D2AD /* DFPort.h */,
-				928E1ED61A16E1210055D2AD /* DFPort.m */,
-				924ABE581A0D4D9200EF97F5 /* DFWorkspace.h */,
-				924ABE591A0D4D9200EF97F5 /* DFWorkspace.m */,
-				92E584D21A184DD300E52A54 /* DFGridView.h */,
-				92E584D31A184DD300E52A54 /* DFGridView.m */,
-				92B9D5411A1BE56300D18BCB /* UIColor+Crayola.h */,
-				92B9D5421A1BE56300D18BCB /* UIColor+Crayola.m */,
+				92174BBF1A56FDB000E89343 /* DFGridView.h */,
+				92174BC01A56FDB000E89343 /* DFGridView.m */,
+				92174BC11A56FDB000E89343 /* DFNode.h */,
+				92174BC21A56FDB000E89343 /* DFNode.m */,
+				92174BC31A56FDB000E89343 /* DFNode.xib */,
+				92174BC41A56FDB000E89343 /* DFOperation+Graph.h */,
+				92174BC51A56FDB000E89343 /* DFOperation+Graph.m */,
+				92174BC61A56FDB000E89343 /* DFPort_Input.xib */,
+				92174BC71A56FDB000E89343 /* DFPort_Output.xib */,
+				92174BC81A56FDB000E89343 /* DFPort.h */,
+				92174BC91A56FDB000E89343 /* DFPort.m */,
+				92174BCA1A56FDB000E89343 /* DFValueNode.h */,
+				92174BCB1A56FDB000E89343 /* DFValueNode.m */,
+				92174BCC1A56FDB000E89343 /* DFValueNode.xib */,
+				92174BCD1A56FDB000E89343 /* DFWorkspace.h */,
+				92174BCE1A56FDB000E89343 /* DFWorkspace.m */,
+				92174BCF1A56FDB000E89343 /* DFWorkspace.xib */,
+				92174BD01A56FDB000E89343 /* DFWorkspaceBlockCell.xib */,
 			);
 			name = Visualization;
 			sourceTree = "<group>";
@@ -485,10 +458,22 @@
 		928E1ECB1A16E0EA0055D2AD /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				928E1EDE1A16E12C0055D2AD /* BlockDescription.h */,
-				928E1EDF1A16E12C0055D2AD /* BlockDescription.m */,
-				928E1EE01A16E12C0055D2AD /* NSObject+BlockObservation.h */,
-				928E1EE11A16E12C0055D2AD /* NSObject+BlockObservation.m */,
+				92174BA71A56FD9A00E89343 /* BlockDescription.h */,
+				92174BA81A56FD9A00E89343 /* BlockDescription.m */,
+				92174BA91A56FD9A00E89343 /* ConnectionInfo.h */,
+				92174BAA1A56FD9A00E89343 /* ConnectionInfo.m */,
+				92174BAB1A56FD9A00E89343 /* Execution_Class.h */,
+				92174BAC1A56FD9A00E89343 /* Execution_Class.m */,
+				92174BAD1A56FD9A00E89343 /* NSObject+BlockObservation.h */,
+				92174BAE1A56FD9A00E89343 /* NSObject+BlockObservation.m */,
+				92174BAF1A56FD9A00E89343 /* OperationInfo.h */,
+				92174BB01A56FD9A00E89343 /* OperationInfo.m */,
+				92174BB11A56FD9A00E89343 /* ReactiveConnectionInfo.h */,
+				92174BB21A56FD9A00E89343 /* ReactiveConnectionInfo.m */,
+				92174BB31A56FD9A00E89343 /* UIColor+Crayola.h */,
+				92174BB41A56FD9A00E89343 /* UIColor+Crayola.m */,
+				92174BB51A56FD9A00E89343 /* UIView+DebugObject.h */,
+				92174BB61A56FD9A00E89343 /* UIView+DebugObject.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -496,12 +481,12 @@
 		928E1EE41A16E12F0055D2AD /* Retry */ = {
 			isa = PBXGroup;
 			children = (
-				928E1EE51A16E13C0055D2AD /* ErrorRetryPolicy.h */,
-				928E1EE61A16E13C0055D2AD /* ErrorRetryPolicy.m */,
-				928E1EE71A16E13C0055D2AD /* LinearErrorRetryPolicy.h */,
-				928E1EE81A16E13C0055D2AD /* LinearErrorRetryPolicy.m */,
-				928E1EE91A16E13C0055D2AD /* RandomBackoffErrorRetryPolicy.h */,
-				928E1EEA1A16E13C0055D2AD /* RandomBackoffErrorRetryPolicy.m */,
+				92174BDD1A56FDC400E89343 /* ErrorRetryPolicy.h */,
+				92174BDE1A56FDC400E89343 /* ErrorRetryPolicy.m */,
+				92174BDF1A56FDC400E89343 /* LinearErrorRetryPolicy.h */,
+				92174BE01A56FDC400E89343 /* LinearErrorRetryPolicy.m */,
+				92174BE11A56FDC400E89343 /* RandomBackoffErrorRetryPolicy.h */,
+				92174BE21A56FDC400E89343 /* RandomBackoffErrorRetryPolicy.m */,
 			);
 			name = Retry;
 			sourceTree = "<group>";
@@ -587,16 +572,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92B9D5451A1E5DCC00D18BCB /* DFValueNode.xib in Resources */,
 				927E12941A0C6D8B002DC6FB /* Main.storyboard in Resources */,
-				928E1ED91A16E1210055D2AD /* DFPort_Output.xib in Resources */,
+				92174BD31A56FDB000E89343 /* DFNode.xib in Resources */,
 				928E1EF11A16E23C0055D2AD /* Images.xcassets in Resources */,
-				92E584D01A184A7500E52A54 /* DFWorkspace.xib in Resources */,
+				92174BD51A56FDB000E89343 /* DFPort_Input.xib in Resources */,
+				92174BD61A56FDB000E89343 /* DFPort_Output.xib in Resources */,
+				92174BDB1A56FDB000E89343 /* DFWorkspace.xib in Resources */,
+				92174BD91A56FDB000E89343 /* DFValueNode.xib in Resources */,
 				927E12991A0C6D8B002DC6FB /* LaunchScreen.xib in Resources */,
-				928E1ED81A16E1210055D2AD /* DFPort_Input.xib in Resources */,
 				928E1EEF1A16E2050055D2AD /* OperationAssets.xcassets in Resources */,
-				92E584D11A184A7500E52A54 /* DFWorkspaceBlockCell.xib in Resources */,
-				928E1ED71A16E1210055D2AD /* DFNode.xib in Resources */,
+				92174BDC1A56FDB000E89343 /* DFWorkspaceBlockCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -614,69 +599,66 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				928E1EAE1A16E0DF0055D2AD /* OperationInfo.m in Sources */,
-				927E134D1A0C7D74002DC6FB /* UIColor+FlatUI.m in Sources */,
-				928E1EC11A16E0DF0055D2AD /* DFAnyOperation.m in Sources */,
-				928E1EBA1A16E0DF0055D2AD /* DFLoopOperation.m in Sources */,
-				924ABE571A0D481200EF97F5 /* UIView+DebugObject.m in Sources */,
+				92174BD11A56FDB000E89343 /* DFGridView.m in Sources */,
+				92174C3A1A56FDF000E89343 /* DFMainOperation.m in Sources */,
+				92174C671A56FE1B00E89343 /* NSMethodSignature+EXT.m in Sources */,
+				92174BDA1A56FDB000E89343 /* DFWorkspace.m in Sources */,
+				92174C391A56FDF000E89343 /* DFLoopOperation.m in Sources */,
+				92174BD41A56FDB000E89343 /* DFOperation+Graph.m in Sources */,
+				92174C2E1A56FDF000E89343 /* DFCompositeOperation.m in Sources */,
+				92174C2B1A56FDF000E89343 /* DFAndOperation.m in Sources */,
 				927E12911A0C6D8B002DC6FB /* ViewController.m in Sources */,
-				928E1EBE1A16E0DF0055D2AD /* DFReactiveOperation.m in Sources */,
-				927E13371A0C6DF3002DC6FB /* EXTSafeCategory.m in Sources */,
-				928E1EC61A16E0DF0055D2AD /* DFParallelOperation.m in Sources */,
-				928E1EB41A16E0DF0055D2AD /* DFMetaOperation.m in Sources */,
-				928E1EC31A16E0DF0055D2AD /* DFIfElseOperation.m in Sources */,
-				927E133B1A0C6DF3002DC6FB /* NSMethodSignature+EXT.m in Sources */,
-				928E1EB91A16E0DF0055D2AD /* DFGenerator.m in Sources */,
-				928E1EDA1A16E1210055D2AD /* UIView+DebugObject.m in Sources */,
-				927E133A1A0C6DF3002DC6FB /* NSInvocation+EXT.m in Sources */,
-				928E1EB71A16E0DF0055D2AD /* DFVoidObject.m in Sources */,
-				9270DFC51A4A8280009E0038 /* DFNetworkOperation.m in Sources */,
-				928E1EAF1A16E0DF0055D2AD /* DFOperation.m in Sources */,
-				928E1EB81A16E0DF0055D2AD /* DFConnectorOperation.m in Sources */,
-				928E1EC81A16E0DF0055D2AD /* DFTryCatchOperation.m in Sources */,
-				928E1EDB1A16E1210055D2AD /* DFNode.m in Sources */,
-				928E1EB21A16E0DF0055D2AD /* DFCoreDataOperation.m in Sources */,
-				927E13361A0C6DF3002DC6FB /* EXTRuntimeExtensions.m in Sources */,
-				928E1EEC1A16E13C0055D2AD /* LinearErrorRetryPolicy.m in Sources */,
-				92B9D5481A1EF9D100D18BCB /* DFIdentityOperation.m in Sources */,
-				928E1EB61A16E0DF0055D2AD /* DFRetryableOperation.m in Sources */,
-				928E1EDC1A16E1210055D2AD /* DFOperation+Graph.m in Sources */,
-				928E1EEB1A16E13C0055D2AD /* ErrorRetryPolicy.m in Sources */,
-				92B9D54B1A1EFC9F00D18BCB /* DFValueNode.m in Sources */,
-				928E1EB11A16E0DF0055D2AD /* DFBackgroundOperation.m in Sources */,
-				928E1EAD1A16E0DF0055D2AD /* Execution_Class.m in Sources */,
-				924ABE5A1A0D4D9200EF97F5 /* DFWorkspace.m in Sources */,
-				928E1EBF1A16E0DF0055D2AD /* DFAggregatorOperation.m in Sources */,
-				928E1EDD1A16E1210055D2AD /* DFPort.m in Sources */,
-				928E1EC01A16E0DF0055D2AD /* DFAndOperation.m in Sources */,
-				928E1EB01A16E0DF0055D2AD /* DFLiftOperation.m in Sources */,
-				928E1EC21A16E0DF0055D2AD /* DFFilterOperation.m in Sources */,
-				92B9D5431A1BE56300D18BCB /* UIColor+Crayola.m in Sources */,
-				924ABE5D1A0D5BD000EF97F5 /* DFOperation+Graph.m in Sources */,
+				92174C401A56FDF000E89343 /* DFPeriodicOperation.m in Sources */,
+				92174C621A56FE1B00E89343 /* EXTRuntimeExtensions.m in Sources */,
+				92174BBD1A56FD9A00E89343 /* UIColor+Crayola.m in Sources */,
+				92174C411A56FDF000E89343 /* DFReactiveOperation.m in Sources */,
+				92174C3F1A56FDF000E89343 /* DFParallelOperation.m in Sources */,
+				92174C441A56FDF000E89343 /* DFTakeOperation.m in Sources */,
+				92174BE41A56FDC400E89343 /* LinearErrorRetryPolicy.m in Sources */,
+				92174C461A56FDF000E89343 /* DFTryCatchOperation.m in Sources */,
+				92174C2D1A56FDF000E89343 /* DFBackgroundOperation.m in Sources */,
+				92174C3D1A56FDF000E89343 /* DFNetworkOperation.m in Sources */,
+				92174BD21A56FDB000E89343 /* DFNode.m in Sources */,
+				92174BB81A56FD9A00E89343 /* ConnectionInfo.m in Sources */,
+				92174C2C1A56FDF000E89343 /* DFAnyOperation.m in Sources */,
+				92174BBC1A56FD9A00E89343 /* ReactiveConnectionInfo.m in Sources */,
+				92174BD81A56FDB000E89343 /* DFValueNode.m in Sources */,
+				92174BB71A56FD9A00E89343 /* BlockDescription.m in Sources */,
+				92174C641A56FE1B00E89343 /* EXTScope.m in Sources */,
+				92174C471A56FDF000E89343 /* DFVoidObject.m in Sources */,
+				92174C601A56FE1B00E89343 /* EXTConcreteProtocol.m in Sources */,
+				92174C371A56FDF000E89343 /* DFIfElseOperation.m in Sources */,
+				92174BE51A56FDC400E89343 /* RandomBackoffErrorRetryPolicy.m in Sources */,
+				92174C301A56FDF000E89343 /* DFCoreDataOperation.m in Sources */,
+				92174C431A56FDF000E89343 /* DFRetryableOperation.m in Sources */,
+				92174BB91A56FD9A00E89343 /* Execution_Class.m in Sources */,
+				92174BBB1A56FD9A00E89343 /* OperationInfo.m in Sources */,
+				92174C661A56FE1B00E89343 /* NSInvocation+EXT.m in Sources */,
+				92174C331A56FDF000E89343 /* DFFilterOperation.m in Sources */,
+				92174BD71A56FDB000E89343 /* DFPort.m in Sources */,
+				92174C2F1A56FDF000E89343 /* DFConnectorOperation.m in Sources */,
+				92174BBA1A56FD9A00E89343 /* NSObject+BlockObservation.m in Sources */,
+				92174C321A56FDF000E89343 /* DFDropOperation.m in Sources */,
+				92174C451A56FDF000E89343 /* DFTakeWhileOperation.m in Sources */,
+				92174C611A56FE1B00E89343 /* EXTNil.m in Sources */,
+				92174C311A56FDF000E89343 /* DFDelayOperation.m in Sources */,
 				924ABE541A0D2FE900EF97F5 /* NSArray+Utility.m in Sources */,
-				92CCF8121A53A72A004628FF /* DFDropOperation.m in Sources */,
-				927E13351A0C6DF3002DC6FB /* EXTNil.m in Sources */,
-				928E1EE21A16E12C0055D2AD /* BlockDescription.m in Sources */,
 				927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */,
-				92CCF8181A545F00004628FF /* DFTakeWhileOperation.m in Sources */,
-				928E1EB51A16E0DF0055D2AD /* DFCompositeOperation.m in Sources */,
-				927E13341A0C6DF3002DC6FB /* EXTConcreteProtocol.m in Sources */,
-				928E1EBB1A16E0DF0055D2AD /* DFPeriodicOperation.m in Sources */,
-				927E13331A0C6DF3002DC6FB /* EXTADT.m in Sources */,
-				928E1EB31A16E0DF0055D2AD /* DFMainOperation.m in Sources */,
-				927E13381A0C6DF3002DC6FB /* EXTScope.m in Sources */,
-				928E1EC71A16E0DF0055D2AD /* DFReduceOperation.m in Sources */,
-				928E1EBC1A16E0DF0055D2AD /* DFDelayOperation.m in Sources */,
-				92CCF80F1A53A54F004628FF /* DFTakeOperation.m in Sources */,
+				92174C631A56FE1B00E89343 /* EXTSafeCategory.m in Sources */,
+				92174C651A56FE1B00E89343 /* EXTSelectorChecking.m in Sources */,
+				92174BE31A56FDC400E89343 /* ErrorRetryPolicy.m in Sources */,
+				92174C351A56FDF000E89343 /* DFGenerator.m in Sources */,
+				92174C381A56FDF000E89343 /* DFLiftOperation.m in Sources */,
+				92174C3B1A56FDF000E89343 /* DFMapOperation.m in Sources */,
+				92174C3C1A56FDF000E89343 /* DFMetaOperation.m in Sources */,
+				92174C361A56FDF000E89343 /* DFIdentityOperation.m in Sources */,
+				92174C421A56FDF000E89343 /* DFReduceOperation.m in Sources */,
+				92174C2A1A56FDF000E89343 /* DFAggregatorOperation.m in Sources */,
+				92174C5F1A56FE1B00E89343 /* EXTADT.m in Sources */,
+				92174C3E1A56FDF000E89343 /* DFOperation.m in Sources */,
+				92174C341A56FDF000E89343 /* DFFlattenOperation.m in Sources */,
 				927E128B1A0C6D8B002DC6FB /* main.m in Sources */,
-				928E1EC91A16E0DF0055D2AD /* ConnectionInfo.m in Sources */,
-				928E1EBD1A16E0DF0055D2AD /* ReactiveConnectionInfo.m in Sources */,
-				92E584D41A184DD300E52A54 /* DFGridView.m in Sources */,
-				928E1EE31A16E12C0055D2AD /* NSObject+BlockObservation.m in Sources */,
-				928E1EC41A16E0DF0055D2AD /* DFMapOperation.m in Sources */,
-				928E1EC51A16E0DF0055D2AD /* DFFlattenOperation.m in Sources */,
-				927E13391A0C6DF3002DC6FB /* EXTSelectorChecking.m in Sources */,
-				928E1EED1A16E13C0055D2AD /* RandomBackoffErrorRetryPolicy.m in Sources */,
+				92174BBE1A56FD9A00E89343 /* UIView+DebugObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

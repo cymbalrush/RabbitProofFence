@@ -16,7 +16,6 @@
 
 #import "NSArray+Utility.h"
 #import "UIView+DebugObject.h"
-#import "UIColor+FlatUI.h"
 
 @implementation DFOperation (Graph)
 
@@ -45,7 +44,7 @@
 {
     DFNodeInfo *info = [DFNodeInfo new];
     info.name = self.name.length > 0 ? self.name : NSStringFromClass([self class]);
-    info.nodeColor = [self isKindOfClass:[DFReactiveOperation class]] ? [UIColor midnightBlueColor] : [UIColor wisteriaColor];
+    info.nodeColor = [self isKindOfClass:[DFReactiveOperation class]] ? [UIColor redColor] : [UIColor blueColor];
     info.inputPorts = [self inputPortsInfo];
     info.outputPorts = [self outputPortsInfo];
     return info;
@@ -201,7 +200,7 @@ NS_INLINE DFNode *nodeForOperation(DFOperation *operation, NSArray *nodes)
     connectionLayer.zPosition = 2;
     connectionLayer.lineWidth = 2;
     connectionLayer.fillColor = UIColor.clearColor.CGColor;
-    connectionLayer.strokeColor = [UIColor tealColor].CGColor;
+    connectionLayer.strokeColor = [UIColor blueColor].CGColor;
     connectionLayer.allowsEdgeAntialiasing = YES;
     connectionLayer.lineCap = kCALineCapRound;
 }
@@ -239,7 +238,7 @@ NS_INLINE DFNode *nodeForOperation(DFOperation *operation, NSArray *nodes)
                  clockwise:YES];
     
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.fillColor = [[UIColor silverColor] CGColor];
+    shapeLayer.fillColor = [[UIColor grayColor] CGColor];
     shapeLayer.path = [path CGPath];
     [port.layer addSublayer:shapeLayer];
 }
@@ -266,7 +265,7 @@ NS_INLINE DFNode *nodeForOperation(DFOperation *operation, NSArray *nodes)
                         if ([operation isKindOfClass:[DFReactiveOperation class]]) {
                             DFReactiveOperation *reactiveOperation = (DFReactiveOperation *)operation;
                             if ([reactiveOperation isBindingReactive:@{inPortName : outPortName}]) {
-                                connectionLayer.strokeColor = [UIColor vfActiveColor].CGColor;
+                                connectionLayer.strokeColor = [UIColor redColor].CGColor;
                             }
                         }
                         [self connect:connectionLayer port:outPort toPort:inPort];

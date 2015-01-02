@@ -12,7 +12,6 @@
 #import "DFOperation.h"
 
 #import "NSArray+Utility.h"
-#import "UIColor+FlatUI.h"
 #import "EXTKeyPathCoding.h"
 #import "EXTScope.h"
 #import "NSObject+BlockObservation.h"

@@ -11,7 +11,7 @@
 #import "DFPort.h"
 #import "DFWorkspace.h"
 
-#import "UIColor+FlatUI.h"
+#import "UIColor+Crayola.h"
 #import "EXTKeyPathCoding.h"
 
 @interface DFGridView ()
@@ -73,7 +73,7 @@
     connectionLayer.zPosition = 2;
     connectionLayer.lineWidth = 2;
     connectionLayer.fillColor = UIColor.clearColor.CGColor;
-    connectionLayer.strokeColor = [UIColor tealColor].CGColor;
+    connectionLayer.strokeColor = [UIColor crayolaAquamarineColor].CGColor;
     connectionLayer.allowsEdgeAntialiasing = YES;
     connectionLayer.lineCap = kCALineCapRound;
 }

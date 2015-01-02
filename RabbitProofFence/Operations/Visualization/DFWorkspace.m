@@ -12,7 +12,6 @@
 #import "Operations.h"
 #import "DFPort.h"
 
-#import "UIColor+FlatUI.h"
 #import "UIColor+Crayola.h"
 #import "EXTKeyPathCoding.h"
 #import "DFOperation_SubclassingHooks.h"
