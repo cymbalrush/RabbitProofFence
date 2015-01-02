@@ -99,7 +99,8 @@
     dispatch_block_t block = ^() {
         freePorts = [NSMutableArray arrayWithArray:[super freePorts]];
         [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [freePorts removeObject:key];
+            ReactiveConnectionInfo *info = obj;
+            [freePorts removeObject:info.toPort];
         }];
     };
     [self safelyExecuteBlock:block];
@@ -159,16 +160,16 @@
     dispatch_block_t block = ^(void) {
         NSSet *filteredKeys = [self validBindingsForOperation:operation bindings:bindings];
         [filteredKeys enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-            NSString *property = obj;
-            NSString *connectedProperty = [bindings objectForKey:property];
+            NSString *toPort = obj;
+            NSString *fromPort = bindings[toPort];
             @weakify(self);
             //add observation for property change
-            AMBlockToken *propertyObservationToken = [operation addObserverForKeyPath:connectedProperty task:^(id obj, NSDictionary *change) {
+            AMBlockToken *propertyObservationToken = [operation addObserverForKeyPath:fromPort task:^(id obj, NSDictionary *change) {
                 DFOperation *connectedOperation = obj;
                 dispatch_async(observationQueue, ^{
                     @strongify(self);
                     [self reactiveConnectionPropertyChanged:change[NSKeyValueChangeNewKey]
-                                                   property:property
+                                                   property:toPort
                                                   operation:connectedOperation];
                 });
             }];
@@ -179,7 +180,7 @@
                 dispatch_async(observationQueue, ^{
                     @strongify(self);
                     [self reactiveConnectionStateChanged:change[NSKeyValueChangeNewKey]
-                                                property:property
+                                                property:toPort
                                                operation:connectedOperation];
                 });
             }];
@@ -190,17 +191,18 @@
             info.operationState = operation.state;
             info.stateObservationToken = stateObservationToken;
             info.propertyObservationToken = propertyObservationToken;
-            info.fromPort = connectedProperty;
+            info.fromPort = fromPort;
+            info.toPort = toPort;
             info.connectionCapacity = self.connectionCapacity;
             //check operation input, to see if it has value
             if (operation.state == OperationStateExecuting || operation.state == OperationStateDone) {
                 //make sure that property has been set otherwise we will be working with incorrect value.
-                if ([operation isPropertySet:connectedProperty]) {
-                    id input = [operation valueForKey:connectedProperty];
+                if ([operation isPropertySet:fromPort]) {
+                    id input = [operation valueForKey:fromPort];
                     [info addInput:input];
                 }
             }
-            [self.reactiveConnections setObject:info forKey:property];
+            self.reactiveConnections[toPort] = info;
         }];
         validBindings = [bindings dictionaryWithValuesForKeys:[filteredKeys allObjects]];
     };

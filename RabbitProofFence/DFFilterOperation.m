@@ -70,7 +70,6 @@
             [self prepareExecutionObj:executionObj];
             id wrappedValue = [executionObj execute];
             if ([wrappedValue boolValue]) {
-                self.executionCount ++;
                 self.output = [executionObj valueForArgAtIndex:0];
             }
         }

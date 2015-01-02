@@ -433,6 +433,10 @@ NS_INLINE DFPort *portForTouchPoint(CGPoint point, CGFloat margin, NSArray *port
 
 - (void)nodeTapped:(UITapGestureRecognizer *)recognizer
 {
+    if ([UIMenuController sharedMenuController].isMenuVisible) {
+        [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
+        return;
+    }
     CGRect rect = CGRectZero;
     rect.origin = [recognizer locationInView:self];
     

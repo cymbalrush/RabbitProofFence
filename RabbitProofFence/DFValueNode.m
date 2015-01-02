@@ -14,7 +14,7 @@
 
 @interface DFValueNode ()
 
-@property (strong, nonatomic) UITextField *textField;
+@property (weak, nonatomic) IBOutlet UITextField *textField;
 
 @end
 
@@ -44,6 +44,11 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
     
+}
+
+-(IBAction)editingEnded:(id)sender
+{
+    [sender resignFirstResponder];
 }
 
 - (void)keyboardWasShown:(NSNotification*)aNotification

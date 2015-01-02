@@ -135,22 +135,17 @@
     } forName:@"Delay"];
     
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
-        DFGenerator *forSeq =  OperationFromBlock([DFGenerator class], ^(NSNumber *i, NSNumber *j, NSNumber *inc, DFGenerator *selfRef) {
-            NSInteger value = [i integerValue];
-            if (!isVoid(selfRef.output)) {
-                value = [selfRef.output integerValue] + [inc integerValue];
-            }
-            if (value >= [j integerValue]) {
-                [selfRef stop];
-            }
-            return @(value);
-            
-        });
+        SequenceGenerator *forSeq =  [SequenceGenerator generator];
         [forSeq setValue:@(1) forKey:@"inc"];
-
         NameOperation(forSeq);
         return forSeq;
     } forName:@"For"];
+    
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        RepeatGenerator *repeat =  [RepeatGenerator generator];
+        NameOperation(repeat);
+        return repeat;
+    } forName:@"Repeat"];
     
     DFWorkspace *ws = [DFWorkspace workspaceWithBounds:self.view.bounds];
 

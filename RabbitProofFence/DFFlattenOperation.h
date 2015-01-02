@@ -14,6 +14,4 @@
 
 + (DFFlattenOperation *)flattenOperation;
 
-- (void)connectWithOperation:(DFOperation *)operation;
-
 @end

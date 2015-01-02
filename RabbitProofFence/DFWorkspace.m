@@ -27,6 +27,8 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
 
 @property (weak, nonatomic) IBOutlet DFGridView *gridView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingConstraint;
+
 @property (strong, nonatomic) NSMutableArray *nodes;
 
 @property (strong, nonatomic) NSDictionary *creationBlocks;
@@ -144,20 +146,10 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     
     [self.previewView addConstraints:constraints];
     self.textView = textView;
-}
-
-- (void)setup
-{
-    [[[self class] activeWorkSpaces_] addObject:self];
-    self.nodes = [NSMutableArray new];
-}
-
-- (void)reload
-{
+    
     UINib *nib = [UINib nibWithNibName:@"DFWorkspaceBlockCell" bundle:[NSBundle bundleForClass:self.class]];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"DefaultCell"];
     
-    self.creationBlocks = [[[self class] creationBlocks] copy];
     self.previewView.layer.borderWidth = 1.0;
     self.previewView.layer.borderColor = [[UIColor silverColor] CGColor];
     self.previewView.backgroundColor = [UIColor crayolaAquaPearlColor];
@@ -169,8 +161,20 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     self.tableView.backgroundColor = [UIColor crayolaAquaPearlColor];
     self.tableView.separatorColor = [UIColor clearColor];
     
-    [self.tableView reloadData];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+
+}
+
+- (void)setup
+{
+    [[[self class] activeWorkSpaces_] addObject:self];
+    self.nodes = [NSMutableArray new];
+}
+
+- (void)reload
+{
+    self.creationBlocks = [[[self class] creationBlocks] copy];
+    [self.tableView reloadData];
 }
 
 - (void)pressedPort:(DFPort *)port
@@ -330,7 +334,6 @@ NS_INLINE NSArray *sortedKeys(NSDictionary *dictionary)
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DefaultCell" forIndexPath:indexPath];
     cell.contentView.backgroundColor = [UIColor crayolaAquaPearlColor];
-    cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.text = sortedKeys(self.creationBlocks)[indexPath.row];
     return cell;
 }

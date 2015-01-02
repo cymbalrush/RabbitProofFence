@@ -73,9 +73,4 @@
     return [FlattenInputInfo new];
 }
 
-- (void)connectWithOperation:(DFOperation *)operation
-{
-    [self connectPortReactively:@keypath(self.input) toOutputOfOperation:operation];
-}
-
 @end

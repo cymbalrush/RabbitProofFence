@@ -39,7 +39,6 @@
         dispatch_block_t block = ^(void) {
             @strongify(self);
             [self execute];
-            
         };
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self.delay doubleValue] * NSEC_PER_SEC)), queue, block);

@@ -36,6 +36,7 @@
 {
     self = [super initWithCoder:coder];
     if (self) {
+        self.zoomableView.backgroundColor = [UIColor clearColor];
         UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                                                action:@selector(handlePanGesture:)];
         [self addGestureRecognizer:panGestureRecognizer];
@@ -43,8 +44,6 @@
         UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self
                                                                                                      action:@selector(handlePinchGesture:)];
         [self addGestureRecognizer:pinchGestureRecognizer];
-        
-        self.backgroundColor = [UIColor whiteColor];
         
         self.nodes = [NSMutableArray new];
     }

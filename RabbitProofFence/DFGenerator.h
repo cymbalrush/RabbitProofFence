@@ -66,4 +66,11 @@
 
 @end
 
+@interface RepeatGenerator : DFGenerator
+
+@property (strong, nonatomic) id input;
+
+@property (strong, nonatomic) NSNumber *n;
+
+@end
 

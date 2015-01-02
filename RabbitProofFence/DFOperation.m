@@ -831,8 +831,12 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     dispatch_block_t block = ^() {
         freePorts = [self.inputPorts mutableCopy];
         [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [freePorts removeObject:key];
+            ConnectionInfo *info = obj;
+            [freePorts removeObject:info.toPort];
         }];
+        if (self.execludedPorts.count > 0) {
+            [freePorts removeObjectsInArray:[self.execludedPorts allObjects]];
+        }
     };
     [self safelyExecuteBlock:block];
     return freePorts;

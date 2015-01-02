@@ -218,20 +218,42 @@
 
 + (instancetype)generator
 {
-    SequenceGenerator *generator = OperationFromBlock([DFGenerator class], ^(NSNumber *i, NSNumber *j, NSNumber *inc, DFGenerator *selfRef) {
+    SequenceGenerator *generator = OperationFromBlock(self, ^(NSNumber *i, NSNumber *j, NSNumber *inc, DFGenerator *selfRef) {
         NSInteger value = [i integerValue];
         if (!isVoid(selfRef.output)) {
             value = [selfRef.output integerValue] + [inc integerValue];
         }
-        if (value >= [j integerValue]) {
+        if (value > [j integerValue]) {
             selfRef.terminate = YES;
         }
         return @(value);
-        
     });
     return generator;
 }
 
 @end
+
+@interface RepeatGenerator ()
+
+@property (assign, nonatomic) NSUInteger index;
+
+@end
+
+@implementation RepeatGenerator
+
++ (instancetype)generator
+{
+    RepeatGenerator *generator = OperationFromBlock(self, ^(id input, NSNumber *n, RepeatGenerator *selfRef) {
+        if (selfRef.index >= [n integerValue]) {
+            selfRef.terminate = YES;
+        }
+        selfRef.index ++;
+        return input;
+    });
+    return generator;
+}
+
+@end
+
 
 

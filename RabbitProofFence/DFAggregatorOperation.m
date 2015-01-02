@@ -77,7 +77,7 @@
     if (executionObj.executionBlock) {
         @try {
             [self prepareExecutionObj:executionObj];
-            self.output = [executionObj execute];
+            [executionObj execute];
         }
         @catch (NSException *exception) {
             self.error = NSErrorFromException(exception);
@@ -90,6 +90,14 @@
         }
     }
     return NO;
+}
+
+- (void)done
+{
+    if (self.accumulator.count > 0 && !self.error) {
+        self.output = self.accumulator;
+    }
+    [super done];
 }
 
 @end
