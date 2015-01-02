@@ -36,4 +36,6 @@
 
 - (void)displayResult:(id)result ofNode:(DFNode *)node;
 
+- (void)toggleLeftPane;
+
 @end

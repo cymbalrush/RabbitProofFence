@@ -12,20 +12,22 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vfc-Az-iRC" userLabel="RightView">
-                    <rect key="frame" x="731.5" y="0.0" width="292.5" height="768"/>
+                    <rect key="frame" x="731" y="0.0" width="292.5" height="768"/>
                     <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="2lf-Iz-twH">
-                            <rect key="frame" x="-1" y="384" width="292.5" height="384"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="2lf-Iz-twH">
+                            <rect key="frame" x="0.0" y="384" width="292.5" height="384"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <outlet property="dataSource" destination="iN0-l3-epB" id="DCx-kf-bTf"/>
                                 <outlet property="delegate" destination="iN0-l3-epB" id="2XJ-7o-oES"/>
                             </connections>
                         </tableView>
-                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogA-6c-NWF" userLabel="OutputView">
-                            <rect key="frame" x="-2" y="0.0" width="292.5" height="384"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogA-6c-NWF" userLabel="OutputView">
+                            <rect key="frame" x="0.0" y="0.0" width="292.5" height="384"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
@@ -33,21 +35,13 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="ogA-6c-NWF" secondAttribute="bottom" multiplier="2:1" id="5SM-pl-dBA"/>
                         <constraint firstItem="2lf-Iz-twH" firstAttribute="top" secondItem="ogA-6c-NWF" secondAttribute="bottom" id="CgD-qx-5RD"/>
-                        <constraint firstItem="2lf-Iz-twH" firstAttribute="top" secondItem="ogA-6c-NWF" secondAttribute="top" id="I0u-9X-hop"/>
                         <constraint firstItem="2lf-Iz-twH" firstAttribute="leading" secondItem="Vfc-Az-iRC" secondAttribute="leading" id="ITa-Mv-pSk"/>
                         <constraint firstAttribute="bottom" secondItem="2lf-Iz-twH" secondAttribute="bottom" id="PNl-JI-ure"/>
                         <constraint firstItem="ogA-6c-NWF" firstAttribute="top" secondItem="Vfc-Az-iRC" secondAttribute="top" id="axT-Eq-wkG"/>
-                        <constraint firstItem="2lf-Iz-twH" firstAttribute="top" secondItem="ogA-6c-NWF" secondAttribute="top" id="gbT-lX-mNZ"/>
                         <constraint firstAttribute="trailing" secondItem="ogA-6c-NWF" secondAttribute="trailing" id="nDY-oe-bBQ"/>
                         <constraint firstAttribute="trailing" secondItem="2lf-Iz-twH" secondAttribute="trailing" id="oOF-FK-KeP"/>
                         <constraint firstItem="ogA-6c-NWF" firstAttribute="leading" secondItem="Vfc-Az-iRC" secondAttribute="leading" id="ypD-G0-kY1"/>
                     </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="I0u-9X-hop"/>
-                            <exclude reference="gbT-lX-mNZ"/>
-                        </mask>
-                    </variation>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Vo-T4-fvh" userLabel="LeftView">
                     <rect key="frame" x="0.0" y="0.0" width="731.5" height="768"/>
@@ -86,29 +80,18 @@
                 <constraint firstAttribute="bottom" secondItem="Vfc-Az-iRC" secondAttribute="bottom" id="8qB-nk-bPN"/>
                 <constraint firstItem="8Vo-T4-fvh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BxW-mZ-0k6"/>
                 <constraint firstItem="Vfc-Az-iRC" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="OM9-pF-ZTw"/>
-                <constraint firstItem="Vfc-Az-iRC" firstAttribute="top" secondItem="8Vo-T4-fvh" secondAttribute="bottom" constant="-768" id="PXv-8p-eCR"/>
                 <constraint firstAttribute="bottom" secondItem="8Vo-T4-fvh" secondAttribute="bottom" id="UB1-io-HR6"/>
-                <constraint firstItem="8Vo-T4-fvh" firstAttribute="leading" secondItem="Vfc-Az-iRC" secondAttribute="leading" id="VvE-gO-hiq"/>
                 <constraint firstItem="8Vo-T4-fvh" firstAttribute="height" secondItem="Vfc-Az-iRC" secondAttribute="height" id="WaV-5F-cQe"/>
-                <constraint firstAttribute="trailing" secondItem="8Vo-T4-fvh" secondAttribute="trailing" multiplier="4.2:3" id="bxY-8G-zZC"/>
-                <constraint firstItem="Vfc-Az-iRC" firstAttribute="top" secondItem="8Vo-T4-fvh" secondAttribute="bottom" constant="-768" id="cYp-NW-qLY"/>
-                <constraint firstItem="Vfc-Az-iRC" firstAttribute="leading" secondItem="8Vo-T4-fvh" secondAttribute="leading" id="dDg-ke-Rcg"/>
+                <constraint firstAttribute="trailing" secondItem="8Vo-T4-fvh" secondAttribute="trailing" multiplier="1.4" id="bxY-8G-zZC"/>
                 <constraint firstItem="Vfc-Az-iRC" firstAttribute="leading" secondItem="8Vo-T4-fvh" secondAttribute="trailing" id="h3H-a5-W2n"/>
                 <constraint firstItem="8Vo-T4-fvh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="p7b-dV-gke"/>
                 <constraint firstAttribute="trailing" secondItem="Vfc-Az-iRC" secondAttribute="trailing" id="sE1-UY-4rv"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="VvE-gO-hiq"/>
-                    <exclude reference="PXv-8p-eCR"/>
-                    <exclude reference="cYp-NW-qLY"/>
-                    <exclude reference="dDg-ke-Rcg"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="gridView" destination="cE5-QU-pMM" id="8dq-ho-YK8"/>
+                <outlet property="leftViewTrailingConstraint" destination="bxY-8G-zZC" id="m1B-Jk-Y86"/>
                 <outlet property="previewView" destination="ogA-6c-NWF" id="ruD-95-lrc"/>
                 <outlet property="tableView" destination="2lf-Iz-twH" id="FTF-Kk-H2N"/>
             </connections>

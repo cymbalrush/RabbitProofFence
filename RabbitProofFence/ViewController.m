@@ -55,7 +55,7 @@
         DFIdentityOperation *value = [DFIdentityOperation new];
         NameOperation(value);
         return value;
-    } forName:@"TextInput"];
+    } forName:@"Input"];
     
     
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
@@ -73,7 +73,7 @@
         });
         NameOperation(intConverter);
         return intConverter;
-    } forName:@"IntegerConverter"];
+    } forName:@"IntConverter"];
     
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
         ArrayGenerator *seq = [ArrayGenerator generator];
@@ -85,7 +85,7 @@
         DFAggregatorOperation *agg = [DFAggregatorOperation new];
         NameOperation(agg);
         return agg;
-    } forName:@"Aggregator"];
+    } forName:@"Accumulator"];
     
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
         DFAnyOperation *any = [DFAnyOperation anyOperation:@[@"x1", @"x2"]];

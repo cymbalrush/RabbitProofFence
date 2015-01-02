@@ -45,6 +45,11 @@
                                                                                                      action:@selector(handlePinchGesture:)];
         [self addGestureRecognizer:pinchGestureRecognizer];
         
+        UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                              action:@selector(handleDoubleTap:)];
+        [doubleTapRecognizer setNumberOfTapsRequired:2];
+        [self addGestureRecognizer:doubleTapRecognizer];
+        
         self.nodes = [NSMutableArray new];
     }
     return self;
@@ -121,6 +126,11 @@
         subview.center = center;
     }];
     [self setNeedsDisplay];
+}
+
+- (void)handleDoubleTap:(UITapGestureRecognizer *)tapGestureRecognizer
+{
+    [self.workspace toggleLeftPane];
 }
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)panGestureRecognizer

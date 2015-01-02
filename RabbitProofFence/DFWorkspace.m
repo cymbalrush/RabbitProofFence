@@ -27,7 +27,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
 
 @property (weak, nonatomic) IBOutlet DFGridView *gridView;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewTrailingConstraint;
 
 @property (strong, nonatomic) NSMutableArray *nodes;
 
@@ -129,7 +129,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     
     [self.previewView addSubview:textView];
     
-    constraintDesc = @"H:|-10-[textView]-10-|";
+    constraintDesc = @"H:|-0-[textView]-0-|";
     constraints = [NSLayoutConstraint constraintsWithVisualFormat:constraintDesc
                                                           options:NSLayoutFormatDirectionLeadingToTrailing
                                                           metrics:nil
@@ -137,7 +137,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     
     [self.previewView addConstraints:constraints];
     
-    constraintDesc = @"V:|-10-[textView]-10-|";
+    constraintDesc = @"V:|-0-[textView]-0-|";
     constraints = [NSLayoutConstraint constraintsWithVisualFormat:constraintDesc
                                                           options:NSLayoutFormatDirectionLeadingToTrailing
                                                           metrics:nil
@@ -151,18 +151,33 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     [self.tableView registerNib:nib forCellReuseIdentifier:@"DefaultCell"];
     
     self.previewView.layer.borderWidth = 1.0;
-    self.previewView.layer.borderColor = [[UIColor silverColor] CGColor];
+    self.previewView.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.previewView.backgroundColor = [UIColor crayolaAquaPearlColor];
     
     self.gridView.backgroundColor = [UIColor crayolaAquaPearlColor];
     
     self.tableView.layer.borderWidth = 1.0;
-    self.tableView.layer.borderColor = [[UIColor silverColor] CGColor];
+    self.tableView.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.tableView.backgroundColor = [UIColor crayolaAquaPearlColor];
-    self.tableView.separatorColor = [UIColor clearColor];
-    
-    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+}
 
+- (void)toggleLeftPane
+{
+    CGFloat multiplier = self.leftViewTrailingConstraint.multiplier;
+    multiplier = (multiplier > 1) ? 1 : (1.4);
+    
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.leftViewTrailingConstraint.firstItem
+                                                                  attribute:self.leftViewTrailingConstraint.firstAttribute
+                                                                  relatedBy:self.leftViewTrailingConstraint.relation
+                                                                     toItem:self.leftViewTrailingConstraint.secondItem
+                                                                  attribute:self.leftViewTrailingConstraint.secondAttribute
+                                                                 multiplier:multiplier
+                                                                   constant:self.leftViewTrailingConstraint.constant];
+    [self removeConstraint:self.leftViewTrailingConstraint];
+    [self addConstraint:constraint];
+    self.leftViewTrailingConstraint = constraint;
+    [self setNeedsLayout];
+    [UIView animateWithDuration:0.3 animations:^{[self layoutIfNeeded];}];
 }
 
 - (void)setup
