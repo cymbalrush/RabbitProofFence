@@ -11,7 +11,7 @@
 
 @interface DFTakeOperation ()
 
-@property (assign, nonatomic) NSInteger i;
+@property (strong, nonatomic) NSNumber *DF_counter;
 
 @end
 
@@ -24,18 +24,32 @@
     } ports:@[@keypath(self.input), @keypath(self.n)]];
 }
 
-- (BOOL)next
+- (BOOL)DF_execute
 {
     BOOL result = YES;
-    while ([self canExecute] && self.i > 0) {
-        self.i --;
-        result = [super next];
-        if (!result) {
-            break;
+    NSError *error = nil;
+    Execution_Class *executionObj = self.DF_executionObj;
+    @try {
+        NSInteger i = [self.DF_counter integerValue];
+        if (i <= 0) {
+            result = NO;
+        }
+        else {
+            [self DF_prepareExecutionObj:executionObj];
+            id output = [executionObj execute];
+            self.DF_output = output;
+            i --;
+            self.DF_counter = @(i);
         }
     }
-    if ([self isDone] || self.i == 0) {
+    @catch (NSException *exception) {
+        error = NSErrorFromException(exception);
+        self.DF_error = error;
+        self.DF_output = errorObject(error);
         result = NO;
+    }
+    @finally {
+        [self DF_breakRefCycleForExecutionObj:self.DF_executionObj];
     }
     return result;
 }
@@ -43,13 +57,9 @@
 - (void)main
 {
     dispatch_block_t block = ^(void) {
-        if (self.state != OperationStateExecuting) {
-            return;
-        }
-        self.i = [self.n integerValue];
-        [super main];
+        self.DF_counter = self.n;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

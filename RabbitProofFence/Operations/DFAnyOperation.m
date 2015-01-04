@@ -22,21 +22,21 @@
     if (self) {
         [ports enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *port = obj;
-            [self addPortToInputPorts:port];
+            [self DF_addPortToInputPorts:port];
         }];
     }
     return self;
 }
 
-- (BOOL)isDone
+- (BOOL)DF_isDone
 {
-    __block BOOL result = YES;
-    if (self.state == OperationStateReady) {
-        result = NO;
+    __block BOOL result = NO;
+    if (self.DF_state == OperationStateDone) {
+        result = YES;
     }
-    else if (self.state == OperationStateExecuting) {
-        __block BOOL done = (self.executionCount > 0) || (self.connections.count == 0);
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    else if (self.DF_state == OperationStateExecuting) {
+        __block BOOL done = (self.DF_executionCount > 0);
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             if (!(info.operationState == OperationStateDone && [info.inputs count] == 0)) {
                 done = NO;
@@ -48,11 +48,11 @@
     return result;
 }
 
-- (BOOL)canExecute
+- (BOOL)DF_canExecute
 {
-    __block BOOL result = NO;
-    if (self.state == OperationStateExecuting) {
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    __block BOOL result = (self.DF_executionCount == 0);
+    if (self.DF_state == OperationStateExecuting) {
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             if ([info.inputs count] > 0){
                 result = YES;
@@ -63,32 +63,32 @@
     return result;
 }
 
-- (BOOL)execute
+- (BOOL)DF_execute
 {
     __block BOOL result = NO;
-    [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *property = obj;
-        ReactiveConnectionInfo *info = self.reactiveConnections[property];
-        if ([info.inputs count] > 0) {
+        ReactiveConnectionInfo *info = self.DF_reactiveConnections[property];
+        if (info.inputs.count > 0) {
             result = YES;
             id output = info.inputs[0];
             [info.inputs removeObjectAtIndex:0];
-            self.output = output;
+            self.DF_output = output;
         }
     }];
     return result;
 }
 
-- (BOOL)next
+- (BOOL)DF_next
 {
     BOOL result = YES;
-    while ([self canExecute]) {
-        result = [super next];
+    while ([self DF_canExecute]) {
+        result = [super DF_next];
         if (!result) {
             break;
         }
     }
-    if ([self isDone]) {
+    if ([self DF_isDone]) {
         result = NO;
     }
     return result;

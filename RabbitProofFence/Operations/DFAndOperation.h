@@ -10,7 +10,7 @@
 
 @interface DFAndOperation : DFReactiveOperation 
 
-@property (strong, nonatomic) NSArray *output;
+@property (readonly, nonatomic) NSArray *output;
 
 + (instancetype)andOperation:(NSArray *)ports;
 

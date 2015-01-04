@@ -12,22 +12,22 @@
 #import <objc/runtime.h>
 #import "EXTNil.h"
 
-static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
+static char const * const OPERATION_INDEX_KEY = "com.operations.DF_operationIndexKey";
 
 @interface DFOperation (Parallel)
 
-@property (assign, nonatomic) NSUInteger operationIndex;
+@property (assign, nonatomic) NSUInteger DF_operationIndex;
 
 @end
 
 @implementation DFOperation (Parallel)
 
-- (NSUInteger)operationIndex
+- (NSUInteger)DF_operationIndex
 {
     return [objc_getAssociatedObject(self, OPERATION_INDEX_KEY) intValue];
 }
 
-- (void)setOperationIndex:(NSUInteger)operationIndex
+- (void)setDF_operationIndex:(NSUInteger)operationIndex
 {
     objc_setAssociatedObject(self, OPERATION_INDEX_KEY, @(operationIndex), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -36,9 +36,9 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
 
 @interface DFParallelOperation ()
 
-@property (nonatomic, strong) NSMutableDictionary *operationsInProgress;
+@property (nonatomic, strong) NSMutableDictionary *DF_operationsInProgress;
 
-@property (assign, nonatomic) NSUInteger currentOperationIndex;
+@property (assign, nonatomic) NSUInteger DF_currentOperationIndex;
 
 @end
 
@@ -48,39 +48,39 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
 {
     self = [super init];
     if (self) {
-        self.operationsInProgress = [NSMutableDictionary dictionary];
+        self.DF_operationsInProgress = [NSMutableDictionary dictionary];
         self.maxConcurrentOperations = 1;
         self.outputInOrder = YES;
-        self.currentOperationIndex = 0;
+        self.DF_currentOperationIndex = 0;
     }
     return self;
 }
 
-- (NSUInteger)operationsToStart
+- (NSUInteger)DF_operationsToStart
 {
    __block NSUInteger operationsToStart = 0;
     dispatch_block_t block = ^(void) {
-        operationsToStart = self.maxConcurrentOperations - [self.operationsInProgress count];
-        if ([self.reactiveConnections count] > 0) {
-            [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        operationsToStart = self.maxConcurrentOperations - [self.DF_operationsInProgress count];
+        if ([self.DF_reactiveConnections count] > 0) {
+            [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 ReactiveConnectionInfo *info = obj;
                 operationsToStart = MIN(operationsToStart, [info.inputs count]);
             }];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return operationsToStart;
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFParallelOperation *newParallelOperation = nil;
     dispatch_block_t block = ^(void) {
-        newParallelOperation = [super clone:objToPointerMapping];
+        newParallelOperation = [super DF_clone:objToPointerMapping];
         newParallelOperation.maxConcurrentOperations = self.maxConcurrentOperations;
         newParallelOperation.outputInOrder = self.outputInOrder;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newParallelOperation;
 }
 
@@ -92,122 +92,145 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
         newParallelOperation.maxConcurrentOperations = self.maxConcurrentOperations;
         newParallelOperation.outputInOrder = self.outputInOrder;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newParallelOperation;
 }
 
-- (BOOL)isExecutingOperation
+- (BOOL)DF_isExecutingOperation
 {
-    return ([self.operationsInProgress count] > 0);
+    return ([self.DF_operationsInProgress count] > 0);
 }
 
-- (BOOL)canExecute
+- (BOOL)DF_canExecute
 {
     BOOL result = NO;
-    if ([self isExecuting] && ([self.operationsInProgress count] < self.maxConcurrentOperations)) {
-        result = [self isReadyToExecute];
+    if ([self isExecuting] &&
+        self.DF_operationsInProgress &&
+        [self.DF_operationsInProgress count] < self.maxConcurrentOperations) {
+        result = [self DF_isReadyToExecute];
     }
     return result;
 }
 
-- (void)operation:(DFOperation *)operation stateChanged:(id)changedValue
+- (void)DF_operation:(DFOperation *)operation stateChanged:(id)changedValue
 {
+    __block NSDictionary *operationsToCancel = nil;
     dispatch_block_t block = ^(void) {
-        if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
+        if (self.DF_state == OperationStateDone || !self.DF_operationsInProgress) {
             return;
         }
-        NSNumber *operationIndex = @(operation.operationIndex);
-        //this will remove observation
-        NSError *error = operation.error;
-        id output = operation.output;
-        if (self.outputInOrder) {
-            //produce output in order
-            NSArray *keys = [[self.operationsInProgress allKeys] sortedArrayUsingSelector:@selector(compare:)];
-            [keys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                NSNumber *key = obj;
-                ConnectionInfo *info = self.operationsInProgress[key];
-                DFOperation *executingOperation = info.operation;
-                if (executingOperation.state == OperationStateDone) {
-                    self.error = executingOperation.error;
-                    self.output = executingOperation.output;
-                    [self.operationsInProgress removeObjectForKey:key];
-                }
-                else {
-                    *stop = YES;
-                }
+        NSNumber *operationIndex = @(operation.DF_operationIndex);
+        OperationInfo *info  = self.DF_operationsInProgress[operationIndex];
+        OperationState state = [changedValue integerValue];
+        info.operationState = state;
+        if (!info || state != OperationStateDone) {
+            return;
+        }
+        NSError *error = operation.DF_error;
+        if (error) {
+            //done
+            self.DF_error = error;
+            self.DF_output = errorObject(error);
+            [self.DF_operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                OperationInfo *info = obj;
+                [info clean];
             }];
+            operationsToCancel = [self.DF_operationsInProgress copy];
+            [self DF_done];
+            self.DF_operationsInProgress = nil;
         }
         else {
-            self.error = error;
-            self.output = output;
-            [self.operationsInProgress removeObjectForKey:operationIndex];
+            if (self.outputInOrder) {
+                //produce output in order
+                NSArray *keys = [[self.DF_operationsInProgress allKeys] sortedArrayUsingSelector:@selector(compare:)];
+                [keys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    NSNumber *key = obj;
+                    OperationInfo *info = self.DF_operationsInProgress[key];
+                    DFOperation *operation = info.operation;
+                    if (info.operationState == OperationStateDone) {
+                        self.DF_output = operation.output;
+                        [self.DF_operationsInProgress removeObjectForKey:key];
+                    }
+                    else {
+                        *stop = YES;
+                    }
+                }];
+            }
+            else {
+                self.DF_output = operation.output;
+                [self.DF_operationsInProgress removeObjectForKey:operationIndex];
+            }
+            [self DF_startOperations];
         }
-        [self startOperations];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
+    [operationsToCancel enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        OperationInfo *info = obj;
+        [info.operation cancelRecursively];
+    }];
 }
 
-- (void)startOperation:(DFOperation *)operation
+- (void)DF_startOperation:(DFOperation *)operation
 {
     dispatch_block_t block = ^(void) {
         if (!operation) {
-            [self done];
+            [self DF_done];
             return;
         }
         //prepare operation
-        [self prepareOperation:operation];
+        [self DF_prepareOperation:operation];
         [operation setQueuePriorityRecursively:self.queuePriority];
         //start observing
-        AMBlockToken *observationToken = [self startObservingOperation:operation];
+        AMBlockToken *observationToken = [self DF_startObservingOperation:operation];
         OperationInfo *info = [OperationInfo new];
         info.operation = operation;
         info.stateObservationToken = observationToken;
-        NSUInteger operationIndex = self.currentOperationIndex;
+        NSUInteger operationIndex = self.DF_currentOperationIndex;
         //start operation
-        [self.operationsInProgress setObject:info forKey:@(operationIndex)];
-        operation.operationIndex = operationIndex;
-        self.currentOperationIndex = (operationIndex + 1);
-        if (self.isSuspended) {
+        [self.DF_operationsInProgress setObject:info forKey:@(operationIndex)];
+        operation.DF_operationIndex = operationIndex;
+        self.DF_currentOperationIndex = (operationIndex + 1);
+        if (self.DF_isSuspended) {
             [operation suspend];
         }
         [operation startExecution];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (void)startOperations
+- (void)DF_startOperations
 {
     //if operation is suspended then return
-    if (self.isSuspended) {
+    if (self.DF_isSuspended || !self.DF_operationsInProgress) {
         return;
     }
-    else if (self.state == OperationStateDone) {
+    else if (self.DF_state == OperationStateDone) {
         return;
     }
     //if it's done then mark it as done
-    else if ([self isDone]) {
-        [self done];
+    else if ([self DF_isDone]) {
+        [self DF_done];
         return;
     }
-    else if (![self next]) {
-        [self done];
+    else if (![self DF_next]) {
+        [self DF_done];
         return;
     }
 }
 
-- (BOOL)next
+- (BOOL)DF_next
 {
     BOOL result = YES;
-    if ([self canExecute]) {
-        NSUInteger operationsToStart = [self operationsToStart];
+    if ([self DF_canExecute]) {
+        NSUInteger operationsToStart = [self DF_operationsToStart];
         if (operationsToStart > 0) {
             for (int i = 0; i < operationsToStart; i++) {
-                if ([self execute]) {
-                    self.executionCount ++;
-                    [self generateNextValues];
+                if ([self DF_execute]) {
+                    self.DF_executionCount ++;
+                    [self DF_generateNextValues];
                 }
                 else {
-                    if (self.operationsInProgress.count == 0) {
+                    if (self.DF_operationsInProgress.count == 0) {
                         result = NO;
                     }
                     break;
@@ -222,81 +245,83 @@ static char const * const OPERATION_INDEX_KEY = "operationIndexKey";
 {
     [super suspend];
     dispatch_block_t block = ^(void) {
-        [self.operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ConnectionInfo *info = obj;
+        [self.DF_operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            OperationInfo *info = obj;
             if (info.operation) {
-                [(DFOperation *)info.operation suspend];
+                [info.operation suspend];
             }
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)resume
 {
     [super resume];
     dispatch_block_t block = ^(void) {
-        [self.operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ConnectionInfo *info = obj;
+        [self.DF_operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            OperationInfo *info = obj;
             if (info.operation) {
-                [(DFOperation *)info.operation resume];
+                [info.operation resume];
             }
         }];
-        [self startOperations];
+        [self DF_startOperations];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
+
 
 - (void)cancel
 {
+    __block NSMutableDictionary *operationsInProgress = nil;
     dispatch_block_t block = ^(void) {
-        [self.operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.DF_operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             OperationInfo *info = obj;
             [info clean];
-            [info.operation cancelRecursively];
         }];
+        operationsInProgress = [self.DF_operationsInProgress copy];
+        self.DF_operationsInProgress = nil;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     [super cancel];
+    [operationsInProgress enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        OperationInfo *info = obj;
+        [info.operation cancelRecursively];
+    }];
 }
 
 - (void)main
 {
     dispatch_block_t block = ^(void) {
-        if (self.state != OperationStateExecuting) {
+        if (self.DF_state != OperationStateExecuting) {
             return;
         }
-        if (self.error) {
-            [self done];
-        }
-        else {
-            [self generateNextValues];
-            dispatch_queue_t observationQueue = [[self class] operationObservationHandlingQueue];
-            @weakify(self);
-            dispatch_async(observationQueue, ^{
-                @strongify(self);
-                if (!self) {
-                    return;
+        [self DF_generateNextValues];
+        dispatch_queue_t observationQueue = [[self class] DF_observationQueue];
+        @weakify(self);
+        dispatch_async(observationQueue, ^{
+            @strongify(self);
+            if (!self) {
+                return;
+            }
+            dispatch_block_t block = ^(void) {
+                if ((self.DF_state == OperationStateExecuting) && [self DF_isDone]) {
+                    [self DF_done];
                 }
-                dispatch_block_t block = ^(void) {
-                    if ((self.state == OperationStateExecuting) && [self isDone]) {
-                        [self done];
-                    }
-                    else if ([self canExecute]) {
-                        [self startOperations];
-                    }
-                };
-                [self safelyExecuteBlock:block];
-            });
-        }
+                else if ([self DF_canExecute]) {
+                    [self DF_startOperations];
+                }
+            };
+            [self DF_safelyExecuteBlock:block];
+        });
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (void)done
+- (void)DF_done
 {
-    [super done];
-    [self.operationsInProgress removeAllObjects];
+    [super DF_done];
+    [self.DF_operationsInProgress removeAllObjects];
 }
 
 @end

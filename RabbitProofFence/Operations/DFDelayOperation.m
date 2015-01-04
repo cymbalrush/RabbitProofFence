@@ -21,7 +21,7 @@
 {
     self = [super init];
     if (self) {
-        self.inputPorts = @[@keypath(self.input), @keypath(self.delay)];
+        self.DF_inputPorts = @[@keypath(self.input), @keypath(self.delay)];
         self.executionBlock = ^(id input, NSNumber *delay) {
             return input;
         };
@@ -32,13 +32,13 @@
 - (void)main
 {
     if ([self.delay doubleValue] == 0) {
-        [self execute];
+        [self DF_execute];
     }
     else {
         @weakify(self);
         dispatch_block_t block = ^(void) {
             @strongify(self);
-            [self execute];
+            [self DF_execute];
         };
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([self.delay doubleValue] * NSEC_PER_SEC)), queue, block);

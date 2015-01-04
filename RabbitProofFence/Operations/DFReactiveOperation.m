@@ -15,7 +15,7 @@
 
 @interface DFReactiveOperation ()
 
-@property (strong, nonatomic) NSMutableDictionary *reactiveConnections;
+@property (strong, nonatomic) NSMutableDictionary *DF_reactiveConnections;
 
 @end
 
@@ -31,17 +31,17 @@
     self = [super init];
     if (self) {
         _connectionCapacity = -1;
-        _reactiveConnections = [NSMutableDictionary dictionary];
+        _DF_reactiveConnections = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFReactiveOperation *newReactiveOperation = nil;
     dispatch_block_t block = ^() {
-        newReactiveOperation = [super clone:objToPointerMapping];
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        newReactiveOperation = [super DF_clone:objToPointerMapping];
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             NSString *toProperty = key;
             NSString *fromProperty = info.fromPort;
@@ -50,13 +50,13 @@
             //check if object is already present
             DFOperation *operation = objToPointerMapping[pointerKey];
             if (!operation) {
-                operation = [connectedOperation clone:objToPointerMapping];
+                operation = [connectedOperation DF_clone:objToPointerMapping];
                 objToPointerMapping[pointerKey] = operation;
             }
             [newReactiveOperation addReactiveDependency:operation withBindings:@{toProperty : fromProperty}];
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newReactiveOperation;
 }
 
@@ -65,7 +65,7 @@
     __block DFReactiveOperation *newReactiveOperation = nil;
     dispatch_block_t block = ^() {
         newReactiveOperation = [super copyWithZone:zone];
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             NSString *toProperty = key;
             NSString *fromProperty = info.fromPort;
@@ -73,23 +73,23 @@
             [newReactiveOperation addReactiveDependency:connectedOperation withBindings:@{toProperty : fromProperty}];
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newReactiveOperation;
 }
 
-- (void)addPortToInputPorts:(NSString *)port
+- (void)DF_addPortToInputPorts:(NSString *)port
 {
-    if (![self.inputPorts containsObject:port]) {
-        if (!self.inputPorts) {
-            self.inputPorts = [NSArray arrayWithObject:port];
+    if (![self.DF_inputPorts containsObject:port]) {
+        if (!self.DF_inputPorts) {
+            self.DF_inputPorts = [NSArray arrayWithObject:port];
         }
         else {
-            self.inputPorts = [self.inputPorts arrayByAddingObject:port];
+            self.DF_inputPorts = [self.DF_inputPorts arrayByAddingObject:port];
         }
     }
-    if ([self.inputPorts count] != [self.executionObj numberOfPorts]) {
+    if ([self.DF_inputPorts count] != [self.DF_executionObj numberOfPorts]) {
         //update execution obj
-        self.executionObj = [Execution_Class instanceForNumberOfArguments:[self.inputPorts count]];
+        self.DF_executionObj = [Execution_Class instanceForNumberOfArguments:[self.DF_inputPorts count]];
     }
 }
 
@@ -98,23 +98,25 @@
     __block NSMutableArray *freePorts = nil;
     dispatch_block_t block = ^() {
         freePorts = [NSMutableArray arrayWithArray:[super freePorts]];
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             [freePorts removeObject:info.toPort];
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return freePorts;
 }
 
-- (ReactiveConnectionInfo *)reactiveConnectionInfo
+- (ReactiveConnectionInfo *)DF_reactiveConnectionInfo
 {
     return [ReactiveConnectionInfo new];
 }
 
-- (void)reactiveConnectionPropertyChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation
+- (void)DF_reactiveConnectionPropertyChanged:(id)changedValue
+                                    property:(NSString *)property
+                                   operation:(DFOperation *)operation
 {
-    if (self.state == OperationStateDone) {
+    if (self.DF_state == OperationStateDone) {
         return;
     }
     id newInput = changedValue;
@@ -123,30 +125,30 @@
         newInput = [EXTNil null];
     }
     dispatch_block_t block = ^(void) {
-        ReactiveConnectionInfo *info  = self.reactiveConnections[property];
+        ReactiveConnectionInfo *info  = self.DF_reactiveConnections[property];
         [info addInput:newInput];
-        if ([self canExecute]) {
-            if (![self next]) {
-                [self done];
+        if ([self DF_canExecute]) {
+            if (![self DF_next]) {
+                [self DF_done];
             }
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (void)reactiveConnectionStateChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation
+- (void)DF_reactiveConnectionStateChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation
 {
-    if (self.state == OperationStateDone) {
+    if (self.DF_state == OperationStateDone) {
         return;
     }
     dispatch_block_t block = ^(void) {
-        ReactiveConnectionInfo *info  = [self.reactiveConnections objectForKey:property];
+        ReactiveConnectionInfo *info  = [self.DF_reactiveConnections objectForKey:property];
         info.operationState = [changedValue integerValue];
-        if (self.state == OperationStateExecuting && [self isDone]) {
-            [self done];
+        if (self.DF_state == OperationStateExecuting && [self DF_isDone]) {
+            [self DF_done];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (NSDictionary *)addReactiveDependency:(DFOperation *)operation withBindings:(NSDictionary *)bindings
@@ -155,10 +157,10 @@
         return nil;
     }
     __block NSDictionary *validBindings = nil;
-    dispatch_queue_t observationQueue = [[self class] operationObservationHandlingQueue];
+    dispatch_queue_t observationQueue = [[self class] DF_observationQueue];
     //operation connected reactively is not a dependency
     dispatch_block_t block = ^(void) {
-        NSSet *filteredKeys = [self validBindingsForOperation:operation bindings:bindings];
+        NSSet *filteredKeys = [self DF_validBindingsForOperation:operation bindings:bindings];
         [filteredKeys enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
             NSString *toPort = obj;
             NSString *fromPort = bindings[toPort];
@@ -168,45 +170,45 @@
                 DFOperation *connectedOperation = obj;
                 dispatch_async(observationQueue, ^{
                     @strongify(self);
-                    [self reactiveConnectionPropertyChanged:change[NSKeyValueChangeNewKey]
-                                                   property:toPort
-                                                  operation:connectedOperation];
+                    [self DF_reactiveConnectionPropertyChanged:change[NSKeyValueChangeNewKey]
+                                                     property:toPort
+                                                    operation:connectedOperation];
                 });
             }];
             
             //add observation for state change
-            AMBlockToken *stateObservationToken = [operation addObserverForKeyPath:@keypath(operation.state) task:^(id obj, NSDictionary *change) {
+            AMBlockToken *stateObservationToken = [operation addObserverForKeyPath:@keypath(operation.DF_state) task:^(id obj, NSDictionary *change) {
                 DFOperation *connectedOperation = obj;
                 dispatch_async(observationQueue, ^{
                     @strongify(self);
-                    [self reactiveConnectionStateChanged:change[NSKeyValueChangeNewKey]
-                                                property:toPort
-                                               operation:connectedOperation];
+                    [self DF_reactiveConnectionStateChanged:change[NSKeyValueChangeNewKey]
+                                                  property:toPort
+                                                 operation:connectedOperation];
                 });
             }];
             
             //create info for operation
-            ReactiveConnectionInfo *info = [self reactiveConnectionInfo];
+            ReactiveConnectionInfo *info = [self DF_reactiveConnectionInfo];
             info.operation = operation;
-            info.operationState = operation.state;
+            info.operationState = operation.DF_state;
             info.stateObservationToken = stateObservationToken;
             info.propertyObservationToken = propertyObservationToken;
             info.fromPort = fromPort;
             info.toPort = toPort;
             info.connectionCapacity = self.connectionCapacity;
             //check operation input, to see if it has value
-            if (operation.state == OperationStateExecuting || operation.state == OperationStateDone) {
+            if (operation.DF_state == OperationStateExecuting || operation.DF_state == OperationStateDone) {
                 //make sure that property has been set otherwise we will be working with incorrect value.
-                if ([operation isPropertySet:fromPort]) {
+                if ([operation DF_isPropertySet:fromPort]) {
                     id input = [operation valueForKey:fromPort];
                     [info addInput:input];
                 }
             }
-            self.reactiveConnections[toPort] = info;
+            self.DF_reactiveConnections[toPort] = info;
         }];
         validBindings = [bindings dictionaryWithValuesForKeys:[filteredKeys allObjects]];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return validBindings;
 }
 
@@ -226,16 +228,16 @@
         if ([operation isKindOfClass:[DFOperation class]]) {
             //if operation is connected reactively
             NSMutableArray *connectionsToRemove = [NSMutableArray array];
-            [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 ReactiveConnectionInfo *info = obj;
                 if ([info.operation isEqual:operation]) {
                     [connectionsToRemove addObject:key];
                 }
             }];
-            [self.reactiveConnections removeObjectsForKeys:connectionsToRemove];
+            [self.DF_reactiveConnections removeObjectsForKeys:connectionsToRemove];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)setConnectionCapacity:(int)connectionCapacity
@@ -244,18 +246,18 @@
         if (connectionCapacity == _connectionCapacity) {
             return;
         }
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             info.connectionCapacity = connectionCapacity;
         }];
         _connectionCapacity = connectionCapacity;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (void)generateNextValues
+- (void)DF_generateNextValues
 {
-    [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         ReactiveConnectionInfo *info = obj;
         DFOperation *operation = info.operation;
         OperationState operationState = info.operationState;
@@ -263,7 +265,7 @@
             (operationState == OperationStateExecuting) &&
             [info.inputs count] == 0) {
             @weakify(operation);
-            dispatch_queue_t startQueue = [[self class] operationStartQueue];
+            dispatch_queue_t startQueue = [[self class] DF_startQueue];
             dispatch_async(startQueue, ^{
                 @strongify(operation);
                 DFGenerator *generator = (DFGenerator *)operation;
@@ -273,19 +275,19 @@
     }];
 }
 
-- (BOOL)next
+- (BOOL)DF_next
 {
-    BOOL result = [super next];
+    BOOL result = [super DF_next];
     if (result) {
-        [self generateNextValues];
+        [self DF_generateNextValues];
     }
     return result;
 }
 
-- (BOOL)isReadyToExecute
+- (BOOL)DF_isReadyToExecute
 {
-    __block BOOL ready = YES;
-    [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    __block BOOL ready = (self.DF_executionCount == 0);
+    [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         ReactiveConnectionInfo *info = obj;
         OperationState state = info.operationState;
         //if there is no operation associated with
@@ -301,24 +303,24 @@
     return ready;
 }
 
-- (BOOL)canExecute
+- (BOOL)DF_canExecute
 {
     BOOL result = NO;
-    if (self.isExecuting && !self.isExecutingOperation) {
-        result = [self isReadyToExecute];
+    if (self.isExecuting && !self.DF_isExecutingOperation) {
+        result = [self DF_isReadyToExecute];
     }
     return result;
 }
 
-- (BOOL)isDone
+- (BOOL)DF_isDone
 {
     BOOL result = NO;
-    if (self.state == OperationStateDone) {
+    if (self.DF_state == OperationStateDone) {
         result = YES;
     }
-    else if (self.isExecuting && !self.isExecutingOperation) {
-        __block BOOL done = (self.executionCount > 0) || (self.connections.count == 0);
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    else if (self.isExecuting && !self.DF_isExecutingOperation) {
+        __block BOOL done = (self.DF_executionCount > 0);
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             done = NO;
             if ((info.operationState == OperationStateDone) && ([info.inputs count] == 0)) {
@@ -340,7 +342,7 @@
         if (operations) {
             [connectedOperations addObjectsFromArray:operations];
         }
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             DFOperation *connectedOperation = info.operation;
             if (connectedOperation) {
@@ -349,18 +351,13 @@
         }];
         result = [connectedOperations allObjects];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return result;
 }
 
-- (BOOL)hasReactiveBindings
+- (BOOL)DF_hasReactiveBindings
 {
-    __block BOOL result = NO;
-    dispatch_block_t block = ^(void) {
-        result = ([self.reactiveConnections count] > 0);
-    };
-    [self safelyExecuteBlock:block];
-    return result;
+    return ([self.DF_reactiveConnections count] > 0);
 }
 
 - (BOOL)isBindingReactive:(NSDictionary *)binding
@@ -369,7 +366,7 @@
     NSString *outPort = [binding allValues][0];
     NSString *inPort = [binding allKeys][0];
     dispatch_block_t block = ^(void) {
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ReactiveConnectionInfo *info = obj;
             NSString *connectionInPort = key;
             NSString *connectionOutPort = info.fromPort;
@@ -379,38 +376,32 @@
             }
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return result;
 }
 
-- (NSArray *)reactiveOperations
+- (NSArray *)DF_operationsConnectedReactively
 {
     __block NSMutableSet *operations = [NSMutableSet set];
-    dispatch_block_t block = ^(void) {
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ReactiveConnectionInfo *info = obj;
-            [operations addObject:info.operation];
-        }];
-    };
-    [self safelyExecuteBlock:block];
+    [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        ReactiveConnectionInfo *info = obj;
+        [operations addObject:info.operation];
+    }];
     return [operations allObjects];
 }
 
-- (NSDictionary *)reactiveBindingsForOperation:(DFOperation *)operation
+- (NSDictionary *)DF_reactiveBindingsForOperation:(DFOperation *)operation
 {
     __block NSMutableDictionary *bindings = [NSMutableDictionary dictionary];
-    dispatch_block_t block = ^(void) {
-        [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ReactiveConnectionInfo *info = obj;
-            DFOperation *connectedOperation = info.operation;
-            if (connectedOperation == operation) {
-                NSString *connectedToProperty = key;
-                NSString *connectedFromProperty = info.fromPort;
-                bindings[connectedToProperty] = connectedFromProperty;
-            }
-        }];
-    };
-    [self safelyExecuteBlock:block];
+    [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        ReactiveConnectionInfo *info = obj;
+        DFOperation *connectedOperation = info.operation;
+        if (connectedOperation == operation) {
+            NSString *connectedToProperty = key;
+            NSString *connectedFromProperty = info.fromPort;
+            bindings[connectedToProperty] = connectedFromProperty;
+        }
+    }];
     return bindings;
 }
 
@@ -419,7 +410,7 @@
     __block NSDictionary *result = nil;
     dispatch_block_t block = ^(void) {
     NSDictionary *bindings = [super bindingsForOperation:operation];
-        NSDictionary *reactiveBindings = [self reactiveBindingsForOperation:operation];
+        NSDictionary *reactiveBindings = [self DF_reactiveBindingsForOperation:operation];
         if (!bindings) {
             bindings = reactiveBindings;
         }
@@ -428,15 +419,15 @@
         }
         result = bindings;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return result;
 }
 
-- (void)prepareExecutionObj:(Execution_Class *)executionObj
+- (void)DF_prepareExecutionObj:(Execution_Class *)executionObj
 {
-    [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *property = obj;
-        ReactiveConnectionInfo *info = [self.reactiveConnections objectForKey:property];
+    [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *port = obj;
+        ReactiveConnectionInfo *info = self.DF_reactiveConnections[port];
         id value = nil;
         if (info) {
             //take the first input and assign
@@ -444,23 +435,23 @@
             [info.inputs removeObjectAtIndex:0];
         }
         else {
-            value = [self valueForKey:property];
+            value = [self valueForKey:port];
         }
-         value = (value == [EXTNil null]) ? nil : value;
+        value = [self DF_correctedValue:value forPort:port];
         [executionObj setValue:value atArgIndex:idx];
     }];
 }
 
-- (void)prepareOperation:(DFOperation *)operation
+- (void)DF_prepareOperation:(DFOperation *)operation
 {
     if (self.retryBlock) {
         return;
     }
-    NSDictionary *mapping = [[self class] freePortsToOperationMapping:operation];
-    [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *property = obj;
-        NSSet *operations = [mapping objectForKey:property];
-        ReactiveConnectionInfo *info = self.reactiveConnections[property];
+    NSDictionary *mapping = [[self class] DF_freePortsToOperationMapping:operation];
+    [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *port = obj;
+        NSSet *operations = mapping[port];
+        ReactiveConnectionInfo *info = self.DF_reactiveConnections[port];
         id value = nil;
         if (info) {
             //take the first input and assign
@@ -468,59 +459,60 @@
             [info.inputs removeObjectAtIndex:0];
         }
         else {
-            value = [self valueForKey:property];
+            value = [self valueForKey:port];
         }
-        value = (value == [EXTNil null]) ? nil : value;
+        value = [self DF_correctedValue:value forPort:port];
         [operations enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
             DFOperation *operation = obj;
-            [operation setValue:value forKey:property];
+            [operation setValue:value forKey:port];
         }];
     }];
 }
 
-- (void)operation:(DFOperation *)operation stateChanged:(id)changedValue
+- (void)DF_operation:(DFOperation *)operation stateChanged:(id)changedValue
 {
     dispatch_block_t block = ^(void) {
-        if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
+        OperationState state = [changedValue integerValue];
+        if ((self.DF_state == OperationStateDone) || (state != OperationStateDone)) {
             return;
         }
-        self.error = operation.error;
-        self.output = operation.output;
-        self.executingOperationInfo = nil;
+        self.DF_error = operation.DF_error;
+        self.DF_output = operation.DF_output;
+        self.DF_runningOperationInfo = nil;
         BOOL finished = NO;
-        if ([self isDone]) {
+        if ([self DF_isDone]) {
             finished = YES;
         }
-        else if ([self canExecute]) {
-            finished = !([self next]);
+        else if ([self DF_canExecute]) {
+            finished = !([self DF_next]);
         }
         if (finished) {
-            [self done];
+            [self DF_done];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
     __block id value = nil;
     dispatch_block_t block = ^(void) {
-        ReactiveConnectionInfo *info = [self.reactiveConnections objectForKey:key];
+        ReactiveConnectionInfo *info = [self.DF_reactiveConnections objectForKey:key];
         if (info) {
-            value = [info.inputs lastObject];
+            value = [info.inputs firstObject];
         }
         else {
             value = [super valueForUndefinedKey:key];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return value;
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
     dispatch_block_t block = ^(void) {
-        ReactiveConnectionInfo *info = [self.reactiveConnections objectForKey:key];
+        ReactiveConnectionInfo *info = [self.DF_reactiveConnections objectForKey:key];
         if (info) {
             [info.inputs addObject:(value ? value : [EXTNil null])];
         }
@@ -528,59 +520,56 @@
             [super setValue:value forUndefinedKey:key];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)setValueArray:(NSArray *)valueArray forKey:(NSString *)key
 {
     dispatch_block_t block = ^(void) {
-        ReactiveConnectionInfo *info = [self.reactiveConnections objectForKey:key];
+        ReactiveConnectionInfo *info = [self.DF_reactiveConnections objectForKey:key];
         if (info) {
             [info.inputs addObjectsFromArray:valueArray];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)main
 {
     dispatch_block_t block = ^(void) {
-        if (self.state != OperationStateExecuting) {
+        if (self.DF_state != OperationStateExecuting) {
             return;
         }
-        if (self.error) {
-            [self done];
-        }
         else {
-            [self generateNextValues];
+            [self DF_generateNextValues];
             @weakify(self);
-            dispatch_queue_t observationQueue = [[self class] operationObservationHandlingQueue];
+            dispatch_queue_t observationQueue = [[self class] DF_observationQueue];
             dispatch_async(observationQueue, ^{
                 @strongify(self);
                 if (!self) {
                     return;
                 }
                 dispatch_block_t block = ^(void) {
-                    if ((self.state == OperationStateExecuting) && [self isDone]) {
-                        [self done];
+                    if ((self.DF_state == OperationStateExecuting) && [self DF_isDone]) {
+                        [self DF_done];
                     }
-                    else if ([self canExecute]) {
-                        if (![self next]) {
-                            [self done];
+                    else if ([self DF_canExecute]) {
+                        if (![self DF_next]) {
+                            [self DF_done];
                         }
                     }
                 };
-                [self safelyExecuteBlock:block];
+                [self DF_safelyExecuteBlock:block];
             });
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (void)done
+- (void)DF_done
 {
-    [super done];
-    [self.reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [super DF_done];
+    [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         ReactiveConnectionInfo *info = obj;
         [info clean];
     }];

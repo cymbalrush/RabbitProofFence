@@ -11,22 +11,26 @@
 
 @implementation DFCompositeOperation
 
-- (void)prepareOperation:(DFOperation *)operation
+- (void)DF_prepareOperation:(DFOperation *)operation
 {
     dispatch_block_t block = ^() {
-        NSDictionary *mapping = [[self class] freePortsToOperationMapping:operation];
-        [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *property = obj;
-            NSSet *operations = [mapping objectForKey:property];
-            id value = [self valueForKey:property];
+        NSDictionary *mapping = [[self class] DF_freePortsToOperationMapping:operation];
+        [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *port = obj;
+            NSSet *operations = mapping[port];
+            id value = [self valueForKey:port];
+            if (isDFErrorObject(value) && self.portErrorResolutionBlock) {
+                DFErrorObject *errorObj = value;
+                value = self.portErrorResolutionBlock(errorObj.error, port, self);
+            }
             value = (value == [EXTNil null]) ? nil : value;
             [operations enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
                 DFOperation *operation = obj;
-                [operation setValue:value forKey:property];
+                [operation setValue:value forKey:port];
             }];
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

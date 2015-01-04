@@ -12,7 +12,7 @@
 
 @interface DFPeriodicOperation ()
 
-@property (assign, nonatomic) NSUInteger scheduledSyncNumber;
+@property (assign, nonatomic) NSUInteger DF_scheduledSyncNumber;
 
 @end
 
@@ -33,14 +33,14 @@
     return self;
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFPeriodicOperation *newPeriodicOperation = nil;
     dispatch_block_t block = ^(void) {
-        newPeriodicOperation = [super clone:objToPointerMapping];
+        newPeriodicOperation = [super DF_clone:objToPointerMapping];
         newPeriodicOperation.waitInterval = self.waitInterval;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newPeriodicOperation;
 }
 
@@ -51,22 +51,30 @@
         newPeriodicOperation = [super copyWithZone:zone];
         newPeriodicOperation.waitInterval = self.waitInterval;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newPeriodicOperation;
 }
 
-- (void)operation:(DFOperation *)operation stateChanged:(id)changedValue
+- (void)DF_operation:(DFOperation *)operation stateChanged:(id)changedValue
 {
     dispatch_block_t block = ^(void) {
-        if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
+        OperationState state = [changedValue integerValue];
+        if ((self.DF_state == OperationStateDone) || (state != OperationStateDone)) {
             return;
         }
-        //remove observation token
-        self.error = operation.error;
-        self.output = operation.output;
-        self.executingOperationInfo = nil;
-        self.scheduledSyncNumber ++;
-        NSUInteger scheduledSyncNumber = self.scheduledSyncNumber;
+        self.DF_runningOperationInfo = nil;
+        NSError *error = operation.DF_error;
+        if (error) {
+            self.DF_error = error;
+            self.DF_output = errorObject(error);
+            [self DF_done];
+            return;
+        }
+        else {
+            self.DF_output = operation.DF_output;
+        }
+        self.DF_scheduledSyncNumber ++;
+        NSUInteger scheduledSyncNumber = self.DF_scheduledSyncNumber;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, self.waitInterval * NSEC_PER_SEC);
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         @weakify(self);
@@ -77,42 +85,42 @@
                 return;
             }
             dispatch_block_t block = ^(void) {
-                if (self.state == OperationStateExecuting && (scheduledSyncNumber == self.scheduledSyncNumber)) {
-                    if (![self execute]) {
-                        [self done];
+                if (self.DF_state == OperationStateExecuting && (scheduledSyncNumber == self.DF_scheduledSyncNumber)) {
+                    if (![self DF_next]) {
+                        [self DF_done];
                     }
                 }
             };
-            [self safelyExecuteBlock:block];
+            [self DF_safelyExecuteBlock:block];
         });
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)setWaitIntervalAndStartNow:(NSTimeInterval)waitInterval
 {
     dispatch_block_t block = ^(void) {
         _waitInterval = waitInterval;
-        self.scheduledSyncNumber ++;
-        NSUInteger scheduledSyncNumber = self.scheduledSyncNumber;
+        self.DF_scheduledSyncNumber ++;
+        NSUInteger scheduledSyncNumber = self.DF_scheduledSyncNumber;
         @weakify(self);
-        dispatch_queue_t operationStartQueue = [[self class] operationStartQueue];
+        dispatch_queue_t operationStartQueue = [[self class] DF_startQueue];
         dispatch_async(operationStartQueue, ^(void){
             @strongify(self);
             dispatch_block_t block = ^(void) {
-                if ((self.state == OperationStateExecuting) &&
-                    !self.isExecutingOperation &&
-                    (scheduledSyncNumber == self.scheduledSyncNumber)) {
-                    if (![self execute]) {
-                        [self done];
+                if ((self.DF_state == OperationStateExecuting) &&
+                    !self.DF_isExecutingOperation &&
+                    (scheduledSyncNumber == self.DF_scheduledSyncNumber)) {
+                    if (![self DF_next]) {
+                        [self DF_done];
                     }
                 }
             };
-            [self safelyExecuteBlock:block];
+            [self DF_safelyExecuteBlock:block];
             
         });
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

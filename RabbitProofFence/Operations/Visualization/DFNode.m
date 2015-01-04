@@ -311,16 +311,16 @@ NS_INLINE DFPort *portForTouchPoint(CGPoint point, CGFloat margin, NSArray *port
     @weakify(operation);
     @weakify(self);
     AMBlockToken *stateObservationToken = nil;
-    stateObservationToken = [operation addObserverForKeyPath:@keypath(operation.state) task:^(id obj, NSDictionary *change) {
+    stateObservationToken = [operation addObserverForKeyPath:@keypath(operation.DF_state) task:^(id obj, NSDictionary *change) {
         @strongify(operation);
         @strongify(self);
-        OperationState state = operation.state;
+        OperationState state = operation.DF_state;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (state == OperationStateExecuting) {
                 [self startGear];
             }
             else if (state == OperationStateDone) {
-                [operation safelyRemoveObserverWithBlockToken:stateObservationToken];
+                [operation DF_safelyRemoveObserver:stateObservationToken];
                 [self stopGearAfterDelay:0.2];
             }
         });
@@ -391,7 +391,7 @@ NS_INLINE DFPort *portForTouchPoint(CGPoint point, CGFloat margin, NSArray *port
 - (void)cancel
 {
     if (self.stateObservationToken) {
-        [self.operation safelyRemoveObserverWithBlockToken:self.stateObservationToken];
+        [self.operation DF_safelyRemoveObserver:self.stateObservationToken];
         self.stateObservationToken = nil;
     }
     [self.operation removeOutputConnectionsForObject:self property:@keypath(self.result)];

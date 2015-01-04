@@ -41,11 +41,11 @@
 - (void)clean
 {
     if (self.stateObservationToken) {
-        [self.operation safelyRemoveObserverWithBlockToken:self.stateObservationToken];
+        [self.operation DF_safelyRemoveObserver:self.stateObservationToken];
         self.stateObservationToken = nil;
     }
     if (self.propertyObservationToken) {
-        [self.operation safelyRemoveObserverWithBlockToken:self.propertyObservationToken];
+        [self.operation DF_safelyRemoveObserver:self.propertyObservationToken];
         self.propertyObservationToken = nil;
     }
     [self.inputs removeAllObjects];

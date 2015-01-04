@@ -16,6 +16,4 @@
 
 + (instancetype)aggregator;
 
-- (void)connectWithOperation:(DFOperation *)operation;
-
 @end

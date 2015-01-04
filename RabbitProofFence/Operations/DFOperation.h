@@ -23,9 +23,6 @@ extern NSString * const DFOperationExceptionInvalidInitialization;
 extern NSString * const DFOperationExceptionMethodNotSupported;
 extern NSString * const DFOperationExceptionIncorrectParameter;
 extern const int DFOperationExceptionEncounteredErrorCode;
-extern NSString *setterFromProperty(NSString *property);
-extern void methodNotSupported();
-
 
 #define OPERATION_INVALID_PORT 
 
@@ -41,6 +38,10 @@ NSArray *portNamesFromBlockArgs(const char *blockBody);
 
 //queue which runs this operation
 @property (strong, nonatomic) NSOperationQueue *queue;
+
+@property (copy, nonatomic) id(^portErrorResolutionBlock)(NSError *error, NSString *port, DFOperation *operation);
+
+@property (copy, nonatomic) id(^outputErrorResolutionBlock)(NSError *error, DFOperation *operation);
 
 //start queue
 + (void)startQueue;

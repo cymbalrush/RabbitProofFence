@@ -12,20 +12,20 @@
 
 @interface DFMetaOperation ()
 
-@property (strong, nonatomic) DFOperation *operation;
+@property (strong, nonatomic) DFOperation *DF_operation;
 
-@property (strong, nonatomic) OperationInfo *executingOperationInfo;
+@property (strong, nonatomic) OperationInfo *DF_runningOperationInfo;
 
-@property (readonly, nonatomic) BOOL isExecutingOperation;
+@property (readonly, nonatomic) BOOL DF_isExecutingOperation;
 
-+ (NSDictionary *)freePortsToOperationMapping:(DFOperation *)operation;
++ (NSDictionary *)DF_freePortsToOperationMapping:(DFOperation *)operation;
 
-- (void)prepareOperation:(DFOperation *)operation;
+- (void)DF_prepareOperation:(DFOperation *)operation;
 
-- (void)startOperation:(DFOperation *)operation;
+- (void)DF_startOperation:(DFOperation *)operation;
 
-- (void)operation:(DFOperation *)operation stateChanged:(id)changedValue;
+- (void)DF_operation:(DFOperation *)operation stateChanged:(id)changedValue;
 
-- (AMBlockToken *)startObservingOperation:(DFOperation *)operation;
+- (AMBlockToken *)DF_startObservingOperation:(DFOperation *)operation;
 
 @end

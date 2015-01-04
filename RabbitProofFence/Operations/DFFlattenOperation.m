@@ -68,7 +68,7 @@
     return [super initWithMapBlock:mapBlock ports:@[@keypath(self.input)]];
 }
 
-- (ReactiveConnectionInfo *)reactiveConnectionInfo
+- (ReactiveConnectionInfo *)DF_reactiveConnectionInfo
 {
     return [FlattenInputInfo new];
 }

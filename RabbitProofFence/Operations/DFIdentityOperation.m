@@ -15,12 +15,12 @@
 {
     self = [super init];
     if (self) {
-        self.inputPorts = @[@keypath(self.input)];
+        self.DF_inputPorts = @[@keypath(self.input)];
         id(^block)(id input) = ^(id input) {
             return input;
         };
-        self.executionObj = [[self class] executionObjFromBlock:block];
-        self.executionObj.executionBlock = block;
+        self.DF_executionObj = [[self class] DF_executionObjFromBlock:block];
+        self.DF_executionObj.executionBlock = block;
     }
     return self;
 }

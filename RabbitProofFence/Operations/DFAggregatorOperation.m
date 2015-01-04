@@ -12,7 +12,7 @@
 
 @interface DFAggregatorOperation ()
 
-@property (strong, nonatomic) NSMutableArray *accumulator;
+@property (strong, nonatomic) NSMutableArray *DF_accumulator;
 
 @end
 
@@ -53,51 +53,49 @@
 {
     self = [super init];
     if (self) {
-        self.accumulator = [NSMutableArray array];
+        self.DF_accumulator = [NSMutableArray array];
         NSArray *(^block)(id input, DFAggregatorOperation *selfRef) = ^(id input, DFAggregatorOperation *selfRef) {
             input = input ? input : [EXTNil null];
-            [selfRef.accumulator addObject:input];
-            return selfRef.accumulator;
+            [selfRef.DF_accumulator addObject:input];
+            return selfRef.DF_accumulator;
         };
-        self.executionObj = [[self class] executionObjFromBlock:block];
-        self.executionObj.executionBlock = block;
-        self.inputPorts = @[@keypath(self.input), @keypath(self.selfRef)];
+        self.DF_executionObj = [[self class] DF_executionObjFromBlock:block];
+        self.DF_executionObj.executionBlock = block;
+        self.DF_inputPorts = @[@keypath(self.input), @keypath(self.selfRef)];
     }
     return self;
 }
 
-- (void)connectWithOperation:(DFOperation *)operation
+- (BOOL)DF_execute
 {
-    [super addReactiveDependency:operation withBindings:@{@keypath(self.input) : @keypath(operation.output)}];
+    Execution_Class *executionObj = self.DF_executionObj;
+    NSError *error = error;
+    @try {
+        [self DF_prepareExecutionObj:executionObj];
+        [executionObj execute];
+    }
+    @catch (NSException *exception) {
+        error = NSErrorFromException(exception);
+    }
+    @finally {
+        [self DF_breakRefCycleForExecutionObj:executionObj];
+    }
+    if (error) {
+        self.DF_error = error;
+        self.DF_output = errorObject(error);
+        return NO;
+    }
+    else {
+        return YES;
+    }
 }
 
-- (BOOL)execute
+- (void)DF_done
 {
-    Execution_Class *executionObj = self.executionObj;
-    if (executionObj.executionBlock) {
-        @try {
-            [self prepareExecutionObj:executionObj];
-            [executionObj execute];
-        }
-        @catch (NSException *exception) {
-            self.error = NSErrorFromException(exception);
-        }
-        @finally {
-            [self breakRefCycleForExecutionObj:executionObj];
-        }
-        if (!self.error) {
-            return YES;
-        }
+    if (!self.DF_error && self.DF_accumulator.count > 0) {
+        self.DF_output = self.DF_accumulator;
     }
-    return NO;
-}
-
-- (void)done
-{
-    if (self.accumulator.count > 0 && !self.error) {
-        self.output = self.accumulator;
-    }
-    [super done];
+    [super DF_done];
 }
 
 @end

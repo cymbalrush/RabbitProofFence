@@ -38,7 +38,10 @@ typedef NS_ENUM(NSInteger, OperationState) {
 @property (readonly, nonatomic) id<Operation> selfRef;
 
 //returns 'YES' if operations is suspended otherwise 'NO'
-@property (readonly, nonatomic) BOOL isSuspended;
+@property (readonly, nonatomic) BOOL DF_isSuspended;
+
+//returns dependencies
+@property (readonly, nonatomic) NSArray *connectedOperations;
 
 /**
  * Designated initializer

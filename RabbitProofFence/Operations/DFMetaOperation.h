@@ -10,7 +10,7 @@
 
 @interface DFMetaOperation : DFOperation
 
-@property (readonly, nonatomic) DFOperation *operation;
+@property (readonly, nonatomic) DFOperation *DF_operation;
 
 - (instancetype)initWithOperation:(DFOperation *)operation;
 

@@ -22,33 +22,34 @@
     if (self) {
         [ports enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *port = obj;
-            [self addPortToInputPorts:port];
+            [self DF_addPortToInputPorts:port];
         }];
     }
     return self;
 }
 
-- (BOOL)execute
+- (BOOL)DF_execute
 {
-    if ([self.executionObj numberOfPorts] == 0) {
+    if ([self.DF_executionObj numberOfPorts] == 0) {
         return NO;
     }
-    [self prepareExecutionObj:self.executionObj];
-    NSArray *valuesArray = [self.executionObj valuesArray];
-    self.output = valuesArray;
+    [self DF_prepareExecutionObj:self.DF_executionObj];
+    NSArray *valuesArray = [self.DF_executionObj valuesArray];
+    self.DF_output = valuesArray;
+    [self DF_breakRefCycleForExecutionObj:self.DF_executionObj];
     return YES;
 }
 
-- (BOOL)next
+- (BOOL)DF_next
 {
     BOOL result = YES;
-    while ([self canExecute]) {
-        result = [super next];
+    while ([self DF_canExecute]) {
+        result = [super DF_next];
         if (!result) {
             break;
         }
     }
-    if ([self isDone]) {
+    if ([self DF_isDone]) {
         result = NO;
     }
     return result;

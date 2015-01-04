@@ -12,9 +12,9 @@
 
 @interface DFLoopOperation ()
 
-@property (strong, nonatomic) NSPredicate *predicate;
+@property (strong, nonatomic) NSPredicate *DF_predicate;
 
-@property (assign, nonatomic) NSUInteger executionCount;
+@property (assign, nonatomic) NSUInteger DF_executionCount;
 
 @end
 
@@ -29,7 +29,7 @@
 {
     self = [super initWithOperation:operation];
     if (self) {
-        self.predicate = predicate;
+        self.DF_predicate = predicate;
     }
     return self;
 }
@@ -38,7 +38,7 @@
 {
     self = [super initWithOperation:operation];
     if (self) {
-        self.predicate = [NSPredicate predicateWithValue:YES];
+        self.DF_predicate = [NSPredicate predicateWithValue:YES];
     }
     return self;
 }
@@ -47,7 +47,7 @@
 {
     self = [self init];
     if (self) {
-        Execution_Class *executionObj = [[self class] executionObjFromBlock:retryBlock];
+        Execution_Class *executionObj = [[self class] DF_executionObjFromBlock:retryBlock];
         NSUInteger n = [executionObj numberOfPorts];
         if ((n > 0) && !([ports count] == n && [[NSSet setWithArray:ports] count] == [ports count])) {
             //throw an exception
@@ -55,29 +55,21 @@
             @throw [NSException exceptionWithName:DFOperationExceptionDuplicatePropertyNames reason:reason userInfo:nil];
         }
         //this will hold values
-        self.inputPorts = ports;
-        self.executionObj = executionObj;
-        self.executionObj.executionBlock = retryBlock;
+        self.DF_inputPorts = ports;
+        self.DF_executionObj = executionObj;
+        self.DF_executionObj.executionBlock = retryBlock;
     }
     return self;
 }
 
-- (void)setRetryBlock:(id)retryBlock
-{
-    dispatch_block_t block = ^(void) {
-        self.executionObj.executionBlock = retryBlock;
-    };
-    [self safelyExecuteBlock:block];
-}
-
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFLoopOperation *newLoopOperation = nil;
     dispatch_block_t block = ^() {
-        newLoopOperation = [super clone:objToPointerMapping];
-        newLoopOperation.predicate = self.predicate;
+        newLoopOperation = [super DF_clone:objToPointerMapping];
+        newLoopOperation.DF_predicate = self.DF_predicate;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newLoopOperation;
 }
 
@@ -86,77 +78,102 @@
     __block DFLoopOperation *newLoopOperation = nil;
     dispatch_block_t block = ^() {
         newLoopOperation = [super copyWithZone:zone];
-        newLoopOperation.predicate = self.predicate;
+        newLoopOperation.DF_predicate = self.DF_predicate;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newLoopOperation;
 }
 
-- (void)prepareOperation:(DFOperation *)operation
+- (void)DF_prepareOperation:(DFOperation *)operation
 {
     if (self.retryBlock) {
         return;
     }
-    [super prepareOperation:operation];
+    [super DF_prepareOperation:operation];
 }
 
 - (id)retryBlock
 {
-    return self.executionObj.executionBlock;
+    return self.DF_executionObj.executionBlock;
 }
 
-- (BOOL)execute
+- (void)setRetryBlock:(id)retryBlock
 {
+    dispatch_block_t block = ^(void) {
+        self.DF_executionObj.executionBlock = retryBlock;
+    };
+    [self DF_safelyExecuteBlock:block];
+}
+
+- (NSPredicate *)predicate
+{
+    return self.DF_predicate;
+}
+
+- (BOOL)DF_execute
+{
+    DFOperation *operation = nil;
     if (self.retryBlock) {
-        Execution_Class *executionObj = self.executionObj;
-        [self prepareExecutionObj:executionObj];
-        DFOperation *operation = nil;
+        Execution_Class *executionObj = self.DF_executionObj;
+        [self DF_prepareExecutionObj:executionObj];
         @try {
             operation = [executionObj execute];
         }
         @catch (NSException *ex) {
-            self.error = NSErrorFromException(ex);
+            NSError *error = NSErrorFromException(ex);
+            self.DF_error = error;
+            self.DF_output = errorObject(error);
         }
         @finally {
-            [self breakRefCycleForExecutionObj:executionObj];
+            [self DF_breakRefCycleForExecutionObj:executionObj];
         }
-        if (operation) {
-            [self startOperation:operation];
-            return YES;
+        
+    }
+    else if (self.DF_operation) {
+        if ([self.DF_predicate evaluateWithObject:self]) {
+            //clone
+            operation = [self.DF_operation DF_clone];
         }
     }
-    else if (self.operation) {
-        if ([self.predicate evaluateWithObject:self]) {
-            DFOperation *newOperation = [self.operation clone];
-            [self startOperation:newOperation];
-            return YES;
-        }
+    if (operation) {
+        [self DF_startOperation:operation];
+        return YES;
     }
     return NO;
 }
 
-- (void)operation:(DFOperation *)operation stateChanged:(id)changedValue
+- (void)DF_operation:(DFOperation *)operation stateChanged:(id)changedValue
 {
     dispatch_block_t block = ^(void) {
-        if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
+        OperationState state = [changedValue integerValue];
+        if ((self.DF_state == OperationStateDone) || (state != OperationStateDone)) {
             return;
         }
-        self.error = operation.error;
-        self.output = operation.output;
-        self.executingOperationInfo = nil;
+        self.DF_error = operation.DF_error;
+        self.DF_output = operation.DF_output;
+        self.DF_runningOperationInfo = nil;
         //if it's suspended then don't retry
-        if (![self next]) {
-            [self done];
+        if (![self DF_next]) {
+            [self DF_done];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (BOOL)next
+- (BOOL)DF_next
 {
-    BOOL result = [self execute];
+    NSError *error = nil;
+    if (!self.portErrorResolutionBlock) {
+        error = [self DF_incomingPortErrors];
+    }
+    if (error) {
+        self.DF_error = error;
+        self.DF_output = errorObject(error);
+        return NO;
+    }
+    BOOL result = [self DF_execute];
     if (result) {
-        self.executionCount ++;
+        self.DF_executionCount ++;
     }
     return result;
 }
@@ -164,17 +181,25 @@
 - (void)main
 {
     dispatch_block_t block = ^(void) {
-        if (self.state != OperationStateExecuting) {
+        if (self.DF_state != OperationStateExecuting) {
             return;
         }
-        if (!self.error) {
-            if ([self next]) {
+        NSError *error = nil;
+        if (!self.portErrorResolutionBlock) {
+            error = [self DF_incomingPortErrors];
+        }
+        if (error) {
+            self.DF_error = error;
+            self.DF_output = errorObject(error);
+        }
+        else {
+            if ([self DF_next]) {
                 return;
             }
         }
-        [self done];
+        [self DF_done];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

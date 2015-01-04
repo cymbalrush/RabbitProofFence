@@ -22,7 +22,7 @@
 
 - (NSArray *)inputPortsInfo
 {
-    return [self.inputPorts map:^id(id obj, NSUInteger idx) {
+    return [self.DF_inputPorts map:^id(id obj, NSUInteger idx) {
         NSString *name = obj;
         DFPortInfo *info = [DFPortInfo new];
         info.name = name;
@@ -57,7 +57,7 @@
     DFNode *node = nil;
     BOOL isIdentity = [self isKindOfClass:[DFIdentityOperation class]];
     node = isIdentity ? [DFValueNode nodeWithInfo:[self info]] : [DFNode nodeWithInfo:[self info]];
-    NSArray *exludedPorts = [self.excludedPorts allObjects];
+    NSArray *exludedPorts = [self.DF_excludedPorts allObjects];
     [exludedPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *portName = obj;
         DFPort *port = [node portForName:portName];

@@ -9,31 +9,46 @@
 #import "DFNetworkOperation.h"
 #import "DFOperation_SubclassingHooks.h"
 
+NSString * const DFNetworkOperationQueueName = @"com.operations.networkQueue";
+
 @interface DFNetworkOperation ()
 
-@property (strong, nonatomic) NSURLSessionDataTask *task;
+@property (strong, nonatomic) NSURLSessionDataTask *DF_task;
 
 @end
 
 @implementation DFNetworkOperation
 
++ (NSOperationQueue *)operationQueue
+{
+    static NSOperationQueue *queue = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        queue = [[NSOperationQueue alloc] init];
+        queue.name = DFNetworkOperationQueueName;
+        //we need a queue for prioritizing operations
+        [queue setMaxConcurrentOperationCount:4];
+    });
+    return queue;
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.inputPorts = @[@keypath(self.request)];
+        self.DF_inputPorts = @[@keypath(self.request)];
     }
     return self;
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFNetworkOperation *operation = nil;
     dispatch_block_t block = ^() {
-        operation = [super clone:objToPointerMapping];
+        operation = [super DF_clone:objToPointerMapping];
         operation.request = self.request;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return operation;
 }
 
@@ -44,7 +59,7 @@
         operation = [super copyWithZone:zone];
         operation.request = self.request;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return operation;
 }
 
@@ -52,40 +67,40 @@
 {
     dispatch_block_t block = ^() {
         [super suspend];
-        if (self.task.state == NSURLSessionTaskStateRunning) {
-            [self.task suspend];
+        if (self.DF_task.state == NSURLSessionTaskStateRunning) {
+            [self.DF_task suspend];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)resume
 {
     dispatch_block_t block = ^() {
         [super resume];
-        if (self.task.state == NSURLSessionTaskStateSuspended) {
-            [self.task resume];
+        if (self.DF_task.state == NSURLSessionTaskStateSuspended) {
+            [self.DF_task resume];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)cancel
 {
     dispatch_block_t block = ^() {
         [super cancel];
-        if (self.state == OperationStateExecuting) {
-            [self done];
-            [self.task cancel];
+        if (self.DF_state == OperationStateExecuting) {
+            [self DF_done];
+            [self.DF_task cancel];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)main
 {
     dispatch_block_t block = ^(void) {
-        if (self.state != OperationStateExecuting) {
+        if (self.DF_state != OperationStateExecuting) {
             return;
         }
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -98,11 +113,12 @@
         completionHandler = ^(NSData *data, NSURLResponse *response, NSError *error) {
             @strongify(self);
             dispatch_block_t block = ^(void) {
-                if (self.state != OperationStateExecuting) {
+                if (self.DF_state != OperationStateExecuting) {
                     return;
                 }
                 if (error) {
-                    self.error = error;
+                    self.DF_error = error;
+                    self.DF_output = errorObject(error);
                 }
                 else if (response) {
                     NSString *text = nil;
@@ -122,29 +138,29 @@
                         }
                         @finally {
                             if (encodingError) {
-                                self.error = encodingError;
-                                self.output = nil;
+                                self.DF_error = encodingError;
+                                self.DF_output = errorObject(encodingError);
                             }
                             else {
-                                self.output = text;
+                                self.DF_output = text;
                             }
                         }
                     }
-                    self.output = text;
+                    self.DF_output = text;
                 }
-                [self done];
+                [self DF_done];
             };
-            [self safelyExecuteBlock:block];
+            [self DF_safelyExecuteBlock:block];
         };
-        self.task = [session dataTaskWithRequest:self.request completionHandler:completionHandler];
-        if (self.task) {
-            [self.task resume];
+        self.DF_task = [session dataTaskWithRequest:self.request completionHandler:completionHandler];
+        if (self.DF_task) {
+            [self.DF_task resume];
         }
         else  {
-            [self done];
+            [self DF_done];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

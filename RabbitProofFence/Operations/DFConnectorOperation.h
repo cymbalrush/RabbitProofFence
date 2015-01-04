@@ -14,7 +14,7 @@
 
 @interface DFConnectorOperation : DFOperation <StreamOperation>
 
-@property (nonatomic, readonly, weak) NSObject *object;
+@property (nonatomic, readonly) NSObject *object;
 
 @property (nonatomic, readonly) NSString *property;
 

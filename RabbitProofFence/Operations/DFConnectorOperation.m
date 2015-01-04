@@ -11,11 +11,11 @@
 
 @interface DFConnectorOperation ()
 
-@property (weak, nonatomic) NSObject *object;
+@property (strong, nonatomic) NSObject *DF_object;
 
-@property (strong, nonatomic) NSString *property;
+@property (strong, nonatomic) NSString *DF_property;
 
-@property (strong, nonatomic) AMBlockToken *propertyObservationToken;
+@property (strong, nonatomic) AMBlockToken *DF_propertyObservationToken;
 
 @end
 
@@ -32,10 +32,10 @@
     return [[DFConnectorOperation alloc] initWithObject:object property:property];
 }
 
-+ (void)startOperation:(DFOperation *)operation
++ (void)DF_startOperation:(DFOperation *)operation
 {
     //start it immediately
-    if (operation.state == OperationStateReady) {
+    if (operation.DF_state == OperationStateReady) {
         [operation start];
     }
 }
@@ -43,8 +43,8 @@
 {
     self = [super init];
     if (self) {
-        _object = object;
-        _property = property;
+        _DF_object = object;
+        _DF_property = property;
         _useCurrentValue = NO;
     }
     return self;
@@ -55,16 +55,16 @@
     [self cancel];
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFConnectorOperation *newConnectorOperation = nil;
     dispatch_block_t block = ^() {
-        newConnectorOperation = [super clone:objToPointerMapping];
-        newConnectorOperation.object = self.object;
-        newConnectorOperation.property = self.property;
+        newConnectorOperation = [super DF_clone:objToPointerMapping];
+        newConnectorOperation.DF_object = self.DF_object;
+        newConnectorOperation.DF_property = self.DF_property;
         newConnectorOperation.useCurrentValue = self.useCurrentValue;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newConnectorOperation;
 }
 
@@ -73,59 +73,69 @@
     __block DFConnectorOperation *newConnectorOperation = nil;
     dispatch_block_t block = ^() {
         newConnectorOperation = [super copyWithZone:zone];
-        newConnectorOperation.object = self.object;
-        newConnectorOperation.property = self.property;
+        newConnectorOperation.DF_object = self.DF_object;
+        newConnectorOperation.DF_property = self.DF_property;
         newConnectorOperation.useCurrentValue = self.useCurrentValue;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newConnectorOperation;
+}
+
+- (void)object:(NSObject *)object valueChanged:(id)changedValue
+{
+    dispatch_block_t block = ^() {
+        if (self.DF_state != OperationStateExecuting) {
+            return;
+        }
+        self.DF_output = changedValue;
+    };
+    [self DF_safelyExecuteBlock:block];
+}
+
+- (NSObject *)object
+{
+    return self.DF_object;
+}
+
+- (NSString *)property
+{
+    return self.DF_property;
 }
 
 - (void)cancel
 {
     [super cancel];
     dispatch_block_t block = ^(void) {
-        if (self.propertyObservationToken) {
-            [self.object removeObserverWithBlockToken:self.propertyObservationToken];
-            self.propertyObservationToken = nil;
+        if (self.DF_propertyObservationToken) {
+            [self.DF_object removeObserverWithBlockToken:self.DF_propertyObservationToken];
+            self.DF_propertyObservationToken = nil;
         }
-        self.state = OperationStateDone;
+        self.DF_state = OperationStateDone;
     };
-    [self safelyExecuteBlock:block];
-}
-
-- (void)object:(NSObject *)object valueChanged:(id)changedValue
-{
-    dispatch_block_t block = ^() {
-        if (self.state == OperationStateDone) {
-            return;
-        }
-        self.output = changedValue;
-    };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)main
 {
     dispatch_block_t block = ^(void) {
-        if (self.state != OperationStateExecuting) {
+        if (self.DF_state != OperationStateExecuting) {
             return;
         }
         if (self.useCurrentValue) {
-            self.output = [self.object valueForKey:self.property];
+            self.DF_output = [self.DF_object valueForKey:self.DF_property];
         }
         @weakify(self);
-        dispatch_queue_t observationQueue = [[self class] operationObservationHandlingQueue];
-        AMBlockToken *observationToken = [self.object addObserverForKeyPath:self.property task:^(id obj, NSDictionary *change) {
+        dispatch_queue_t observationQueue = [[self class] DF_observationQueue];
+        AMBlockToken *token = [self.DF_object addObserverForKeyPath:self.DF_property task:^(id obj, NSDictionary *change) {
             id newValue = change[NSKeyValueChangeNewKey];
             dispatch_async(observationQueue, ^{
                 @strongify(self);
                 [self object:obj valueChanged:newValue];
             });
         }];
-        self.propertyObservationToken = observationToken;
+        self.DF_propertyObservationToken = token;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

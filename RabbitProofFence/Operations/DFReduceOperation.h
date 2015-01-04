@@ -10,9 +10,9 @@
 
 @interface DFReduceOperation : DFReactiveOperation
 
-@property (strong, nonatomic) id accumulator;
+@property (readonly, nonatomic) id acc;
 
-@property (strong, nonatomic) id initialValue;
+@property (strong, nonatomic) id seed;
 
 - (instancetype)initWithReduceBlock:(id)reduceBlock ports:(NSArray *)ports;
 

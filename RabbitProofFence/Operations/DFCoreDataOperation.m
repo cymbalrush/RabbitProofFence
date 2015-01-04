@@ -26,14 +26,14 @@ NSString * const DFCoreDataOperationQueueName = @"com.operations.coreDataQueue";
     return queue;
 }
     
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFCoreDataOperation *newCoreDataOperation = nil;
     dispatch_block_t block = ^() {
-        newCoreDataOperation = [super clone:objToPointerMapping];
+        newCoreDataOperation = [super DF_clone:objToPointerMapping];
         newCoreDataOperation.context = self.context;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newCoreDataOperation;
 }
 
@@ -44,44 +44,44 @@ NSString * const DFCoreDataOperationQueueName = @"com.operations.coreDataQueue";
         newCoreDataOperation = [super copyWithZone:zone];
         newCoreDataOperation.context = self.context;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newCoreDataOperation;
 }
 
 - (void)main
 {
     dispatch_block_t block = ^(void) {
-        if (self.state != OperationStateExecuting) {
+        if (self.DF_state != OperationStateExecuting) {
             return;
         }
-        if (!self.error && self.context) {
+        if (self.context) {
             @weakify(self);
             [self.context performBlock:^{
                 @strongify(self);
                 if (!self) {
                     return;
                 }
-                else if (self.state == OperationStateDone) {
+                else if (self.DF_state == OperationStateDone) {
                     return;
                 }
                 else if (self.isCancelled) {
                     dispatch_block_t block = ^(void) {
-                        if (self.state == OperationStateExecuting) {
-                            [self done];
+                        if (self.DF_state == OperationStateExecuting) {
+                            [self DF_done];
                         }
                     };
-                    [self safelyExecuteBlock:block];
+                    [self DF_safelyExecuteBlock:block];
                 }
                 else {
-                    [self execute];
+                    [self DF_execute];
                 }
             }];
         }
         else {
-            [self done];
+            [self DF_done];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

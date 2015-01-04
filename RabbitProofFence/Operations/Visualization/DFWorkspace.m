@@ -291,7 +291,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     [self addNode:patchNode];
     patchNode.center = center;
     patchNode.operationCreationBlock = ^(void) {
-        return [patch clone];
+        return [patch DF_clone];
     };
 }
 
@@ -325,7 +325,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
         [self printResult:result];
         return;
     }
-    DFPort *port = [node portForName:@keypath(operation.output)];
+    DFPort *port = [node portForName:@keypath(operation.DF_output)];
     [CATransaction begin];
     [port.connections enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         [self.gridView animateValueFlowFromPort:port toPort:obj];

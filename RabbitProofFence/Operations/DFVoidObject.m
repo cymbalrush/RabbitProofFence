@@ -9,13 +9,10 @@
 #import "DFVoidObject.h"
 #import "ExtRuntimeExtensions.h"
 
-BOOL isVoid(id obj) {
+BOOL isDFVoidObject(id obj)
+{
     return [obj isKindOfClass:[DFVoidObject class]];
 }
-
-@interface DFVoidObjectException : NSException
-
-@end
 
 @implementation DFVoidObjectException
 
@@ -28,11 +25,13 @@ BOOL isVoid(id obj) {
     return [[self class] alloc];
 }
 
-- (BOOL)respondsToSelector:(SEL)aSelector
+- (BOOL)respondsToSelector:(SEL)selector
 {
-    if ([super respondsToSelector:aSelector]) {
-        return YES;
-    }
+    return NO;
+}
+
+- (BOOL)conformsToProtocol:(Protocol *)protocol
+{
     return NO;
 }
 
@@ -64,6 +63,5 @@ BOOL isVoid(id obj) {
 
     
 }
-
 
 @end

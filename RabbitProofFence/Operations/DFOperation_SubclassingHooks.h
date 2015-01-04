@@ -15,83 +15,94 @@
 #import "NSObject+BlockObservation.h"
 #import "DFVoidObject.h"
 #import "EXTNil.h"
+#import "DFErrorObject.h"
+
+extern NSString * const DFErrorKeyName;
+extern const int DFOperationInComingPortErrorCode;
+
+extern void methodNotSupported();
+extern NSString *setterFromProperty(NSString *property);
+extern NSDictionary *portErrors(NSError *error);
+extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
 
 @interface DFOperation ()
 
-@property (assign, nonatomic) OperationState state;
+@property (assign, nonatomic) OperationState DF_state;
 
-@property (strong, nonatomic) NSError *error;
+@property (strong, nonatomic) NSError *DF_error;
 
-@property (strong, nonatomic) id output;
+@property (strong, nonatomic) id DF_output;
 
-@property (readonly, nonatomic) NSRecursiveLock *operationLock;
+@property (readonly, nonatomic) NSRecursiveLock *DF_operationLock;
 
-@property (assign, nonatomic) BOOL isSuspended;
+@property (assign, nonatomic) BOOL DF_isSuspended;
 
-@property (strong, nonatomic) Execution_Class *executionObj;
+@property (strong, nonatomic) Execution_Class *DF_executionObj;
 
-@property (strong, nonatomic) NSArray *inputPorts;
+@property (strong, nonatomic) NSArray *DF_inputPorts;
 
-@property (strong, nonatomic) NSMutableSet *propertiesSet;
+@property (strong, nonatomic) NSArray *DF_internalPorts;
 
-@property (strong, nonatomic) NSMutableSet *excludedPorts;
+@property (strong, nonatomic) NSMutableSet *DF_propertiesSet;
 
-@property (strong, nonatomic) NSMutableDictionary *connections;
+@property (strong, nonatomic) NSMutableSet *DF_excludedPorts;
 
-+ (Execution_Class *)executionObjFromBlock:(id)block;
+@property (strong, nonatomic) NSMutableDictionary *DF_connections;
+
++ (Execution_Class *)DF_executionObjFromBlock:(id)block;
 
 + (NSOperationQueue *)operationQueue;
 
-+ (dispatch_queue_t)syncQueue;
++ (dispatch_queue_t)DF_syncQueue;
 
-+ (dispatch_queue_t)operationStartQueue;
++ (dispatch_queue_t)DF_startQueue;
 
-+ (dispatch_queue_t)operationObservationHandlingQueue;
++ (dispatch_queue_t)DF_observationQueue;
 
-+ (NSMutableDictionary *)dependentOperations;
++ (NSMutableDictionary *)DF_dependentOperations;
 
-+ (NSMutableSet *)executingOperations;
++ (NSMutableSet *)DF_runningOperations;
 
-+ (void)startOperation:(DFOperation *)operation;
++ (void)DF_startOperation:(DFOperation *)operation;
 
-+ (void)startDependentOperations:(DFOperation *)finishedOperation;
++ (void)DF_startDependentOperations:(DFOperation *)finishedOperation;
 
-+ (void)startObservingOperation:(DFOperation *)operation;
++ (void)DF_observeOperation:(DFOperation *)operation;
 
-+ (void)removeObservations:(DFOperation *)operation;
++ (void)DF_removeObservations:(DFOperation *)operation;
 
-+ (void)copyExcludedPortValuesFromOperation:(DFOperation *)fromOperation
++ (void)DF_copyExcludedPortValuesFromOperation:(DFOperation *)fromOperation
                                 toOperation:(DFOperation *)toOperation
                               excludedPorts:(NSSet *)excludedPorts;
 
-- (void)safelyRemoveObserverWithBlockToken:(AMBlockToken *)token;
+- (void)DF_safelyRemoveObserver:(AMBlockToken *)token;
 
-- (void)safelyExecuteBlock:(dispatch_block_t)block;
+- (void)DF_safelyExecuteBlock:(dispatch_block_t)block;
 
-- (instancetype)clone;
+- (instancetype)DF_clone;
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping;
-
-- (NSArray *)connectedOperations;
-
-- (NSArray *)freePorts;
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping;
 
 - (NSDictionary *)bindingsForOperation:(DFOperation *)operation;
 
-- (NSSet *)validBindingsForOperation:(DFOperation *)operation bindings:(NSDictionary *)bindings;
+- (NSSet *)DF_validBindingsForOperation:(DFOperation *)operation bindings:(NSDictionary *)bindings;
 
-- (BOOL)isPropertySet:(NSString *)property;
+- (NSError *)DF_incomingPortErrors;
 
-- (void)executeBindings;
+- (BOOL)DF_isPropertySet:(NSString *)property;
 
-- (BOOL)execute;
+- (id)DF_correctedValue:(id)value forPort:(NSString *)port;
 
-- (void)prepareForExecution;
+- (void)DF_executeBindings;
 
-- (void)prepareExecutionObj:(Execution_Class *)executionObj;
+- (BOOL)DF_execute;
 
-- (void)breakRefCycleForExecutionObj:(Execution_Class *)executionObj;
+- (void)DF_prepareForExecution;
 
-- (void)done;
+- (void)DF_prepareExecutionObj:(Execution_Class *)executionObj;
+
+- (void)DF_breakRefCycleForExecutionObj:(Execution_Class *)executionObj;
+
+- (void)DF_done;
 
 @end

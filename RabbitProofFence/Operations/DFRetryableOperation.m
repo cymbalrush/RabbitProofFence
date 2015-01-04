@@ -13,7 +13,7 @@
 
 @interface DFRetryableOperation ()
 
-@property (strong, nonatomic) NSMutableArray *errorRetryPolicies;
+@property (strong, nonatomic) NSMutableArray *DF_errorRetryPolicies;
 
 @end
 
@@ -29,7 +29,7 @@
 {
     self = [super init];
     if (self) {
-        _errorRetryPolicies = [[NSMutableArray alloc] init];
+        _DF_errorRetryPolicies = [NSMutableArray new];
     }
     return self;
 }
@@ -40,18 +40,18 @@
         return;
     }
     dispatch_block_t block = ^(void) {
-        [self.errorRetryPolicies addObject:retryPolicy];
+        [self.DF_errorRetryPolicies addObject:retryPolicy];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)addErrorRetryPolicies:(NSArray *)retryPolicies
 {
     if ([retryPolicies count] > 0) {
         dispatch_block_t block = ^(void) {
-            [self.errorRetryPolicies addObjectsFromArray:retryPolicies];
+            [self.DF_errorRetryPolicies addObjectsFromArray:retryPolicies];
         };
-        [self safelyExecuteBlock:block];
+        [self DF_safelyExecuteBlock:block];
     }
 }
 
@@ -59,9 +59,9 @@
 {
     if (retryPolicy) {
         dispatch_block_t block = ^(void) {
-            [self.errorRetryPolicies removeObject:retryPolicy];
+            [self.DF_errorRetryPolicies removeObject:retryPolicy];
         };
-        [self safelyExecuteBlock:block];
+        [self DF_safelyExecuteBlock:block];
     }
 }
 
@@ -69,9 +69,9 @@
 {
     if ([retryPolicies count] > 0) {
         dispatch_block_t block = ^(void) {
-            [self.errorRetryPolicies removeObjectsInArray:retryPolicies];
+            [self.DF_errorRetryPolicies removeObjectsInArray:retryPolicies];
         };
-        [self safelyExecuteBlock:block];
+        [self DF_safelyExecuteBlock:block];
     }
 }
 
@@ -82,7 +82,7 @@
     }
     __block ErrorRetryPolicy *foundPolicy = nil;
     dispatch_block_t block = ^(void) {
-        NSUInteger index = [self.errorRetryPolicies indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        NSUInteger index = [self.DF_errorRetryPolicies indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
             ErrorRetryPolicy *retryPolicy = obj;
             if (retryPolicy.errorRegistrationBlock) {
                 if (retryPolicy.errorRegistrationBlock(error)) {
@@ -93,21 +93,22 @@
             return NO;
         }];
         if (index != NSNotFound) {
-            foundPolicy = [self.errorRetryPolicies objectAtIndex:index];
+            foundPolicy = [self.DF_errorRetryPolicies objectAtIndex:index];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return foundPolicy;
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFRetryableOperation *newRetryableOperation = nil;
     dispatch_block_t block = ^() {
-        newRetryableOperation = [super clone:objToPointerMapping];
-        newRetryableOperation.errorRetryPolicies = [[NSMutableArray alloc] initWithArray:self.errorRetryPolicies copyItems:YES];
+        newRetryableOperation = [super DF_clone:objToPointerMapping];
+        newRetryableOperation.DF_errorRetryPolicies = [[NSMutableArray alloc] initWithArray:self.DF_errorRetryPolicies
+                                                                                  copyItems:YES];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newRetryableOperation;
 }
 
@@ -116,13 +117,14 @@
     __block DFRetryableOperation *newRetryableOperation = nil;
     dispatch_block_t block = ^() {
         newRetryableOperation = [super copyWithZone:zone];
-        newRetryableOperation.errorRetryPolicies = [[NSMutableArray alloc] initWithArray:self.errorRetryPolicies copyItems:YES];
+        newRetryableOperation.DF_errorRetryPolicies = [[NSMutableArray alloc] initWithArray:self.DF_errorRetryPolicies
+                                                                                  copyItems:YES];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return newRetryableOperation;
 }
 
-- (BOOL)willRetryOperationForError:(NSError *)error
+- (BOOL)DF_willRetryOperationForError:(NSError *)error
 {
     //if retry policy exists for error and it can retry
     ErrorRetryPolicy *retryPolicy = [self retryPolicyForError:error];
@@ -130,13 +132,13 @@
         return NO;
     }
     NSTimeInterval waitInterval = retryPolicy.waitInterval;
-    DFOperation *newOperation = [self.operation clone];
+    DFOperation *newOperation = [self.DF_operation DF_clone];
     [retryPolicy retried];
     if (waitInterval == 0) {
-        [self startOperation:newOperation];
+        [self DF_startOperation:newOperation];
     }
     else {
-        self.executingOperationInfo = nil;
+        self.DF_runningOperationInfo = nil;
         //retry after wait interval
         NSLog(@"%@ Error Retrying after %f, cause : %@",self, waitInterval, error);
         @weakify(self);
@@ -148,33 +150,40 @@
                 return;
             }
             dispatch_block_t block = ^(void) {
-                if (self.state == OperationStateDone) {
+                if (self.DF_state == OperationStateDone) {
                     return;
                 }
                 else {
-                    [self startOperation:newOperation];
+                    [self DF_startOperation:newOperation];
                 }
             };
-            [self safelyExecuteBlock:block];
+            [self DF_safelyExecuteBlock:block];
         });
     }
     return YES;
 }
 
-- (void)operation:(DFOperation *)operation stateChanged:(id)changedValue
+- (void)DF_operation:(DFOperation *)operation stateChanged:(id)changedValue
 {
     dispatch_block_t block = ^() {
-        if ((self.state == OperationStateDone) || (operation.state != OperationStateDone)) {
+        OperationState state = [changedValue integerValue];
+        if ((self.DF_state == OperationStateDone) || (state != OperationStateDone)) {
             return;
         }
-        self.executingOperationInfo = nil;
-        if (![self willRetryOperationForError:operation.error]) {
-            self.error = operation.error;
-            self.output = operation.output;
-            [self done];
+        self.DF_runningOperationInfo = nil;
+        NSError *error = operation.DF_error;
+        if (![self DF_willRetryOperationForError:error]) {
+            if (error) {
+                self.DF_error = error;
+                self.DF_output = errorObject(error);
+            }
+            else {
+                self.DF_output = operation.DF_output;
+            }
+            [self DF_done];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 @end

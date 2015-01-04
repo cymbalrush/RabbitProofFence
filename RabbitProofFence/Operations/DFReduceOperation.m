@@ -9,6 +9,12 @@
 #import "DFReduceOperation.h"
 #import "DFReactiveOperation_SubclassingHooks.h"
 
+@interface DFReduceOperation ()
+
+@property (strong, nonatomic) id DF_acc;
+
+@end
+
 @implementation DFReduceOperation
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
@@ -20,71 +26,57 @@
 {
     self = [super init];
     if (self) {
-        self.executionObj = [[self class] executionObjFromBlock:reduceBlock];
-        self.executionObj.executionBlock = reduceBlock;
-        self.inputPorts = ports;
+        self.DF_executionObj = [[self class] DF_executionObjFromBlock:reduceBlock];
+        self.DF_executionObj.executionBlock = reduceBlock;
+        if ([ports containsObject:@keypath(self.seed)]) {
+            ports = [ports arrayByAddingObject:@keypath(self.seed)];
+        }
+        self.DF_inputPorts = ports;
     }
     return self;
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (BOOL)DF_execute
 {
-    __block DFReduceOperation *newReduceOperation = nil;
-    dispatch_block_t block = ^(void) {
-        newReduceOperation = [super clone:objToPointerMapping];
-        newReduceOperation.initialValue = self.initialValue;
-    };
-    [self safelyExecuteBlock:block];
-    return newReduceOperation;
-}
-
-- (instancetype)copyWithZone:(NSZone *)zone
-{
-    __block DFReduceOperation *newReduceOperation = nil;
-    dispatch_block_t block = ^(void) {
-        newReduceOperation = [super copyWithZone:zone];
-        newReduceOperation.initialValue = self.initialValue;
-    };
-    [self safelyExecuteBlock:block];
-    return newReduceOperation;
-}
-
-- (void)setInitialValue:(id)initialValue
-{
-    dispatch_block_t block = ^(void) {
-        _initialValue = initialValue;
-        if (self.state == OperationStateReady) {
-            self.accumulator = initialValue;
-        }
-    };
-    [self safelyExecuteBlock:block];
-}
-
-- (BOOL)execute
-{
-    Execution_Class *executionObj = self.executionObj;
-    if (executionObj.executionBlock) {
-        @try {
-            [self prepareExecutionObj:executionObj];
-            self.accumulator = [executionObj execute];
-        }
-        @catch (NSException *exception) {
-            self.error = NSErrorFromException(exception);
-        }
-        @finally {
-            [self breakRefCycleForExecutionObj:executionObj];
-        }
-        if (!self.error) {
-            return YES;
-        }
+    NSError *error = nil;
+    Execution_Class *executionObj = self.DF_executionObj;
+    @try {
+        [self DF_prepareExecutionObj:executionObj];
+        self.DF_acc = [executionObj execute];
     }
-    return NO;
+    @catch (NSException *exception) {
+        error = NSErrorFromException(exception);
+    }
+    @finally {
+        [self DF_breakRefCycleForExecutionObj:executionObj];
+    }
+    if (error) {
+        self.DF_error = error;
+        self.DF_output = errorObject(error);
+        return NO;
+    }
+    return YES;
 }
 
-- (void)done
+- (void)DF_done
 {
-    self.output = self.accumulator;
-    [super done];
+    if (!self.DF_error) {
+        self.DF_output = self.acc;
+    }
+    [super DF_done];
 }
+
+- (void)main
+{
+    dispatch_block_t block = ^(void) {
+        if (self.DF_state != OperationStateExecuting) {
+            return;
+        }
+        self.DF_acc = self.seed;
+        [super main];
+    };
+    [self DF_safelyExecuteBlock:block];
+}
+
 
 @end

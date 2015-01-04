@@ -16,6 +16,10 @@
 
 - (instancetype)initWithTryOperation:(DFOperation *)tryOperation
                    andCatchOperation:(DFOperation *)catchOperation
-                      andErrorBlock:(BOOL(^)(NSError *error))errorBlock;
+                       andErrorBlock:(BOOL(^)(NSError *error, DFTryCatchOperation *operation))errorBlock;
+
+@property (readonly, nonatomic) DFOperation *tryOperation;
+
+@property (readonly, nonatomic) DFOperation *catchOperation;
 
 @end

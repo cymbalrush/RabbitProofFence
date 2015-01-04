@@ -43,7 +43,7 @@
 //incoming port
 @property (strong, nonatomic) NSDictionary *dictionary;
 
-@property (strong, nonatomic) KeyValue *output;
+@property (readonly, nonatomic) KeyValue *output;
 
 @end
 
@@ -62,7 +62,7 @@
 
 @property (strong, nonatomic) NSNumber *inc;
 
-@property (strong, nonatomic) NSNumber *output;
+@property (readonly, nonatomic) NSNumber *output;
 
 @end
 

@@ -14,7 +14,7 @@
 - (void)clean
 {
     if (self.stateObservationToken) {
-        [self.operation safelyRemoveObserverWithBlockToken:self.stateObservationToken];
+        [self.operation DF_safelyRemoveObserver:self.stateObservationToken];
         self.stateObservationToken = nil;
     }
 }

@@ -11,7 +11,6 @@
 #import "DFMainOperation.h"
 #import "DFCompositeOperation.h"
 #import "DFRetryableOperation.h"
-#import "DFLiftOperation.h"
 #import "DFCoreDataOperation.h"
 #import "DFDelayOperation.h"
 #import "DFReactiveOperation.h"
@@ -36,6 +35,8 @@
 #import "RandomBackoffErrorRetryPolicy.h"
 #import "DFDelayOperation.h"
 #import "DFOperation+Graph.h"
+#import "DFVoidObject.h"
+#import "DFErrorObject.h"
 #import "DFNode.h"
 #import "DFWorkspace.h"
 

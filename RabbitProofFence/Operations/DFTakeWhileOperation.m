@@ -39,7 +39,7 @@
 {
     self = [super init];
     if (self) {
-        self.inputPorts = @[@keypath(self.input)];
+        self.DF_inputPorts = @[@keypath(self.input)];
     }
     return self;
 }
@@ -53,32 +53,35 @@
         id (^wrappingBlock)(id input) = ^(id input) {
             return @(newTakeWhileBlock(input));
         };
-        self.executionObj = [[self class] executionObjFromBlock:wrappingBlock];
-        self.executionObj.executionBlock = wrappingBlock;
+        self.DF_executionObj = [[self class] DF_executionObjFromBlock:wrappingBlock];
+        self.DF_executionObj.executionBlock = wrappingBlock;
     }
     return self;
 }
 
-- (BOOL)execute
+- (BOOL)DF_execute
 {
-    Execution_Class *executionObj = self.executionObj;
+    NSError *error = nil;
+    Execution_Class *executionObj = self.DF_executionObj;
     BOOL result = NO;
-    if (executionObj.executionBlock) {
-        @try {
-            [self prepareExecutionObj:executionObj];
-            id wrappedValue = [executionObj execute];
-            if ([wrappedValue boolValue]) {
-                self.executionCount ++;
-                self.output = [executionObj valueForArgAtIndex:0];
-                result = YES;
-            }
+    @try {
+        [self DF_prepareExecutionObj:executionObj];
+        id wrappedValue = [executionObj execute];
+        if ([wrappedValue boolValue]) {
+            self.DF_output = [executionObj valueForArgAtIndex:0];
+            result = YES;
         }
-        @catch (NSException *exception) {
-            self.error = NSErrorFromException(exception);
-        }
-        @finally {
-            [self breakRefCycleForExecutionObj:executionObj];
-        }
+    }
+    @catch (NSException *exception) {
+        error = NSErrorFromException(exception);
+    }
+    @finally {
+        [self DF_breakRefCycleForExecutionObj:executionObj];
+    }
+    if (error) {
+        self.DF_error = error;
+        self.DF_output = errorObject(error);
+        return NO;
     }
     return result;
 }

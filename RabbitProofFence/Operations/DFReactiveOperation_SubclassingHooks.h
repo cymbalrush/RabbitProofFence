@@ -12,28 +12,28 @@
 
 @interface DFReactiveOperation ()
 
-@property (strong, nonatomic) NSMutableDictionary *reactiveConnections;
+@property (strong, nonatomic) NSMutableDictionary *DF_reactiveConnections;
 
-- (void)reactiveConnectionPropertyChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation;
+- (void)DF_reactiveConnectionPropertyChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation;
 
-- (void)reactiveConnectionStateChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation;
+- (void)DF_reactiveConnectionStateChanged:(id)changedValue property:(NSString *)property operation:(DFOperation *)operation;
 
-- (BOOL)isReadyToExecute;
+- (BOOL)DF_isReadyToExecute;
 
-- (BOOL)canExecute;
+- (BOOL)DF_canExecute;
 
-- (ReactiveConnectionInfo *)reactiveConnectionInfo;
+- (ReactiveConnectionInfo *)DF_reactiveConnectionInfo;
 
-- (BOOL)isDone;
+- (BOOL)DF_isDone;
 
-- (BOOL)hasReactiveBindings;
+- (BOOL)DF_hasReactiveBindings;
 
-- (void)generateNextValues;
+- (void)DF_generateNextValues;
 
-- (NSArray *)reactiveOperations;
+- (NSArray *)DF_operationsConnectedReactively;
 
-- (NSDictionary *)reactiveBindingsForOperation:(DFOperation *)operation;
+- (NSDictionary *)DF_reactiveBindingsForOperation:(DFOperation *)operation;
 
-- (void)addPortToInputPorts:(NSString *)port;
+- (void)DF_addPortToInputPorts:(NSString *)port;
 
 @end

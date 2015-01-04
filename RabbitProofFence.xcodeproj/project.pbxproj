@@ -44,7 +44,6 @@
 		92174C351A56FDF000E89343 /* DFGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BFD1A56FDF000E89343 /* DFGenerator.m */; };
 		92174C361A56FDF000E89343 /* DFIdentityOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BFF1A56FDF000E89343 /* DFIdentityOperation.m */; };
 		92174C371A56FDF000E89343 /* DFIfElseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C011A56FDF000E89343 /* DFIfElseOperation.m */; };
-		92174C381A56FDF000E89343 /* DFLiftOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C031A56FDF000E89343 /* DFLiftOperation.m */; };
 		92174C391A56FDF000E89343 /* DFLoopOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C061A56FDF000E89343 /* DFLoopOperation.m */; };
 		92174C3A1A56FDF000E89343 /* DFMainOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C081A56FDF000E89343 /* DFMainOperation.m */; };
 		92174C3B1A56FDF000E89343 /* DFMapOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C0A1A56FDF000E89343 /* DFMapOperation.m */; };
@@ -69,6 +68,7 @@
 		92174C651A56FE1B00E89343 /* EXTSelectorChecking.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C581A56FE1B00E89343 /* EXTSelectorChecking.m */; };
 		92174C661A56FE1B00E89343 /* NSInvocation+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C5C1A56FE1B00E89343 /* NSInvocation+EXT.m */; };
 		92174C671A56FE1B00E89343 /* NSMethodSignature+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C5E1A56FE1B00E89343 /* NSMethodSignature+EXT.m */; };
+		92174C6A1A57233800E89343 /* DFErrorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C691A57233800E89343 /* DFErrorObject.m */; };
 		924ABE541A0D2FE900EF97F5 /* NSArray+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */; };
 		927E128B1A0C6D8B002DC6FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128A1A0C6D8B002DC6FB /* main.m */; };
 		927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128D1A0C6D8B002DC6FB /* AppDelegate.m */; };
@@ -159,8 +159,6 @@
 		92174BFF1A56FDF000E89343 /* DFIdentityOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFIdentityOperation.m; path = Operations/DFIdentityOperation.m; sourceTree = "<group>"; };
 		92174C001A56FDF000E89343 /* DFIfElseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFIfElseOperation.h; path = Operations/DFIfElseOperation.h; sourceTree = "<group>"; };
 		92174C011A56FDF000E89343 /* DFIfElseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFIfElseOperation.m; path = Operations/DFIfElseOperation.m; sourceTree = "<group>"; };
-		92174C021A56FDF000E89343 /* DFLiftOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFLiftOperation.h; path = Operations/DFLiftOperation.h; sourceTree = "<group>"; };
-		92174C031A56FDF000E89343 /* DFLiftOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFLiftOperation.m; path = Operations/DFLiftOperation.m; sourceTree = "<group>"; };
 		92174C041A56FDF000E89343 /* DFLoopOperation_SubclassingHooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFLoopOperation_SubclassingHooks.h; path = Operations/DFLoopOperation_SubclassingHooks.h; sourceTree = "<group>"; };
 		92174C051A56FDF000E89343 /* DFLoopOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFLoopOperation.h; path = Operations/DFLoopOperation.h; sourceTree = "<group>"; };
 		92174C061A56FDF000E89343 /* DFLoopOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFLoopOperation.m; path = Operations/DFLoopOperation.m; sourceTree = "<group>"; };
@@ -222,6 +220,8 @@
 		92174C5C1A56FE1B00E89343 /* NSInvocation+EXT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSInvocation+EXT.m"; path = "Ext/NSInvocation+EXT.m"; sourceTree = "<group>"; };
 		92174C5D1A56FE1B00E89343 /* NSMethodSignature+EXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMethodSignature+EXT.h"; path = "Ext/NSMethodSignature+EXT.h"; sourceTree = "<group>"; };
 		92174C5E1A56FE1B00E89343 /* NSMethodSignature+EXT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMethodSignature+EXT.m"; path = "Ext/NSMethodSignature+EXT.m"; sourceTree = "<group>"; };
+		92174C681A57233800E89343 /* DFErrorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFErrorObject.h; path = Operations/DFErrorObject.h; sourceTree = "<group>"; };
+		92174C691A57233800E89343 /* DFErrorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFErrorObject.m; path = Operations/DFErrorObject.m; sourceTree = "<group>"; };
 		924ABE521A0D2FE900EF97F5 /* NSArray+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Utility.h"; sourceTree = "<group>"; };
 		924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Utility.m"; sourceTree = "<group>"; };
 		927E12851A0C6D8B002DC6FB /* RabbitProofFence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RabbitProofFence.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -393,6 +393,8 @@
 				92174C191A56FDF000E89343 /* DFReactiveOperation.h */,
 				92174C1A1A56FDF000E89343 /* DFReactiveOperation.m */,
 				92174C181A56FDF000E89343 /* DFReactiveOperation_SubclassingHooks.h */,
+				92174BFC1A56FDF000E89343 /* DFGenerator.h */,
+				92174BFD1A56FDF000E89343 /* DFGenerator.m */,
 				92174BE61A56FDF000E89343 /* DFAggregatorOperation.h */,
 				92174BE71A56FDF000E89343 /* DFAggregatorOperation.m */,
 				92174BE81A56FDF000E89343 /* DFAndOperation.h */,
@@ -405,10 +407,6 @@
 				92174BF91A56FDF000E89343 /* DFFilterOperation.m */,
 				92174BFA1A56FDF000E89343 /* DFFlattenOperation.h */,
 				92174BFB1A56FDF000E89343 /* DFFlattenOperation.m */,
-				92174BFC1A56FDF000E89343 /* DFGenerator.h */,
-				92174BFD1A56FDF000E89343 /* DFGenerator.m */,
-				92174C021A56FDF000E89343 /* DFLiftOperation.h */,
-				92174C031A56FDF000E89343 /* DFLiftOperation.m */,
 				92174C091A56FDF000E89343 /* DFMapOperation.h */,
 				92174C0A1A56FDF000E89343 /* DFMapOperation.m */,
 				92174C1B1A56FDF000E89343 /* DFReduceOperation.h */,
@@ -423,6 +421,8 @@
 				92174C481A56FDF900E89343 /* StreamOperation.h */,
 				92174C261A56FDF000E89343 /* DFVoidObject.h */,
 				92174C271A56FDF000E89343 /* DFVoidObject.m */,
+				92174C681A57233800E89343 /* DFErrorObject.h */,
+				92174C691A57233800E89343 /* DFErrorObject.m */,
 				928E1EE41A16E12F0055D2AD /* Retry */,
 				928E1ECB1A16E0EA0055D2AD /* Utility */,
 				928E1ECA1A16E0E20055D2AD /* Visualization */,
@@ -647,8 +647,8 @@
 				92174C631A56FE1B00E89343 /* EXTSafeCategory.m in Sources */,
 				92174C651A56FE1B00E89343 /* EXTSelectorChecking.m in Sources */,
 				92174BE31A56FDC400E89343 /* ErrorRetryPolicy.m in Sources */,
+				92174C6A1A57233800E89343 /* DFErrorObject.m in Sources */,
 				92174C351A56FDF000E89343 /* DFGenerator.m in Sources */,
-				92174C381A56FDF000E89343 /* DFLiftOperation.m in Sources */,
 				92174C3B1A56FDF000E89343 /* DFMapOperation.m in Sources */,
 				92174C3C1A56FDF000E89343 /* DFMetaOperation.m in Sources */,
 				92174C361A56FDF000E89343 /* DFIdentityOperation.m in Sources */,

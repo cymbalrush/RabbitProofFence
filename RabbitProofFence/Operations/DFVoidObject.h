@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-extern BOOL isVoid(id obj);
+extern BOOL isDFVoidObject(id obj);
+
+@interface DFVoidObjectException : NSException
+
+@end
 
 @interface DFVoidObject : NSProxy
 

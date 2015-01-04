@@ -16,6 +16,7 @@
 #import <libkern/OSAtomic.h>
 #import "DFVoidObject.h"
 #import "EXTNil.h"
+#import "DFErrorObject.h"
 
 NSString * const DFOperationExceptionInvalidBlockSignature = @"DFOperationExceptionInvalidBlockSignature";
 NSString * const DFOperationExceptionDuplicatePropertyNames = @"DFOperationExceptionDuplicatePropertyNames";
@@ -27,7 +28,9 @@ NSString * const DFOperationExceptionInEqualInputPorts = @"DFOperationOperationE
 NSString * const DFOperationExceptionInvalidInitialization = @"DFOperationExceptionInvalidInitialization";
 NSString * const DFOperationExceptionMethodNotSupported = @"DFOperationExceptionMethodNotSupported";
 NSString * const DFOperationExceptionIncorrectParameter = @"DFOperationExceptionIncorrectParameter";
+NSString * const DFErrorKeyName = @"DFErrorKey";
 const int DFOperationExceptionEncounteredErrorCode = 1000;
+const int DFOperationInComingPortErrorCode = 1001;
 
 static char const * const OPERATION_SYNC_QUEUE = "com.operations.syncQueue";
 static char const * const OPERATION_START_QUEUE = "com.operations.startQueue";
@@ -76,61 +79,77 @@ NSError * NSErrorFromException(NSException *exception)
                                   userInfo:info];
 }
 
-NSString *setterFromProperty(NSString *property)
-{
-    if ([property length] == 0) {
-        return @"";
-    }
-    return [NSString stringWithFormat:@"set%@%@:",  [[property substringToIndex:1] uppercaseString], [property substringFromIndex:1]];
-}
-
 void methodNotSupported()
 {
     NSString *reason = [NSString stringWithFormat:@"Method not supported"];
     @throw [NSException exceptionWithName:DFOperationExceptionMethodNotSupported reason:reason userInfo:nil];
 }
 
+NSString *setterFromProperty(NSString *property)
+{
+    if ([property length] == 0) {
+        return @"";
+    }
+    return [NSString stringWithFormat:@"set%@%@:",
+            [[property substringToIndex:1] uppercaseString],
+            [property substringFromIndex:1]];
+}
+
+NSDictionary *portErrors(NSError *error)
+{
+    if ([error.domain isEqualToString:DFOperationExceptionName] && error.code == DFOperationInComingPortErrorCode) {
+        return nil;
+    }
+    return error.userInfo[DFErrorKeyName];
+}
+
+NSError *createErrorFromPortErrors(NSDictionary *portErrors)
+{
+    NSError *error = [NSError errorWithDomain:DFOperationExceptionName
+                                         code:DFOperationInComingPortErrorCode
+                                     userInfo:portErrors];
+    return error;
+}
+
 @interface DFOperation ()
 
-@property (assign, nonatomic) OperationState state;
+@property (assign, nonatomic) OperationState DF_state;
 
-@property (strong, nonatomic) NSError *error;
+@property (strong, nonatomic) NSError *DF_error;
 
-@property (strong, nonatomic) id output;
+@property (strong, nonatomic) id DF_output;
 
-@property (strong, nonatomic) NSMutableDictionary *connections;
+@property (strong, nonatomic) NSMutableDictionary *DF_connections;
 
-@property (strong, nonatomic) NSMutableDictionary *propertySet;
+@property (strong, nonatomic) AMBlockToken *DF_isFinishedObservationToken;
 
-@property (strong, nonatomic) AMBlockToken *isFinishedObservationToken_;
+@property (strong, nonatomic) AMBlockToken *DF_isReadyObservationToken;
 
-@property (strong, nonatomic) AMBlockToken *isReadyObservationToken_;
+@property (assign, nonatomic) volatile OSSpinLock DF_stateLock;
 
-@property (assign, nonatomic) volatile OSSpinLock stateLock;
+@property (strong, nonatomic) NSRecursiveLock *DF_operationLock;
 
-@property (strong, nonatomic) NSRecursiveLock *operationLock;
+@property (strong, nonatomic) Execution_Class *DF_executionObj;
 
-@property (strong, nonatomic) Execution_Class *executionObj;
+@property (assign, nonatomic) BOOL DF_isSuspended;
 
-@property (assign, nonatomic) BOOL isSuspended;
+@property (strong, nonatomic) NSMutableSet *DF_propertiesSet;
 
-@property (strong, nonatomic) NSMutableSet *propertiesSet;
+@property (strong, nonatomic) NSArray *DF_inputPorts;
 
-@property (strong, nonatomic) NSArray *inputPorts;
+@property (assign, nonatomic) BOOL DF_operationQueued;
 
-@property (assign, nonatomic) BOOL operationQueued;
+@property (strong, nonatomic) NSMutableSet *DF_excludedPorts;
 
-@property (strong, nonatomic) NSMutableSet *excludedPorts;
+@property (strong, nonatomic) NSMutableArray *DF_outputConnections;
 
-@property (strong, nonatomic) NSMutableArray *outputConnections;
-
-- (void)safelyRemoveObserverWithBlockToken:(AMBlockToken *)token;
+- (void)DF_safelyRemoveObserver:(AMBlockToken *)token;
 
 @end
 
 @implementation DFOperation
 
-+ (Execution_Class *)executionObjFromBlock:(id)block
++ (Execution_Class *)DF_executionObjFromBlock:(id)block
 {
     BlockDescription *blockDesc = [[BlockDescription alloc] initWithBlock:block];
     NSMethodSignature  *sig = blockDesc.blockSignature;
@@ -151,7 +170,7 @@ void methodNotSupported()
 }
 
 //mapping between NSOperation properties and state
-+ (NSString *)propertyKeyFromState:(OperationState)state
++ (NSString *)DF_propertyKeyFromState:(OperationState)state
 {
     DFOperation *operation = nil;
     NSString *propertyName = nil;
@@ -179,21 +198,30 @@ void methodNotSupported()
 {
     DFOperation *operation = nil;
     //state change is handled manually
-    return [key isEqualToString:@keypath(operation.state)] ? NO : [super automaticallyNotifiesObserversForKey:key];
+    return [key isEqualToString:@keypath(operation.DF_state)] ? NO : [super automaticallyNotifiesObserversForKey:key];
 }
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
     DFOperation *operation = nil;
     NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    NSSet *properties = nil;
     if ([key isEqualToString:@keypath(operation.isReady)]) {
-        NSSet *properties = [NSSet setWithObject:@keypath(operation.isSuspended)];
+        properties = [NSSet setWithObject:@keypath(operation.DF_isSuspended)];
+    }
+    else if ([key isEqualToString:@keypath(operation.state)]) {
+        properties = [NSSet setWithObject:@keypath(operation.DF_state)];
+    }
+    else if ([key isEqualToString:@keypath(operation.output)]) {
+        properties = [NSSet setWithObject:@keypath(operation.DF_output)];
+    }
+    if (properties) {
         keyPaths = [keyPaths setByAddingObjectsFromSet:properties];
     }
     return keyPaths;
 }
 
-static inline BOOL StateTransitionIsValid(OperationState fromState, OperationState toState, BOOL isCancelled) {
+NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState toState, BOOL isCancelled) {
     switch (fromState) {
         case OperationStateReady: {
             switch (toState) {
@@ -229,7 +257,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     }
 }
 
-+ (dispatch_queue_t)syncQueue
++ (dispatch_queue_t)DF_syncQueue
 {
     static dispatch_queue_t queue = nil;
     static dispatch_once_t onceToken;
@@ -239,7 +267,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     return queue;
 }
 
-+ (dispatch_queue_t)operationStartQueue
++ (dispatch_queue_t)DF_startQueue
 {
     static dispatch_queue_t queue = nil;
     static dispatch_once_t onceToken;
@@ -249,7 +277,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     return queue;
 }
 
-+ (dispatch_queue_t)operationObservationHandlingQueue
++ (dispatch_queue_t)DF_observationQueue
 {
     static dispatch_queue_t queue = nil;
     static dispatch_once_t onceToken;
@@ -259,7 +287,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     return queue;
 }
 
-+ (NSMutableDictionary *)dependentOperations
++ (NSMutableDictionary *)DF_dependentOperations
 {
     static NSMutableDictionary *operations = nil;
     static dispatch_once_t onceToken;
@@ -269,7 +297,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     return operations;
 }
 
-+ (NSMutableSet *)executingOperations
++ (NSMutableSet *)DF_runningOperations
 {
     static NSMutableSet *operations = nil;
     static dispatch_once_t onceToken;
@@ -279,33 +307,33 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     return operations;
 }
 
-+ (void)startOperation:(DFOperation *)operation
++ (void)DF_startOperation:(DFOperation *)operation
 {
     // prepare and start it
-    dispatch_async([DFOperation operationStartQueue], ^{
-        if (operation.state == OperationStateReady) {
+    dispatch_async([DFOperation DF_startQueue], ^{
+        if (operation.DF_state == OperationStateReady) {
             [operation start];
         }
     });
 }
 
-+ (void)removeObservations:(DFOperation *)operation
++ (void)DF_removeObservations:(DFOperation *)operation
 {
     //remove state observation
-    AMBlockToken *observationToken = operation.isFinishedObservationToken_;
-    [operation safelyRemoveObserverWithBlockToken:observationToken];
-    operation.isFinishedObservationToken_ = nil;
+    AMBlockToken *observationToken = operation.DF_isFinishedObservationToken;
+    [operation DF_safelyRemoveObserver:observationToken];
+    operation.DF_isFinishedObservationToken = nil;
     
-    observationToken = operation.isReadyObservationToken_;
-    [operation safelyRemoveObserverWithBlockToken:observationToken];
-    operation.isReadyObservationToken_ = nil;
+    observationToken = operation.DF_isReadyObservationToken;
+    [operation DF_safelyRemoveObserver:observationToken];
+    operation.DF_isReadyObservationToken = nil;
 }
 
-+ (void)cleanupOperation:(DFOperation *)finishedOperation
++ (void)DF_cleanup:(DFOperation *)finishedOperation
 {
     NSValue *key = [NSValue valueWithPointer:(__bridge const void *)(finishedOperation)];
-    NSMutableDictionary *mapping = [DFOperation dependentOperations];
-    [[finishedOperation class] removeObservations:finishedOperation];
+    NSMutableDictionary *mapping = [DFOperation DF_dependentOperations];
+    [[finishedOperation class] DF_removeObservations:finishedOperation];
     NSArray *keys = [mapping allKeys];
     [keys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSValue *key = obj;
@@ -318,10 +346,10 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     [mapping removeObjectForKey:key];
 }
 
-+ (void)startDependentOperations:(DFOperation *)finishedOperation
++ (void)DF_startDependentOperations:(DFOperation *)finishedOperation
 {
     NSValue *key = [NSValue valueWithPointer:(__bridge const void *)(finishedOperation)];
-    NSMutableDictionary *mapping = [DFOperation dependentOperations];
+    NSMutableDictionary *mapping = [DFOperation DF_dependentOperations];
     __block NSMutableSet *operationsToStart = nil;
     NSMutableSet *dependentOperations = mapping[key];
     [dependentOperations enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
@@ -330,7 +358,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
         if (dependentOperation == finishedOperation) {
             return;
         }
-        if (!dependentOperation.queue && (dependentOperation.state == OperationStateReady)) {
+        if (!dependentOperation.queue && (dependentOperation.DF_state == OperationStateReady)) {
             NSArray *dependencies = dependentOperation.dependencies;
             __block BOOL isResolved = YES;
             //check if all dependencies are finished
@@ -350,64 +378,64 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
             }
         }
     }];
-    [self cleanupOperation:finishedOperation];
+    [self DF_cleanup:finishedOperation];
     if (operationsToStart.count > 0) {
         [operationsToStart enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
             DFOperation *operation = obj;
-            [[operation class] startOperation:operation];
+            [[operation class] DF_startOperation:operation];
         }];
     }
 }
 
-+ (void)startObservingOperation:(DFOperation *)operation
++ (void)DF_observeOperation:(DFOperation *)operation
 {
     if (!operation) {
         return;
     }
-    dispatch_sync([DFOperation syncQueue], ^{
-        [[DFOperation executingOperations] addObject:operation];
+    dispatch_sync([DFOperation DF_syncQueue], ^{
+        [[DFOperation DF_runningOperations] addObject:operation];
         @weakify(operation);
         //add internal observer for isFinished
-        AMBlockToken *observationToken = [operation addObserverForKeyPath:@keypath(operation.isFinished) task:^(id obj, NSDictionary *change) {
-                dispatch_async([DFOperation syncQueue], ^{
+        AMBlockToken *token = [operation addObserverForKeyPath:@keypath(operation.isFinished) task:^(id obj, NSDictionary *change) {
+                dispatch_async([DFOperation DF_syncQueue], ^{
                     @strongify(operation);
                     if (!operation) {
                         return;
                     }
-                    [[operation class] startDependentOperations:operation];
-                    [[DFOperation executingOperations] removeObject:operation];
+                    [[operation class] DF_startDependentOperations:operation];
+                    [[DFOperation DF_runningOperations] removeObject:operation];
                 });
         }];
-        operation.isFinishedObservationToken_ = observationToken;
+        operation.DF_isFinishedObservationToken = token;
         //if there is no queue, add internal observer for isReady
         if (!operation.queue) {
             if (operation.isReady) {
-                [[operation class] startOperation:operation];
+                [[operation class] DF_startOperation:operation];
             }
             else {
-                observationToken = [operation addObserverForKeyPath:@keypath(operation.isReady) task:^(id obj, NSDictionary *change) {
+                token = [operation addObserverForKeyPath:@keypath(operation.isReady) task:^(id obj, NSDictionary *change) {
                     //check operation state
                     if ([[change valueForKey:NSKeyValueChangeNewKey] boolValue]) {
                         //move it to the same queue
-                        dispatch_async([DFOperation syncQueue], ^{
+                        dispatch_async([DFOperation DF_syncQueue], ^{
                             @strongify(operation);
                             if (!operation) {
                                 return;
                             }
-                            AMBlockToken *observationToken = operation.isReadyObservationToken_;
-                            [operation safelyRemoveObserverWithBlockToken:observationToken];
-                            operation.isReadyObservationToken_ = nil;
+                            AMBlockToken *observationToken = operation.DF_isReadyObservationToken;
+                            [operation DF_safelyRemoveObserver:observationToken];
+                            operation.DF_isReadyObservationToken = nil;
                             //make sure that operation can be executed
-                            [[operation class] startOperation:operation];
+                            [[operation class] DF_startOperation:operation];
                         });
                     }
                 }];
-                operation.isReadyObservationToken_ = observationToken;
+                operation.DF_isReadyObservationToken = token;
             }
         }
         NSArray *dependencies = operation.dependencies;
         if ([dependencies count] > 0) {
-            NSMutableDictionary *mapping = [DFOperation dependentOperations];
+            NSMutableDictionary *mapping = [DFOperation DF_dependentOperations];
             [dependencies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 DFOperation *dependentOperation = obj;
                 NSValue *key = [NSValue valueWithPointer:(__bridge const void *)(dependentOperation)];
@@ -425,7 +453,7 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {
     DFOperation *operation = [[[self class] alloc] init];
-    operation.inputPorts = [ports copy];
+    operation.DF_inputPorts = [ports copy];
     operation.executionBlock = block;
     return operation;
 }
@@ -449,64 +477,79 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
 {
     self = [super init];
     if (self) {
-        _stateLock = OS_SPINLOCK_INIT;
-        _operationLock = [NSRecursiveLock new];
-        _connections = [NSMutableDictionary new];
-        _propertiesSet = [NSMutableSet new];
-        _outputConnections = [NSMutableArray array];
+        _DF_stateLock = OS_SPINLOCK_INIT;
+        _DF_operationLock = [NSRecursiveLock new];
+        _DF_connections = [NSMutableDictionary new];
+        _DF_propertiesSet = [NSMutableSet new];
+        _DF_outputConnections = [NSMutableArray array];
         _queue = [[self class] operationQueue];
-        _excludedPorts = [NSMutableSet setWithObject:@keypath(self.selfRef)];
-        _output = [DFVoidObject new];
+        _DF_excludedPorts = [NSMutableSet setWithObject:@keypath(self.selfRef)];
+        _DF_output = [DFVoidObject new];
     }
     return self;
 }
 
+- (id)output
+{
+    return self.DF_output;
+}
+
+- (NSError *)error
+{
+    return self.DF_error;
+}
+
+- (OperationState)state
+{
+    return self.DF_state;
+}
+
 - (void)setExecutionBlock:(id)executionBlock
 {
-    if (self.executionObj.executionBlock != executionBlock) {
-        Execution_Class *executionObj = [DFOperation executionObjFromBlock:executionBlock];
-        NSArray *ports = self.inputPorts;
+    if (self.DF_executionObj.executionBlock != executionBlock) {
+        Execution_Class *executionObj = [DFOperation DF_executionObjFromBlock:executionBlock];
+        NSArray *ports = self.DF_inputPorts;
         NSUInteger n = [executionObj numberOfPorts];
         if ((n > 0) && !([ports count] == n && [[NSSet setWithArray:ports] count] == [ports count])) {
             //throw an exception
             NSString *reason = [NSString stringWithFormat:@"Duplicate property names, make sure that property names are unique"];
             @throw [NSException exceptionWithName:DFOperationExceptionDuplicatePropertyNames reason:reason userInfo:nil];
         }
-        self.executionObj = executionObj;
-        self.executionObj.executionBlock = executionBlock;
+        self.DF_executionObj = executionObj;
+        self.DF_executionObj.executionBlock = executionBlock;
     }
 }
 
-- (void)setState:(OperationState)state
+- (void)setDF_state:(OperationState)state
 {
-    OSSpinLockLock(&_stateLock);
-    if (_state == state) {
-        OSSpinLockUnlock(&_stateLock);
+    OSSpinLockLock(&_DF_stateLock);
+    if (_DF_state == state) {
+        OSSpinLockUnlock(&_DF_stateLock);
         return;
     }
-    if (StateTransitionIsValid(_state, state, self.isCancelled)) {
-        NSString *oldStateKey = [DFOperation propertyKeyFromState:_state];
-        NSString *newStateKey = [DFOperation propertyKeyFromState:state];
+    if (StateTransitionIsValid(_DF_state, state, self.isCancelled)) {
+        NSString *oldStateKey = [DFOperation DF_propertyKeyFromState:_DF_state];
+        NSString *newStateKey = [DFOperation DF_propertyKeyFromState:state];
         [self willChangeValueForKey:oldStateKey];
         [self willChangeValueForKey:newStateKey];
-        [self willChangeValueForKey:@keypath(self,state)];
-        _state = state;
-        [self didChangeValueForKey:@keypath(self,state)];
+        [self willChangeValueForKey:@keypath(self.DF_state)];
+        _DF_state = state;
+        [self didChangeValueForKey:@keypath(self.DF_state)];
         [self didChangeValueForKey:newStateKey];
         [self didChangeValueForKey:oldStateKey];
     }
-    OSSpinLockUnlock(&_stateLock);
+    OSSpinLockUnlock(&_DF_stateLock);
 }
 
-- (void)setOutput:(id)output
+- (void)setDF_output:(id)output
 {
-    _output = output;
-    [self.outputConnections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    _DF_output = output;
+    [self.DF_outputConnections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSArray *array = obj;
         NSString *property = array[0];
         NSObject *object = array[1];
         dispatch_queue_t queue = array[2];
-        if ([queue isEqual:[NSNull null]]) {
+        if (queue == [EXTNil null]) {
             [object setValue:output forKey:property];
         }
         else {
@@ -531,9 +574,9 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     }];
 }
 
-+ (void)copyExcludedPortValuesFromOperation:(DFOperation *)fromOperation
-                             toOperation:(DFOperation *)toOperation
-                           excludedPorts:(NSSet *)excludedPorts
++ (void)DF_copyExcludedPortValuesFromOperation:(DFOperation *)fromOperation
+                                   toOperation:(DFOperation *)toOperation
+                                 excludedPorts:(NSSet *)excludedPorts
 {
     [excludedPorts enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         NSString *boundPort = obj;
@@ -545,32 +588,18 @@ static inline BOOL StateTransitionIsValid(OperationState fromState, OperationSta
     }];
 }
 
-- (void)commonCopy:(DFOperation *)operation
-{
-    [self breakRefCycleForExecutionObj:self.executionObj];
-    operation.executionObj = [self.executionObj copy];
-    operation.inputPorts = [self.inputPorts copy];
-    operation.name = [self.name copy];
-    operation.queue = self.queue;
-    operation.queuePriority = self.queuePriority;
-    NSMutableSet *excludedPorts = [self.excludedPorts copy];
-    operation.excludedPorts = excludedPorts;
-    //copy excluded port values
-    [[self class] copyExcludedPortValuesFromOperation:self toOperation:operation excludedPorts:excludedPorts];
-}
-
 NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 {
     DFOperation *newOperation = [[operation class] new];
-    newOperation.executionObj = [operation.executionObj copy];
-    newOperation.inputPorts = [operation.inputPorts copy];
+    newOperation.DF_executionObj = [operation.DF_executionObj copy];
+    newOperation.DF_inputPorts = [operation.DF_inputPorts copy];
     newOperation.name = [operation.name copy];
     newOperation.queue = operation.queue;
     newOperation.queuePriority = operation.queuePriority;
-    NSMutableSet *excludedPorts = [operation.excludedPorts copy];
-    newOperation.excludedPorts = excludedPorts;
+    NSMutableSet *excludedPorts = [operation.DF_excludedPorts copy];
+    newOperation.DF_excludedPorts = excludedPorts;
     //copy excluded port values
-    [[operation class] copyExcludedPortValuesFromOperation:operation
+    [[operation class] DF_copyExcludedPortValuesFromOperation:operation
                                                toOperation:newOperation
                                              excludedPorts:excludedPorts];
     return newOperation;
@@ -581,7 +610,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     __block DFOperation *operation = nil;
     dispatch_block_t block = ^(void) {
         //brek ref cycle
-        [self breakRefCycleForExecutionObj:self.executionObj];
+        [self DF_breakRefCycleForExecutionObj:self.DF_executionObj];
         operation = copyOperation(self);
         //copy dependencies
         [self.dependencies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -594,17 +623,17 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
                 [operation addDependency:connectedOperation];
             }
         }];
-        [operation.propertiesSet removeAllObjects];
+        [operation.DF_propertiesSet removeAllObjects];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return operation;
 }
 
-- (instancetype)clone:(NSMutableDictionary *)objToPointerMapping
+- (instancetype)DF_clone:(NSMutableDictionary *)objToPointerMapping
 {
     __block DFOperation *operation = nil;
     dispatch_block_t block = ^(void) {
-        [self breakRefCycleForExecutionObj:self.executionObj];
+        [self DF_breakRefCycleForExecutionObj:self.DF_executionObj];
         operation = copyOperation(self);
         //clone dependencies
         [self.dependencies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -614,27 +643,32 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             //check if object is already present
             DFOperation *newOperation = objToPointerMapping[key];
             if (!newOperation) {
-                newOperation = [connectedOperation clone:objToPointerMapping];
+                newOperation = [connectedOperation DF_clone:objToPointerMapping];
                 [objToPointerMapping setObject:newOperation forKey:key];
             }
             [operation addDependency:newOperation withBindings:bindings];
         }];
-        [operation.propertiesSet removeAllObjects];
+        [operation.DF_propertiesSet removeAllObjects];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return operation;
 }
 
 //Do a deep copy, while copying we don't want to create dependent operations more than once,
 //to resolve this a dictionary is passed which has operation to pointer mapping.
-- (instancetype)clone
+- (instancetype)DF_clone
 {
     NSMutableDictionary *objToPointerMapping = [NSMutableDictionary dictionary];
-    DFOperation *operation = [self clone:objToPointerMapping];
+    DFOperation *operation = [self DF_clone:objToPointerMapping];
     return operation;
 }
 
-- (NSSet *)validBindingsForOperation:(DFOperation *)operation bindings:(NSDictionary *)bindings
+- (NSArray *)inputPorts
+{
+    return [self.DF_inputPorts copy];
+}
+
+- (NSSet *)DF_validBindingsForOperation:(DFOperation *)operation bindings:(NSDictionary *)bindings
 {
     NSSet *filteredKeys = [bindings keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
         NSString *toPropertyName = key;
@@ -657,13 +691,6 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     return filteredKeys;
 }
 
-- (NSUInteger)indexOfOperation:(DFOperation *)operation array:(NSArray *)array
-{
-    return [array indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        return [[obj operation] isEqual:operation];
-    }];
-}
-
 - (NSDictionary *)addDependency:(DFOperation *)operation withBindings:(NSDictionary *)bindings
 {
     if (!operation || operation == self) {
@@ -672,7 +699,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     [self addDependency:operation];
     __block NSDictionary *validBindings = nil;
     dispatch_block_t block = ^(void) {
-        NSSet *filteredKeys = [self validBindingsForOperation:operation bindings:bindings];
+        NSSet *filteredKeys = [self DF_validBindingsForOperation:operation bindings:bindings];
         [filteredKeys enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
             NSString *toPort = obj;
             NSString *fromPort = bindings[toPort];
@@ -681,18 +708,18 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             info.operation = operation;
             info.fromPort = fromPort;
             info.toPort = toPort;
-            self.connections[toPort] = info;
+            self.DF_connections[toPort] = info;
         }];
         validBindings = [bindings dictionaryWithValuesForKeys:[filteredKeys allObjects]];
      };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return validBindings;
 }
 
-- (BOOL)connectPort:(NSString *)port toOutputOfOperation:(id<Operation>)operation
+- (BOOL)connectPort:(NSString *)port toOutputOfOperation:(DFOperation *)operation
 {
     if ([port length] > 0 && [self respondsToSelector:NSSelectorFromString(setterFromProperty(port))]) {
-        NSDictionary *validBindings = [self addDependency:operation withBindings:@{port : @keypath(operation.output)}];
+        NSDictionary *validBindings = [self addDependency:operation withBindings:@{port : @keypath(operation.DF_output)}];
         return ([validBindings count] > 0);
     }
     return NO;
@@ -704,23 +731,23 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     dispatch_block_t block = ^(void) {
         if ([operation isKindOfClass:[DFOperation class]]) {
             NSMutableArray *connectionsToRemove = [NSMutableArray array];
-            [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 ConnectionInfo *info = obj;
                 if ([info.operation isEqual:operation]) {
                     [connectionsToRemove addObject:key];
                 }
             }];
-            [self.connections removeObjectsForKeys:connectionsToRemove];
+            [self.DF_connections removeObjectsForKeys:connectionsToRemove];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (NSDictionary *)bindingsForOperation:(DFOperation *)operation
 {
     __block NSMutableDictionary *bindings = [NSMutableDictionary dictionary];
     dispatch_block_t block = ^(void) {
-        [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ConnectionInfo *info = obj;
             DFOperation *connectedOperation = info.operation;
             if (connectedOperation == operation) {
@@ -730,42 +757,42 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             }
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return bindings;
 }
 
 - (id)executionBlock
 {
-    return self.executionObj.executionBlock;
+    return self.DF_executionObj.executionBlock;
 }
 
 //start execution
 - (void)startExecution
 {
     dispatch_block_t block = ^() {
-        if (!self.operationQueued) {
+        if (!self.DF_operationQueued) {
             if (self.queue) {
                 [self.queue addOperation:self];
             }
-            [DFOperation startObservingOperation:self];
-            self.operationQueued = YES;
+            [DFOperation DF_observeOperation:self];
+            self.DF_operationQueued = YES;
         }
         //enumerate through dependencies
         [[self connectedOperations] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             DFOperation *operation = obj;
             //if it's subclass of DFOperation then recurse, otherwise ignore
-            if ([operation isKindOfClass:[DFOperation class]] && (operation.state == OperationStateReady)) {
+            if ([operation isKindOfClass:[DFOperation class]] && (operation.DF_state == OperationStateReady)) {
                 [operation startExecution];
             }
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (void)executeBindings
+- (void)DF_executeBindings
 {
     //loop through dependent operation bindings
-    [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         ConnectionInfo *info = obj;
         DFOperation *operation = info.operation;
         [self setValue:[operation valueForKey:info.fromPort] forKey:info.toPort];
@@ -778,61 +805,100 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 }
 
 //prepare for execution
-- (void)prepareForExecution
+- (void)DF_prepareForExecution
 {
-    [self executeBindings];
+    [self DF_executeBindings];
 }
 
-- (void)prepareExecutionObj:(Execution_Class *)executionObj
+- (id)DF_correctedValue:(id)value forPort:(NSString *)port
 {
-    [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *property = obj;
-        id value = [self valueForKey:property];
-        value = (value == [EXTNil null]) ? nil : value;
-        [executionObj setValue:value atArgIndex:idx];
+    if (isDFErrorObject(value) && self.portErrorResolutionBlock) {
+        DFErrorObject *errorObj = value;
+        value = self.portErrorResolutionBlock(errorObj.error, port, self);
+    }
+    value = (value == [EXTNil null]) ? nil : value;
+    return value;
+}
+
+- (void)DF_prepareExecutionObj:(Execution_Class *)executionObj
+{
+    [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx >= executionObj.numberOfPorts) {
+            *stop = YES;
+            return;
+        }
+        NSString *port = obj;
+        id value = [self valueForKey:port];
+        [executionObj setValue:[self DF_correctedValue:value forPort:port] atArgIndex:idx];
     }];
+}
+
+- (NSError *)DF_incomingPortErrors
+{
+    __block NSMutableDictionary *portErrors = nil;
+    dispatch_block_t block = ^(void) {
+        [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *port = obj;
+            id value = [self valueForKey:port];
+            if (isDFErrorObject(value)) {
+                if (!portErrors) {
+                    portErrors = [NSMutableDictionary new];
+                }
+                DFErrorObject *errorObj = value;
+                NSError *error = errorObj.error;
+                if (error) {
+                    portErrors[port] = error;
+                }
+            }
+        }];
+    };
+    [self DF_safelyExecuteBlock:block];
+    if (portErrors.count > 0) {
+        return createErrorFromPortErrors(portErrors);
+    }
+    return nil;
 }
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
     __block id value = nil;
     dispatch_block_t block = ^() {
-        if (self.executionObj) {
-            NSUInteger index = [self.inputPorts indexOfObject:key];
+        if (self.DF_executionObj) {
+            NSUInteger index = [self.DF_inputPorts indexOfObject:key];
             if (index != NSNotFound) {
-                value = [self.executionObj valueForArgAtIndex:index];
+                value = [self.DF_executionObj valueForArgAtIndex:index];
                 return;
             }
         }
         value = [super valueForUndefinedKey:key];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return value;
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
     dispatch_block_t block = ^() {
-        if (self.executionObj) {
-            NSUInteger index = [self.inputPorts indexOfObject:key];
+        if (self.DF_executionObj) {
+            NSUInteger index = [self.DF_inputPorts indexOfObject:key];
             if (index != NSNotFound) {
-                [self.propertiesSet addObject:key];
-                [self.executionObj setValue:value atArgIndex:index];
+                [self.DF_propertiesSet addObject:key];
+                [self.DF_executionObj setValue:value atArgIndex:index];
                 return;
             }
         }
         [super setValue:value forUndefinedKey:key];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
-- (BOOL)isPropertySet:(NSString *)property
+- (BOOL)DF_isPropertySet:(NSString *)property
 {
     __block BOOL propertySet = NO;
     dispatch_block_t block = ^() {
-        propertySet = [self.propertiesSet containsObject:property];
+        propertySet = [self.DF_propertiesSet containsObject:property];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return propertySet;
 }
 
@@ -845,16 +911,16 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 {
     __block NSMutableArray *freePorts = nil;
     dispatch_block_t block = ^() {
-        freePorts = [self.inputPorts mutableCopy];
-        [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        freePorts = [self.DF_inputPorts mutableCopy];
+        [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ConnectionInfo *info = obj;
             [freePorts removeObject:info.toPort];
         }];
-        if (self.excludedPorts.count > 0) {
-            [freePorts removeObjectsInArray:[self.excludedPorts allObjects]];
+        if (self.DF_excludedPorts.count > 0) {
+            [freePorts removeObjectsInArray:[self.DF_excludedPorts allObjects]];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return freePorts;
 }
 
@@ -867,18 +933,18 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             [operation setQueuePriorityRecursively:priority];
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)suspend
 {
     dispatch_block_t block = ^() {
-        if (self.isSuspended || self.state == OperationStateDone) {
+        if (self.DF_isSuspended || self.DF_state == OperationStateDone) {
             return;
         }
-        self.isSuspended = YES;
+        self.DF_isSuspended = YES;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     [[self connectedOperations] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         DFOperation *operation = obj;
         [operation suspend];
@@ -888,32 +954,32 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 - (void)resume
 {
     dispatch_block_t block = ^() {
-        if (!self.isSuspended || self.state == OperationStateDone) {
+        if (!self.DF_isSuspended || self.DF_state == OperationStateDone) {
             return;
         }
-        self.isSuspended = NO;
+        self.DF_isSuspended = NO;
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     [[self connectedOperations] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         DFOperation *operation = obj;
         [operation resume];
     }];
 }
 
-- (void)safelyRemoveObserverWithBlockToken:(AMBlockToken *)token
+- (void)DF_safelyRemoveObserver:(AMBlockToken *)token
 {
     if (token) {
-        OSSpinLockLock(&_stateLock);
+        OSSpinLockLock(&_DF_stateLock);
         [self removeObserverWithBlockToken:token];
-        OSSpinLockUnlock(&_stateLock);
+        OSSpinLockUnlock(&_DF_stateLock);
     }
 }
 
-- (void)safelyExecuteBlock:(dispatch_block_t)block
+- (void)DF_safelyExecuteBlock:(dispatch_block_t)block
 {
-    [self.operationLock lock];
+    [self.DF_operationLock lock];
     block();
-    [self.operationLock unlock];
+    [self.DF_operationLock unlock];
 }
 
 //this supports '.' syntax
@@ -922,7 +988,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     NSString *selector = NSStringFromSelector([anInvocation selector]);
     __block BOOL resolved = NO;
     if (selector) {
-        [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *property = obj;
             //getter
             if ([selector isEqualToString:property]) {
@@ -956,24 +1022,24 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     }
     NSString *selector = NSStringFromSelector(aSelector);
     dispatch_block_t block = ^(void) {
-        [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *port = obj;
             //check if selector is property getter
             if ([selector isEqualToString:port]) {
-                sig = [super methodSignatureForSelector:@selector(output)];
+                sig = [super methodSignatureForSelector:@selector(DF_output)];
                 *stop = YES;
             }
             else {
                 //check if selector is property setter
                 NSString *setter = setterFromProperty(port);
                 if ([selector isEqualToString:setter]) {
-                    sig = [super methodSignatureForSelector:@selector(setOutput:)];
+                    sig = [super methodSignatureForSelector:@selector(setDF_output:)];
                     *stop = YES;
                 }
             }
         }];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return sig;
 }
 
@@ -998,7 +1064,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
         port = selectorString;
     }
     if ([port length] > 0) {
-        [self.inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([port isEqualToString:obj]) {
                 result = YES;
                 *stop = YES;
@@ -1012,11 +1078,11 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 {
     if ([port length] > 0) {
         dispatch_block_t block = ^(void) {
-            if ([self.inputPorts containsObject:port]) {
-                [self.excludedPorts addObject:port];
+            if ([self.DF_inputPorts containsObject:port]) {
+                [self.DF_excludedPorts addObject:port];
             }
         };
-        [self safelyExecuteBlock:block];
+        [self DF_safelyExecuteBlock:block];
     }
 }
 
@@ -1026,12 +1092,12 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
         dispatch_block_t block = ^(void) {
            [ports enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                NSString *port = obj;
-               if ([self.inputPorts containsObject:port]) {
-                   [self.excludedPorts addObject:port];
+               if ([self.DF_inputPorts containsObject:port]) {
+                   [self.DF_excludedPorts addObject:port];
                }
            }];
         };
-        [self safelyExecuteBlock:block];
+        [self DF_safelyExecuteBlock:block];
     }
 }
 
@@ -1042,9 +1108,9 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     }
     dispatch_block_t block = ^(void){
         NSArray *array = @[property, object, ((queue == nil) ? [NSNull null] : queue)];
-        [self.outputConnections addObject:array];
+        [self.DF_outputConnections addObject:array];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)removeOutputConnectionsForObject:(NSObject *)object property:(NSString *)property
@@ -1054,7 +1120,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     }
     dispatch_block_t block = ^(void){
         __block  NSMutableIndexSet *indexSet = nil;
-        [self.outputConnections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self.DF_outputConnections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSArray *array = obj;
             if ([array[0] isEqualToString:property] && [array[1] isEqual:object]) {
                 if (!indexSet) {
@@ -1064,10 +1130,10 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             }
         }];
         if (indexSet) {
-            [self.outputConnections removeObjectsAtIndexes:indexSet];
+            [self.DF_outputConnections removeObjectsAtIndexes:indexSet];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 - (void)removeAllOutputConnectionsForObject:(NSObject *)object
@@ -1077,7 +1143,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     }
     dispatch_block_t block = ^(void){
         __block  NSMutableIndexSet *indexSet = nil;
-        [self.outputConnections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self.DF_outputConnections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSArray *array = obj;
             if ([array[1] isEqual:object]) {
                 if (!indexSet) {
@@ -1086,9 +1152,9 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
                 [indexSet addIndex:idx];
             }
         }];
-        [self.outputConnections removeObjectsAtIndexes:indexSet];
+        [self.DF_outputConnections removeObjectsAtIndexes:indexSet];
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
 }
 
 + (NSOperationQueue *)operationQueue
@@ -1112,7 +1178,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 
 - (BOOL)isReady
 {
-    return [super isReady] && (self.state == OperationStateReady) && !self.isSuspended;
+    return [super isReady] && (self.DF_state == OperationStateReady) && !self.DF_isSuspended;
 }
 
 - (BOOL)isConcurrent
@@ -1122,26 +1188,29 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 
 - (BOOL)isExecuting
 {
-    return (self.state == OperationStateExecuting);
+    return (self.DF_state == OperationStateExecuting);
 }
 
 - (BOOL)isFinished
 {
-    return (self.state == OperationStateDone);
+    return (self.DF_state == OperationStateDone);
 }
 
-- (BOOL)execute
+- (BOOL)DF_execute
 {
     __block id output = nil;
     __block BOOL result = NO;
     NSError *error = nil;
-    if (!self.error) {
+    if (!self.portErrorResolutionBlock) {
+        error = [self DF_incomingPortErrors];
+    }
+    if (!error) {
         __block Execution_Class *executionObj = nil;
         dispatch_block_t block = ^(void) {
-            executionObj = self.executionObj;
-            [self prepareExecutionObj:executionObj];
+            executionObj = self.DF_executionObj;
+            [self DF_prepareExecutionObj:executionObj];
         };
-        [self safelyExecuteBlock:block];
+        [self DF_safelyExecuteBlock:block];
         @try {
             //don't acquire lock when executing
             output = [executionObj execute];
@@ -1150,61 +1219,64 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             error = NSErrorFromException(exception);
         }
         @finally {
-            [self breakRefCycleForExecutionObj:self.executionObj];
+            [self DF_breakRefCycleForExecutionObj:self.DF_executionObj];
         }
     }
     dispatch_block_t block = ^(void) {
-        if (self.state == OperationStateExecuting) {
-            if (!self.error && error) {
-                self.error = error;
+        if (self.DF_state == OperationStateExecuting) {
+            if (!self.isCancelled) {
+                if (error) {
+                    self.DF_error = error;
+                    self.DF_output = errorObject(error);
+                }
+                else {
+                    self.DF_output = output;
+                    result = YES;
+                }
             }
-            if (!(self.isCancelled || self.error)) {
-                self.output = output;
-                result = YES;
-            }
-            [self done];
+            [self DF_done];
         }
     };
-    [self safelyExecuteBlock:block];
+    [self DF_safelyExecuteBlock:block];
     return result;
 }
 
 - (void)main
 {
-    [self execute];
+    [self DF_execute];
 }
 
 - (void)start
 {
     dispatch_block_t block = ^(void) {
-        if ([super isReady] && (self.state == OperationStateReady)) {
-            [self prepareForExecution];
+        if ([super isReady] && (self.DF_state == OperationStateReady)) {
+            [self DF_prepareForExecution];
             if (self.isCancelled) {
-                [self done];
+                [self DF_done];
             }
             else {
-                self.state = OperationStateExecuting;
+                self.DF_state = OperationStateExecuting;
             }
         }
     };
-    [self safelyExecuteBlock:block];
-    if (self.state == OperationStateExecuting) {
+    [self DF_safelyExecuteBlock:block];
+    if (self.DF_state == OperationStateExecuting) {
         [self main];
     }
 }
 
-- (void)breakRefCycleForExecutionObj:(Execution_Class *)executionObj
+- (void)DF_breakRefCycleForExecutionObj:(Execution_Class *)executionObj
 {
-    NSUInteger index = [self.inputPorts indexOfObject:@keypath(self.selfRef)];
+    NSUInteger index = [self.DF_inputPorts indexOfObject:@keypath(self.selfRef)];
     if (index != NSNotFound) {
         [executionObj setValue:nil atArgIndex:index];
     }
 }
 
-- (void)done
+- (void)DF_done
 {
-    self.state = OperationStateDone;
-    [self breakRefCycleForExecutionObj:self.executionObj];
+    self.DF_state = OperationStateDone;
+    [self DF_breakRefCycleForExecutionObj:self.DF_executionObj];
 }
 
 @end

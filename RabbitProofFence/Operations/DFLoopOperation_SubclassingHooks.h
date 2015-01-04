@@ -11,10 +11,10 @@
 
 @interface DFLoopOperation ()
 
-@property (strong, nonatomic) NSPredicate *predicate;
+@property (strong, nonatomic) NSPredicate *DF_predicate;
 
-@property (assign, nonatomic) NSUInteger executionCount;
+@property (assign, nonatomic) NSUInteger DF_executionCount;
 
-- (BOOL)next;
+- (BOOL)DF_next;
 
 @end
