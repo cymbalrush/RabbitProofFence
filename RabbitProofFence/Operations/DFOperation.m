@@ -68,6 +68,57 @@ NSArray *portNamesFromBlockArgs(const char *blockBody)
     return @[];
 }
 
+NS_INLINE Class classFromType(const char *type)
+{
+    const char idType = @encode(id)[0];
+    if (type[0] == idType) {
+        NSString *typeStr = [NSString stringWithCString:type encoding:NSUTF8StringEncoding];
+        typeStr = [typeStr stringByReplacingCharactersInRange:NSMakeRange(0, 1)
+                                                   withString:@""];
+        typeStr = [typeStr stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
+        Class class = NSClassFromString(typeStr);
+        if (class) {
+            return class;
+        }
+    }
+    return [EXTNil null];
+}
+
+NSArray *argTypesFromBlockDesc(BlockDescription *blockDesc)
+{
+    if (!blockDesc) {
+        return nil;
+    }
+    NSMethodSignature  *sig = blockDesc.blockSignature;
+    NSUInteger n = [sig numberOfArguments];
+    if (n < 2) {
+        return nil;
+    }
+    NSMutableArray *types = [NSMutableArray arrayWithCapacity:(n - 1)];
+    for (int i = 1; i < n; i++) {
+        Class argClass = classFromType([sig getArgumentTypeAtIndex:i]);
+        types[(i - 1)] = argClass;
+    }
+    return types;
+}
+
+Class returnTypeFromBlockDesc(BlockDescription *blockDesc)
+{
+    if (!blockDesc) {
+        return nil;
+    }
+    NSMethodSignature *sig = blockDesc.blockSignature;
+    return classFromType([sig methodReturnType]);
+}
+
+BlockDescription *blockDesc(id block)
+{
+    if (!block) {
+        return nil;
+    }
+    return [[BlockDescription alloc] initWithBlock:block];
+}
+
 NSError * NSErrorFromException(NSException *exception)
 {
     NSMutableDictionary * info = [NSMutableDictionary dictionary];
@@ -143,6 +194,8 @@ NSError *createErrorFromPortErrors(NSDictionary *portErrors)
 
 @property (strong, nonatomic) NSMutableArray *DF_outputConnections;
 
+@property (strong, nonatomic) NSMutableDictionary *DF_portTypes;
+
 - (void)DF_safelyRemoveObserver:(AMBlockToken *)token;
 
 @end
@@ -214,6 +267,9 @@ NSError *createErrorFromPortErrors(NSDictionary *portErrors)
     }
     else if ([key isEqualToString:@keypath(operation.output)]) {
         properties = [NSSet setWithObject:@keypath(operation.DF_output)];
+    }
+    else if ([key isEqualToString:@keypath(operation.isSuspended)]) {
+        properties = [NSSet setWithObject:@keypath(operation.DF_isSuspended)];
     }
     if (properties) {
         keyPaths = [keyPaths setByAddingObjectsFromSet:properties];
@@ -452,9 +508,10 @@ NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState t
 
 + (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
 {
-    DFOperation *operation = [[[self class] alloc] init];
+    DFOperation *operation = [self new];
     operation.DF_inputPorts = [ports copy];
     operation.executionBlock = block;
+    [operation DF_populateTypesFromBlock:block ports:ports];
     return operation;
 }
 
@@ -485,6 +542,7 @@ NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState t
         _queue = [[self class] operationQueue];
         _DF_excludedPorts = [NSMutableSet setWithObject:@keypath(self.selfRef)];
         _DF_output = [DFVoidObject new];
+        _DF_portTypes = [NSMutableDictionary new];
     }
     return self;
 }
@@ -502,6 +560,11 @@ NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState t
 - (OperationState)state
 {
     return self.DF_state;
+}
+
+- (BOOL)isSuspended
+{
+    return self.DF_isSuspended;
 }
 
 - (void)setExecutionBlock:(id)executionBlock
@@ -598,6 +661,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     newOperation.queuePriority = operation.queuePriority;
     NSMutableSet *excludedPorts = [operation.DF_excludedPorts copy];
     newOperation.DF_excludedPorts = excludedPorts;
+    newOperation.DF_portTypes = [operation.DF_portTypes copy];
     //copy excluded port values
     [[operation class] DF_copyExcludedPortValuesFromOperation:operation
                                                toOperation:newOperation
@@ -671,22 +735,9 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 - (NSSet *)DF_validBindingsForOperation:(DFOperation *)operation bindings:(NSDictionary *)bindings
 {
     NSSet *filteredKeys = [bindings keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
-        NSString *toPropertyName = key;
-        NSString *fromPropertyName = obj;
-        BOOL isValid = YES;
-        if ([fromPropertyName isKindOfClass:[NSString class]] && [toPropertyName isKindOfClass:[NSString class]]) {
-            //check if operation has properties
-            @try {
-                //we are not interested in value
-                [operation valueForKey:fromPropertyName];
-                [self valueForKey:toPropertyName];
-            }
-            @catch (NSException *ex) {
-                isValid = NO;
-            }
-            return isValid;
-        }
-        return NO;
+        NSString *toPort = key;
+        NSString *fromPort = obj;
+        return [self canConnectPort:fromPort ofOperation:operation toPort:toPort];
     }];
     return filteredKeys;
 }
@@ -696,7 +747,10 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     if (!operation || operation == self) {
         return nil;
     }
-    [self addDependency:operation];
+    if (bindings.count == 0) {
+        [self addDependency:operation];
+        return nil;
+    }
     __block NSDictionary *validBindings = nil;
     dispatch_block_t block = ^(void) {
         NSSet *filteredKeys = [self DF_validBindingsForOperation:operation bindings:bindings];
@@ -713,6 +767,9 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
         validBindings = [bindings dictionaryWithValuesForKeys:[filteredKeys allObjects]];
      };
     [self DF_safelyExecuteBlock:block];
+    if ([validBindings count] > 0) {
+        [self addDependency:operation];
+    }
     return validBindings;
 }
 
@@ -922,6 +979,57 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     };
     [self DF_safelyExecuteBlock:block];
     return freePorts;
+}
+
+- (Class)portType:(NSString *)port
+{
+    __block Class type = nil;
+    dispatch_block_t block = ^(void) {
+        if ([port isEqualToString:@keypath(self.output)]) {
+            type = self.DF_portTypes[@keypath(self.DF_output)];
+        }
+        else {
+            type = self.DF_portTypes[port];
+        }
+    };
+    [self DF_safelyExecuteBlock:block];
+    return type;
+}
+
+- (BOOL)DF_setType:(Class)type forPort:(NSString *)port
+{
+    if (type) {
+        self.DF_portTypes[port] = type;
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)canConnectPort:(NSString *)port ofOperation:(DFOperation *)operation toPort:(NSString *)toPort
+{
+    Class fromPortClass = [operation portType:port];
+    Class toPortClass = [self portType:toPort];
+    BOOL result = NO;
+    if (toPortClass == [EXTNil null]) {
+        result = YES;
+    }
+    else if (fromPortClass != [EXTNil null]) {
+        result = [fromPortClass isSubclassOfClass:toPortClass];
+    }
+    return result;
+}
+
+- (void)DF_populateTypesFromBlock:(id)block ports:(NSArray *)ports
+{
+    BlockDescription *desc = blockDesc(block);
+    if (desc) {
+        NSArray *types = argTypesFromBlockDesc(desc);
+        [ports enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSString *port = obj;
+            [self DF_setType:types[idx] forPort:port];
+        }];
+        [self DF_setType:returnTypeFromBlockDesc(desc) forPort:@keypath(self.DF_output)];
+    }
 }
 
 - (void)setQueuePriorityRecursively:(NSOperationQueuePriority)priority

@@ -19,7 +19,6 @@
 {
     DFPortInfo *info = [[self class] new];
     info.name = [self.name copy];
-    info.dataType = self.dataType;
     info.portType = self.portType;
     return info;
 }
@@ -31,14 +30,13 @@
     }
     DFPort *port = object;
     return [port isKindOfClass:[DFPortInfo class]] &&
-           [port.dataType isEqual:self.dataType] &&
            [port.name isEqualToString:self.name] &&
            port.portType == self.portType;
 }
 
 - (NSUInteger)hash
 {
-    return NSUINTROTATE([self.name hash], NSUINT_BIT / 2) ^ [self.dataType hash] ^ self.portType;
+    return NSUINTROTATE([self.name hash], NSUINT_BIT / 2) ^ self.portType;
 }
 
 @end
@@ -124,7 +122,7 @@
 
 - (Class)dataType
 {
-    return self.info.dataType;
+    return [self.node portType:self.name];
 }
 
 - (BOOL)connectToPort:(DFPort *)port
@@ -183,7 +181,7 @@
 
 - (BOOL)canConnectToPort:(DFPort *)port
 {
-    return [self.dataType isSubclassOfClass:port.dataType] && port.portType == DFPortTypeInput && self.portType == DFPortTypeOutput;
+    return port.portType == DFPortTypeInput && self.portType == DFPortTypeOutput && [self.node canConnectPort:port toPort:self];
 }
 
 - (void)setCompatible:(BOOL)isCompatible

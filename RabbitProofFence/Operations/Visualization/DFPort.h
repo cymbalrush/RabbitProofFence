@@ -19,8 +19,6 @@ typedef NS_ENUM(NSUInteger, DFPortType) {
 
 @property (strong, nonatomic) NSString *name;
 
-@property (strong, nonatomic) Class dataType;
-
 @property (assign, nonatomic) DFPortType portType;
 
 @end

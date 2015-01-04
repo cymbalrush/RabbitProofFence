@@ -43,6 +43,8 @@ NSArray *portNamesFromBlockArgs(const char *blockBody);
 
 @property (copy, nonatomic) id(^outputErrorResolutionBlock)(NSError *error, DFOperation *operation);
 
+- (BOOL)canConnectPort:(NSString *)port ofOperation:(DFOperation *)operation toPort:(NSString *)toPort;
+
 //start queue
 + (void)startQueue;
 

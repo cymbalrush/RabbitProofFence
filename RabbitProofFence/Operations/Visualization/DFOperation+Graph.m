@@ -26,7 +26,6 @@
         NSString *name = obj;
         DFPortInfo *info = [DFPortInfo new];
         info.name = name;
-        info.dataType = [NSObject class];
         info.portType = DFPortTypeInput;
         return info;
     }];
@@ -36,7 +35,6 @@
 {
     DFPortInfo *info = [DFPortInfo new];
     info.name = @keypath(self.output);
-    info.dataType = [NSObject class];
     info.portType = DFPortTypeOutput;
     return @[info];
 }

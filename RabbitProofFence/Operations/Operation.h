@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, OperationState) {
 @property (readonly, nonatomic) id<Operation> selfRef;
 
 //returns 'YES' if operations is suspended otherwise 'NO'
-@property (readonly, nonatomic) BOOL DF_isSuspended;
+@property (readonly, nonatomic) BOOL isSuspended;
 
 //returns dependencies
 @property (readonly, nonatomic) NSArray *connectedOperations;
@@ -89,5 +89,8 @@ typedef NS_ENUM(NSInteger, OperationState) {
 
 //remove all connections to 'output' for 'object'
 - (void)removeAllOutputConnectionsForObject:(NSObject *)object;
+
+//returns port's class or nil, if id
+- (Class)portType:(NSString *)port;
 
 @end

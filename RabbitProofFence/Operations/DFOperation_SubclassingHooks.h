@@ -16,11 +16,15 @@
 #import "DFVoidObject.h"
 #import "EXTNil.h"
 #import "DFErrorObject.h"
+#import "BlockDescription.h"
 
 extern NSString * const DFErrorKeyName;
 extern const int DFOperationInComingPortErrorCode;
 
 extern void methodNotSupported();
+extern NSArray *argTypesFromBlockDesc(BlockDescription *blockDesc);
+extern Class returnTypeFromBlockDesc(BlockDescription *blockDesc);
+extern BlockDescription *blockDesc(id block);
 extern NSString *setterFromProperty(NSString *property);
 extern NSDictionary *portErrors(NSError *error);
 extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
@@ -72,8 +76,8 @@ extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
 + (void)DF_removeObservations:(DFOperation *)operation;
 
 + (void)DF_copyExcludedPortValuesFromOperation:(DFOperation *)fromOperation
-                                toOperation:(DFOperation *)toOperation
-                              excludedPorts:(NSSet *)excludedPorts;
+                                   toOperation:(DFOperation *)toOperation
+                                 excludedPorts:(NSSet *)excludedPorts;
 
 - (void)DF_safelyRemoveObserver:(AMBlockToken *)token;
 
@@ -90,6 +94,10 @@ extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
 - (NSError *)DF_incomingPortErrors;
 
 - (BOOL)DF_isPropertySet:(NSString *)property;
+
+- (BOOL)DF_setType:(Class)type forPort:(NSString *)port;
+
+- (void)DF_populateTypesFromBlock:(id)block ports:(NSArray *)ports;
 
 - (id)DF_correctedValue:(id)value forPort:(NSString *)port;
 

@@ -21,6 +21,7 @@
         };
         self.DF_executionObj = [[self class] DF_executionObjFromBlock:block];
         self.DF_executionObj.executionBlock = block;
+        [self DF_populateTypesFromBlock:block ports:self.DF_inputPorts];
     }
     return self;
 }

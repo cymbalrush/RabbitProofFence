@@ -284,6 +284,11 @@ NS_INLINE DFPort *portForTouchPoint(CGPoint point, CGFloat margin, NSArray *port
     [self.workspace removeNode:self];
 }
 
+- (BOOL)canConnectPort:(DFPort *)port toPort:(DFPort *)toPort
+{
+    return [self.operation canConnectPort:port.name ofOperation:port.node.operation toPort:toPort.name];
+}
+
 - (void)prepare_:(NSMutableSet *)preparedNodes
 {
     [self cancel];
@@ -415,6 +420,11 @@ NS_INLINE DFPort *portForTouchPoint(CGPoint point, CGFloat margin, NSArray *port
 - (BOOL)isReactive
 {
     return [self.operation isKindOfClass:[DFReactiveOperation class]];
+}
+
+- (Class)portType:(NSString *)port
+{
+    return [self.operation portType:port];
 }
 
 - (void)executeNode:(UIMenuItem *)item

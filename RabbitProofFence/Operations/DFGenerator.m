@@ -240,7 +240,7 @@
         if (!isDFVoidObject(selfRef.DF_output)) {
             value = [selfRef.DF_output integerValue] + [inc integerValue];
         }
-        if (value > [j integerValue]) {
+        if (value >= [j integerValue]) {
             selfRef.DF_terminate = YES;
         }
         return @(value);

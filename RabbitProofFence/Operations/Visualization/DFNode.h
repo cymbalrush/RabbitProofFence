@@ -64,6 +64,10 @@
 
 - (NSSet *)connectedNodes;
 
+- (Class)portType:(NSString *)port;
+
+- (BOOL)canConnectPort:(DFPort *)port toPort:(DFPort *)toPort;
+
 @end
 
 @interface DFNode (SubClassingHooks)
