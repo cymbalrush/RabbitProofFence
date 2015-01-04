@@ -325,7 +325,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
         [self printResult:result];
         return;
     }
-    DFPort *port = [node portForName:@keypath(operation.DF_output)];
+    DFPort *port = [node portForName:@keypath(operation.output)];
     [CATransaction begin];
     [port.connections enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         [self.gridView animateValueFlowFromPort:port toPort:obj];
