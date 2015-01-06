@@ -77,7 +77,6 @@
 		927E12911A0C6D8B002DC6FB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E12901A0C6D8B002DC6FB /* ViewController.m */; };
 		927E12941A0C6D8B002DC6FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927E12921A0C6D8B002DC6FB /* Main.storyboard */; };
 		927E12991A0C6D8B002DC6FB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927E12971A0C6D8B002DC6FB /* LaunchScreen.xib */; };
-		927E12A51A0C6D8B002DC6FB /* RabbitProofFenceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E12A41A0C6D8B002DC6FB /* RabbitProofFenceTests.m */; };
 		928E1EEF1A16E2050055D2AD /* OperationAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 928E1EEE1A16E2050055D2AD /* OperationAssets.xcassets */; };
 		928E1EF11A16E23C0055D2AD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 928E1EF01A16E23C0055D2AD /* Images.xcassets */; };
 /* End PBXBuildFile section */
@@ -241,7 +240,6 @@
 		927E12981A0C6D8B002DC6FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		927E129E1A0C6D8B002DC6FB /* FBPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FBPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		927E12A31A0C6D8B002DC6FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		927E12A41A0C6D8B002DC6FB /* RabbitProofFenceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RabbitProofFenceTests.m; sourceTree = "<group>"; };
 		928E1EEE1A16E2050055D2AD /* OperationAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = OperationAssets.xcassets; sourceTree = "<group>"; };
 		928E1EF01A16E23C0055D2AD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -315,7 +313,6 @@
 		927E12A11A0C6D8B002DC6FB /* FBPTests */ = {
 			isa = PBXGroup;
 			children = (
-				927E12A41A0C6D8B002DC6FB /* RabbitProofFenceTests.m */,
 				927E12A21A0C6D8B002DC6FB /* Supporting Files */,
 			);
 			name = FBPTests;
@@ -680,7 +677,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				927E12A51A0C6D8B002DC6FB /* RabbitProofFenceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
