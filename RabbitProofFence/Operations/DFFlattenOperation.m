@@ -65,7 +65,10 @@
     id (^mapBlock)(id input) = ^(id input) {
         return input;
     };
-    return [super initWithMapBlock:mapBlock ports:@[@keypath(self.input)]];
+    self = [super initWithMapBlock:mapBlock ports:@[@keypath(self.input)]];
+    [self DF_setType:[NSArray class] forPort:@keypath(self.input)];
+    [self DF_setType:[EXTNil null] forPort:@keypath(self.DF_output)];
+    return self;
 }
 
 - (ReactiveConnectionInfo *)DF_reactiveConnectionInfo

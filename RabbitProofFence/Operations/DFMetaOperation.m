@@ -78,6 +78,32 @@
     return mapping;
 }
 
++ (NSDictionary *)freePortTypesFromMapping:(NSDictionary *)portToOperationMapping
+{
+    if (portToOperationMapping.count == 0) {
+        return nil;
+    }
+    NSMutableDictionary *portTypes = [[NSMutableDictionary alloc] initWithCapacity:portToOperationMapping.count];
+    [portToOperationMapping enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        NSString *port = key;
+        Class portType = [EXTNil null];
+        NSSet *operations = obj;
+        if (operations.count > 0) {
+            portType = [[operations anyObject] portType:port];
+        }
+        [operations enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+            DFOperation *operation = obj;
+            Class operationPortType = [operation portType:port];
+            if (portType != operationPortType) {
+                NSString *reason = [NSString stringWithFormat:@"Port Type Not Equal %@", port];
+                @throw [NSException exceptionWithName:DFOperationExceptionInEqualPorts reason:reason userInfo:nil];
+            }
+        }];
+        portTypes[port] = portType;
+    }];
+    return portTypes;
+}
+
 //pass head of the operation
 - (instancetype)initWithOperation:(DFOperation *)operation
 {
@@ -85,8 +111,11 @@
     if (self) {
         if (operation) {
             self.DF_operation = operation;
+            NSDictionary *portToOperationMapping = [[self class] DF_freePortsToOperationMapping:operation];
             self.DF_inputPorts = [[[self class] DF_freePortsToOperationMapping:operation] allKeys];
             self.DF_executionObj = [Execution_Class instanceForNumberOfArguments:[self.DF_inputPorts count]];
+            [self DF_addPortTypes:[[self class] freePortTypesFromMapping:portToOperationMapping]];
+            [self DF_setType:[operation portType:@keypath(self.DF_output)] forPort:@keypath(self.DF_output)];
         }
     }
     return self;

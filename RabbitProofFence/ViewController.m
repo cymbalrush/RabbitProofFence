@@ -17,7 +17,6 @@
     [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
         DFOperation *add = OperationFromBlock([DFBackgroundOperation class], ^(NSNumber *x1, NSNumber *x2) {
             return @([x1 intValue] + [x2 intValue]);
-            
         });
         NameOperation(add);
         return add;
@@ -128,6 +127,12 @@
         NameOperation(repeat);
         return repeat;
     } forName:@"Repeat"];
+    
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFSelectorOperation *selector =  [DFSelectorOperation new];
+        NameOperation(selector);
+        return selector;
+    } forName:@"Selector"];
     
     DFWorkspace *ws = [DFWorkspace workspaceWithBounds:self.view.bounds];
 

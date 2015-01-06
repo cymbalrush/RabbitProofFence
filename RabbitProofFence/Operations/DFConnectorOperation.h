@@ -20,8 +20,8 @@
 
 @property (nonatomic, assign) BOOL useCurrentValue;
 
-+ (instancetype)connectorFromObject:(id<NSObject>)object property:(NSString *)property;
++ (instancetype)connectorFromObject:(NSObject *)object property:(NSString *)property;
 
-- (instancetype)initWithObject:(id<NSObject>)object property:(NSString *)property;
+- (instancetype)initWithObject:(NSObject *)object property:(NSString *)property;
 
 @end

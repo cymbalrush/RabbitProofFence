@@ -17,16 +17,37 @@
     return nil;
 }
 
++ (instancetype)delayOperation
+{
+    return [self new];
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.DF_inputPorts = @[@keypath(self.input), @keypath(self.delay)];
-        self.executionBlock = ^(id input, NSNumber *delay) {
+        NSArray *ports = @[@keypath(self.input), @keypath(self.delay)];
+        self.DF_inputPorts = ports;
+        id (^block)(id input, NSNumber *delay) = ^(id input, NSNumber *delay) {
             return input;
         };
+        self.executionBlock = block;
+        [self DF_populateTypesFromBlock:block ports:ports];
     }
     return self;
+}
+
+- (Class)portType:(NSString *)port
+{
+    __block Class type = nil;
+    dispatch_block_t block = ^(void) {
+        type = [super portType:port];
+        if ([port isEqualToString:@keypath(self.DF_output)] || [port isEqualToString:@keypath(self.output)]) {
+            type = [super portType:@keypath(self.input)];
+        }
+    };
+    [self DF_safelyExecuteBlock:block];
+    return type;
 }
 
 - (void)main

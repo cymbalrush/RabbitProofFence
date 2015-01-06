@@ -59,9 +59,12 @@
             [selfRef.DF_accumulator addObject:input];
             return selfRef.DF_accumulator;
         };
+        NSArray *ports = @[@keypath(self.input), @keypath(self.selfRef)];
+        self.DF_inputPorts = ports;
         self.DF_executionObj = [[self class] DF_executionObjFromBlock:block];
         self.DF_executionObj.executionBlock = block;
-        self.DF_inputPorts = @[@keypath(self.input), @keypath(self.selfRef)];
+        [self DF_populateTypesFromBlock:block ports:ports];
+        [self DF_setType:[NSArray class] forPort:@keypath(self.DF_output)];
     }
     return self;
 }

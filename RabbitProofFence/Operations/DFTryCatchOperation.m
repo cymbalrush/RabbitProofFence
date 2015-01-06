@@ -26,9 +26,12 @@
                        andErrorBlock:(BOOL(^)(NSError *error, DFTryCatchOperation *operation))errorBlock
 {
     if (![tryOperation.freePorts isEqualToArray:catchOperation.freePorts]) {
-        [catchOperation freePorts];
-        NSString *reason = [NSString stringWithFormat:@"Inequal free ports"];
-        @throw [NSException exceptionWithName:DFOperationExceptionInEqualInputPorts reason:reason userInfo:nil];
+        NSString *reason = [NSString stringWithFormat:@"Free Ports Not Equal"];
+        @throw [NSException exceptionWithName:DFOperationExceptionInEqualPorts reason:reason userInfo:nil];
+    }
+    if (![tryOperation.freePortTypes isEqualToDictionary:catchOperation.freePortTypes]) {
+        NSString *reason = [NSString stringWithFormat:@"Free Port Types Not Equal"];
+        @throw [NSException exceptionWithName:DFOperationExceptionInEqualPorts reason:reason userInfo:nil];
     }
     
     self = [super init];
@@ -38,7 +41,8 @@
         self.DF_operation = tryOperation;
         self.DF_errorBlock = errorBlock;
         self.DF_inputPorts = [[tryOperation freePorts] copy];
-        self.DF_executionObj = [Execution_Class instanceForNumberOfArguments:[self.DF_inputPorts count]];
+        self.DF_executionObj = [Execution_Class instanceForNumberOfArguments:self.DF_inputPorts.count];
+        [self DF_addPortTypes:tryOperation.freePortTypes];
     }
     return self;
 }
@@ -67,7 +71,6 @@
     };
     [self DF_safelyExecuteBlock:block];
     return newTryCatchPOperation;
-
 }
 
 - (DFOperation *)tryOperation

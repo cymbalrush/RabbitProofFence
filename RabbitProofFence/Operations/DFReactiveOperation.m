@@ -107,6 +107,13 @@
     return freePorts;
 }
 
+- (NSDictionary *)connections
+{
+    NSMutableDictionary *result = [[super connections] mutableCopy];
+    [result addEntriesFromDictionary:self.DF_reactiveConnections];
+    return result;
+}
+
 - (ReactiveConnectionInfo *)DF_reactiveConnectionInfo
 {
     return [ReactiveConnectionInfo new];
@@ -142,7 +149,7 @@
         return;
     }
     dispatch_block_t block = ^(void) {
-        ReactiveConnectionInfo *info  = [self.DF_reactiveConnections objectForKey:property];
+        ReactiveConnectionInfo *info  = self.DF_reactiveConnections[property];
         info.operationState = [changedValue integerValue];
         if (self.DF_state == OperationStateExecuting && [self DF_isDone]) {
             [self DF_done];
@@ -196,6 +203,12 @@
             info.fromPort = fromPort;
             info.toPort = toPort;
             info.connectionCapacity = self.connectionCapacity;
+            Class portType = [self portType:toPort];
+            //infer type
+            if (!portType || portType == [EXTNil null]) {
+                portType = [operation portType:fromPort];
+            }
+            info.inferredType = portType;
             //check operation input, to see if it has value
             if (operation.DF_state == OperationStateExecuting || operation.DF_state == OperationStateDone) {
                 //make sure that property has been set otherwise we will be working with incorrect value.

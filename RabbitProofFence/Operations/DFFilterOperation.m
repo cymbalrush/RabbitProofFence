@@ -58,8 +58,23 @@
         };
         self.DF_executionObj = [[self class] DF_executionObjFromBlock:wrappingBlock];
         self.DF_executionObj.executionBlock = wrappingBlock;
+        [self DF_setType:[EXTNil null] forPort:@keypath(self.input)];
+        [self DF_setType:[EXTNil null] forPort:@keypath(self.DF_output)];
     }
     return self;
+}
+
+- (Class)portType:(NSString *)port
+{
+    __block Class type = nil;
+    dispatch_block_t block = ^(void) {
+        type = [super portType:port];
+        if ([port isEqualToString:@keypath(self.DF_output)] || [port isEqualToString:@keypath(self.output)]) {
+            type = [super portType:@keypath(self.input)];
+        }
+    };
+    [self DF_safelyExecuteBlock:block];
+    return type;
 }
 
 - (BOOL)DF_execute

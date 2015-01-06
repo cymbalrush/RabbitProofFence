@@ -58,6 +58,7 @@
         self.DF_inputPorts = ports;
         self.DF_executionObj = executionObj;
         self.DF_executionObj.executionBlock = retryBlock;
+        [self DF_populateTypesFromBlock:retryBlock ports:ports];
     }
     return self;
 }

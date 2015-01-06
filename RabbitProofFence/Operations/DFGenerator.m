@@ -52,6 +52,7 @@
         self.DF_executionObj = [[self class] DF_executionObjFromBlock:generatorBlock];
         self.DF_executionObj.executionBlock = generatorBlock;
         self.DF_inputPorts = ports;
+        [self DF_populateTypesFromBlock:generatorBlock ports:ports];
     }
     return self;
 }
@@ -265,6 +266,18 @@
             selfRef.DF_terminate = YES;
         }
         selfRef.DF_index ++;
+        return input;
+    });
+    return generator;
+}
+
+@end
+
+@implementation ForeverGenerator
+
++ (instancetype)generator
+{
+    ForeverGenerator *generator = OperationFromBlock(self, ^(id input) {
         return input;
     });
     return generator;

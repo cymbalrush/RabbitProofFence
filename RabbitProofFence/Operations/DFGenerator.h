@@ -74,3 +74,9 @@
 
 @end
 
+@interface ForeverGenerator : DFGenerator
+
+@property (strong, nonatomic) id input;
+
+@end
+

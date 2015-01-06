@@ -19,4 +19,6 @@
 
 @property (strong, nonatomic) NSString *toPort;
 
+@property (strong, nonatomic) Class inferredType;
+
 @end

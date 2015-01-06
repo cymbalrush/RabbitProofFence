@@ -23,6 +23,7 @@
         self.DF_executionObj = [[self class] DF_executionObjFromBlock:mapBlock];
         self.DF_executionObj.executionBlock = mapBlock;
         self.DF_inputPorts = ports;
+        [self DF_populateTypesFromBlock:mapBlock ports:ports];
     }
     return self;
 }

@@ -32,11 +32,24 @@ NSString * const DFNetworkOperationQueueName = @"com.operations.networkQueue";
     return queue;
 }
 
++ (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
+{
+    methodNotSupported();
+    return nil;
+}
+
++ (instancetype)networkOperation
+{
+    return [self new];
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.DF_inputPorts = @[@keypath(self.request)];
+        [self DF_setType:[NSURLRequest class] forPort:@keypath(self.request)];
+        [self DF_setType:[NSString class] forPort:@keypath(self.DF_output)];
     }
     return self;
 }

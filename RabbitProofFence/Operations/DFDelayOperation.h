@@ -14,4 +14,6 @@
 
 @property (strong, nonatomic) id input;
 
++ (instancetype)delayOperation;
+
 @end

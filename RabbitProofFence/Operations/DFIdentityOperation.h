@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) id input;
 
++ (instancetype)identityOperation;
+
 @end

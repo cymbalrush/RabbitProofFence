@@ -17,6 +17,7 @@
 #import "NSObject+BlockObservation.h"
 #import "DFOperation_SubclassingHooks.h"
 #import "DFReactiveOperation.h"
+#import "DFGenerator.h"
 
 @implementation DFNodeInfo
 
@@ -458,8 +459,10 @@ NS_INLINE DFPort *portForTouchPoint(CGPoint point, CGFloat margin, NSArray *port
     UIMenuItem *executeItem = [[UIMenuItem alloc] initWithTitle:@"Execute" action:@selector(executeNode:)];
     [menuItems addObject:executeItem];
     
-    UIMenuItem *compositeItem = [[UIMenuItem alloc] initWithTitle:@"Patch" action:@selector(makeNodeComposite:)];
-    [menuItems addObject:compositeItem];
+    if (![self.operation isKindOfClass:[DFGenerator class]]) {
+        UIMenuItem *compositeItem = [[UIMenuItem alloc] initWithTitle:@"Patch" action:@selector(makeNodeComposite:)];
+        [menuItems addObject:compositeItem];
+    }
     
     [[UIMenuController sharedMenuController] setMenuItems:menuItems];
     [self becomeFirstResponder];

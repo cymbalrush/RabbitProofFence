@@ -69,6 +69,8 @@
 		92174C661A56FE1B00E89343 /* NSInvocation+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C5C1A56FE1B00E89343 /* NSInvocation+EXT.m */; };
 		92174C671A56FE1B00E89343 /* NSMethodSignature+EXT.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C5E1A56FE1B00E89343 /* NSMethodSignature+EXT.m */; };
 		92174C6A1A57233800E89343 /* DFErrorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C691A57233800E89343 /* DFErrorObject.m */; };
+		921CB4C61A5AF57700FC4493 /* DFSelectorOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB4C51A5AF57700FC4493 /* DFSelectorOperation.m */; };
+		921CB4C91A5B2BE100FC4493 /* DFBufferOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB4C81A5B2BE100FC4493 /* DFBufferOperation.m */; };
 		924ABE541A0D2FE900EF97F5 /* NSArray+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */; };
 		927E128B1A0C6D8B002DC6FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128A1A0C6D8B002DC6FB /* main.m */; };
 		927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128D1A0C6D8B002DC6FB /* AppDelegate.m */; };
@@ -222,6 +224,10 @@
 		92174C5E1A56FE1B00E89343 /* NSMethodSignature+EXT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMethodSignature+EXT.m"; path = "Ext/NSMethodSignature+EXT.m"; sourceTree = "<group>"; };
 		92174C681A57233800E89343 /* DFErrorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFErrorObject.h; path = Operations/DFErrorObject.h; sourceTree = "<group>"; };
 		92174C691A57233800E89343 /* DFErrorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFErrorObject.m; path = Operations/DFErrorObject.m; sourceTree = "<group>"; };
+		921CB4C41A5AF57700FC4493 /* DFSelectorOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFSelectorOperation.h; path = Operations/DFSelectorOperation.h; sourceTree = "<group>"; };
+		921CB4C51A5AF57700FC4493 /* DFSelectorOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFSelectorOperation.m; path = Operations/DFSelectorOperation.m; sourceTree = "<group>"; };
+		921CB4C71A5B2BE100FC4493 /* DFBufferOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFBufferOperation.h; path = Operations/DFBufferOperation.h; sourceTree = "<group>"; };
+		921CB4C81A5B2BE100FC4493 /* DFBufferOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFBufferOperation.m; path = Operations/DFBufferOperation.m; sourceTree = "<group>"; };
 		924ABE521A0D2FE900EF97F5 /* NSArray+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Utility.h"; sourceTree = "<group>"; };
 		924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Utility.m"; sourceTree = "<group>"; };
 		927E12851A0C6D8B002DC6FB /* RabbitProofFence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RabbitProofFence.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -371,6 +377,8 @@
 				92174C081A56FDF000E89343 /* DFMainOperation.m */,
 				92174C0E1A56FDF000E89343 /* DFNetworkOperation.h */,
 				92174C0F1A56FDF000E89343 /* DFNetworkOperation.m */,
+				921CB4C41A5AF57700FC4493 /* DFSelectorOperation.h */,
+				921CB4C51A5AF57700FC4493 /* DFSelectorOperation.m */,
 				92174BF01A56FDF000E89343 /* DFConnectorOperation.h */,
 				92174BF11A56FDF000E89343 /* DFConnectorOperation.m */,
 				92174C0C1A56FDF000E89343 /* DFMetaOperation.h */,
@@ -393,6 +401,9 @@
 				92174C191A56FDF000E89343 /* DFReactiveOperation.h */,
 				92174C1A1A56FDF000E89343 /* DFReactiveOperation.m */,
 				92174C181A56FDF000E89343 /* DFReactiveOperation_SubclassingHooks.h */,
+				92174C141A56FDF000E89343 /* DFParallelOperation.h */,
+				92174C151A56FDF000E89343 /* DFParallelOperation.m */,
+				92174C131A56FDF000E89343 /* DFParallelOperation_SubclassingHooks.h */,
 				92174BFC1A56FDF000E89343 /* DFGenerator.h */,
 				92174BFD1A56FDF000E89343 /* DFGenerator.m */,
 				92174BE61A56FDF000E89343 /* DFAggregatorOperation.h */,
@@ -415,9 +426,8 @@
 				92174C201A56FDF000E89343 /* DFTakeOperation.m */,
 				92174C211A56FDF000E89343 /* DFTakeWhileOperation.h */,
 				92174C221A56FDF000E89343 /* DFTakeWhileOperation.m */,
-				92174C141A56FDF000E89343 /* DFParallelOperation.h */,
-				92174C151A56FDF000E89343 /* DFParallelOperation.m */,
-				92174C131A56FDF000E89343 /* DFParallelOperation_SubclassingHooks.h */,
+				921CB4C71A5B2BE100FC4493 /* DFBufferOperation.h */,
+				921CB4C81A5B2BE100FC4493 /* DFBufferOperation.m */,
 				92174C481A56FDF900E89343 /* StreamOperation.h */,
 				92174C261A56FDF000E89343 /* DFVoidObject.h */,
 				92174C271A56FDF000E89343 /* DFVoidObject.m */,
@@ -637,6 +647,7 @@
 				92174C331A56FDF000E89343 /* DFFilterOperation.m in Sources */,
 				92174BD71A56FDB000E89343 /* DFPort.m in Sources */,
 				92174C2F1A56FDF000E89343 /* DFConnectorOperation.m in Sources */,
+				921CB4C61A5AF57700FC4493 /* DFSelectorOperation.m in Sources */,
 				92174BBA1A56FD9A00E89343 /* NSObject+BlockObservation.m in Sources */,
 				92174C321A56FDF000E89343 /* DFDropOperation.m in Sources */,
 				92174C451A56FDF000E89343 /* DFTakeWhileOperation.m in Sources */,
@@ -649,6 +660,7 @@
 				92174BE31A56FDC400E89343 /* ErrorRetryPolicy.m in Sources */,
 				92174C6A1A57233800E89343 /* DFErrorObject.m in Sources */,
 				92174C351A56FDF000E89343 /* DFGenerator.m in Sources */,
+				921CB4C91A5B2BE100FC4493 /* DFBufferOperation.m in Sources */,
 				92174C3B1A56FDF000E89343 /* DFMapOperation.m in Sources */,
 				92174C3C1A56FDF000E89343 /* DFMetaOperation.m in Sources */,
 				92174C361A56FDF000E89343 /* DFIdentityOperation.m in Sources */,

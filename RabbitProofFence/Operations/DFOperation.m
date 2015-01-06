@@ -24,7 +24,7 @@ NSString * const DFOperationExceptionHandlerDomain = @"DFOperationExceptionHandl
 NSString * const DFOperationExceptionReason = @"DFOperationExceptionReason";
 NSString * const DFOperationExceptionUserInfo = @"DFOperationExceptionUserInfo";
 NSString * const DFOperationExceptionName = @"DFOperationException";
-NSString * const DFOperationExceptionInEqualInputPorts = @"DFOperationOperationExceptionInEqualInputPorts";
+NSString * const DFOperationExceptionInEqualPorts = @"DFOperationOperationExceptionInEqualInputPorts";
 NSString * const DFOperationExceptionInvalidInitialization = @"DFOperationExceptionInvalidInitialization";
 NSString * const DFOperationExceptionMethodNotSupported = @"DFOperationExceptionMethodNotSupported";
 NSString * const DFOperationExceptionIncorrectParameter = @"DFOperationExceptionIncorrectParameter";
@@ -506,15 +506,6 @@ NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState t
     });
 }
 
-+ (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
-{
-    DFOperation *operation = [self new];
-    operation.DF_inputPorts = [ports copy];
-    operation.executionBlock = block;
-    [operation DF_populateTypesFromBlock:block ports:ports];
-    return operation;
-}
-
 + (Execution_Class *)executionObjectFromMethodSig:(NSMethodSignature *)sig
 {
     NSUInteger n = [sig numberOfArguments];
@@ -528,6 +519,15 @@ NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState t
     }
     Execution_Class *executionObj = [Execution_Class instanceForNumberOfArguments:(n - 1)];
     return executionObj;
+}
+
++ (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
+{
+    DFOperation *operation = [self new];
+    operation.DF_inputPorts = [ports copy];
+    operation.executionBlock = block;
+    [operation DF_populateTypesFromBlock:block ports:ports];
+    return operation;
 }
 
 - (instancetype)init
@@ -762,6 +762,11 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             info.operation = operation;
             info.fromPort = fromPort;
             info.toPort = toPort;
+            Class portType = self.DF_portTypes[toPort];
+            if (!portType || portType == [EXTNil null]) {
+                portType = [operation portType:fromPort];
+            }
+            info.inferredType = portType;
             self.DF_connections[toPort] = info;
         }];
         validBindings = [bindings dictionaryWithValuesForKeys:[filteredKeys allObjects]];
@@ -964,12 +969,17 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     return self.dependencies;
 }
 
+- (NSDictionary *)connections
+{
+    return [self.DF_connections copy];
+}
+
 - (NSArray *)freePorts
 {
     __block NSMutableArray *freePorts = nil;
     dispatch_block_t block = ^() {
         freePorts = [self.DF_inputPorts mutableCopy];
-        [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             ConnectionInfo *info = obj;
             [freePorts removeObject:info.toPort];
         }];
@@ -985,7 +995,11 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 {
     __block Class type = nil;
     dispatch_block_t block = ^(void) {
-        if ([port isEqualToString:@keypath(self.output)]) {
+        ConnectionInfo *info = self.connections[port];
+        if (info.inferredType) {
+            type = info.inferredType;
+        }
+        else if ([port isEqualToString:@keypath(self.output)]) {
             type = self.DF_portTypes[@keypath(self.DF_output)];
         }
         else {
@@ -1005,15 +1019,47 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     return NO;
 }
 
+- (void)DF_addPortTypes:(NSDictionary *)portTypes
+{
+    if (portTypes) {
+        [self.DF_portTypes addEntriesFromDictionary:portTypes];
+    }
+}
+
+- (NSDictionary *)portTypes
+{
+    __block NSDictionary *result = nil;
+    dispatch_block_t block = ^(void) {
+        result = [self.DF_portTypes copy];
+    };
+    [self DF_safelyExecuteBlock:block];
+    return result;
+}
+
+- (NSDictionary *)freePortTypes
+{
+    NSDictionary *portTypes = self.portTypes;
+    NSArray *freePorts = self.freePorts;
+    NSMutableDictionary *freePortTypes = [[NSMutableDictionary alloc] initWithCapacity:freePorts.count];
+    [freePorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *port = obj;
+        Class type = portTypes[port];
+        if (type) {
+            freePortTypes[port] = type;
+        }
+    }];
+    return freePortTypes;;
+}
+
 - (BOOL)canConnectPort:(NSString *)port ofOperation:(DFOperation *)operation toPort:(NSString *)toPort
 {
     Class fromPortClass = [operation portType:port];
     Class toPortClass = [self portType:toPort];
     BOOL result = NO;
-    if (toPortClass == [EXTNil null]) {
+    if (toPortClass == [EXTNil null] || fromPortClass == [EXTNil null]) {
         result = YES;
     }
-    else if (fromPortClass != [EXTNil null]) {
+    else {
         result = [fromPortClass isSubclassOfClass:toPortClass];
     }
     return result;

@@ -23,7 +23,9 @@
         [ports enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *port = obj;
             [self DF_addPortToInputPorts:port];
+            [self DF_setType:[EXTNil null] forPort:port];
         }];
+        [self DF_setType:[NSArray class] forPort:@keypath(self.DF_output)];
     }
     return self;
 }

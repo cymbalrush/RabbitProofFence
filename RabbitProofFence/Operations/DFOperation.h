@@ -18,7 +18,7 @@ extern NSString * const DFOperationExceptionHandlerDomain;
 extern NSString * const DFOperationExceptionReason;
 extern NSString * const DFOperationExceptionUserInfo;
 extern NSString * const DFOperationExceptionHandlerDomain;
-extern NSString * const DFOperationExceptionInEqualInputPorts;
+extern NSString * const DFOperationExceptionInEqualPorts;
 extern NSString * const DFOperationExceptionInvalidInitialization;
 extern NSString * const DFOperationExceptionMethodNotSupported;
 extern NSString * const DFOperationExceptionIncorrectParameter;

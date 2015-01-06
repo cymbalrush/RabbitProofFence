@@ -32,6 +32,7 @@
 #import "DFIdentityOperation.h"
 #import "DFOperation+Graph.h"
 #import "DFNetworkOperation.h"
+#import "DFSelectorOperation.h"
 #import "RandomBackoffErrorRetryPolicy.h"
 #import "DFDelayOperation.h"
 #import "DFOperation+Graph.h"

@@ -43,6 +43,12 @@ typedef NS_ENUM(NSInteger, OperationState) {
 //returns dependencies
 @property (readonly, nonatomic) NSArray *connectedOperations;
 
+//returns port types
+@property (readonly, nonatomic) NSDictionary *portTypes;
+
+//return free port types
+@property (readonly, nonatomic) NSDictionary *freePortTypes;
+
 /**
  * Designated initializer
  * @param block - execution block

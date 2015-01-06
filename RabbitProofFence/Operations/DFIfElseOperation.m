@@ -33,9 +33,14 @@
                           predicate:(NSPredicate *)predicate
 {
     if (![ifOperation.freePorts isEqualToArray:elseOperation.freePorts]) {
-        NSString *reason = [NSString stringWithFormat:@"Inequal free ports"];
-        @throw [NSException exceptionWithName:DFOperationExceptionInEqualInputPorts reason:reason userInfo:nil];
+        NSString *reason = [NSString stringWithFormat:@"Free Ports Not Equal"];
+        @throw [NSException exceptionWithName:DFOperationExceptionInEqualPorts reason:reason userInfo:nil];
     }
+    if (![ifOperation.freePortTypes isEqualToDictionary:elseOperation.freePortTypes]) {
+        NSString *reason = [NSString stringWithFormat:@"Free Port Types Not Equal"];
+        @throw [NSException exceptionWithName:DFOperationExceptionInEqualPorts reason:reason userInfo:nil];
+    }
+
     self = [super init];
     if (self) {
         self.DF_ifOperation = ifOperation;
@@ -43,6 +48,7 @@
         self.DF_predicate = predicate;
         self.DF_inputPorts = [[ifOperation freePorts] copy];
         self.DF_executionObj = [Execution_Class instanceForNumberOfArguments:[self.DF_inputPorts count]];
+        [self DF_addPortTypes:self.ifOperation.freePortTypes];
     }
     return self;
 }

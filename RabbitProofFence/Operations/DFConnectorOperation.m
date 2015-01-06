@@ -39,7 +39,7 @@
         [operation start];
     }
 }
-- (instancetype)initWithObject:(id<NSObject>)object property:(NSString *)property
+- (instancetype)initWithObject:(NSObject *)object property:(NSString *)property
 {
     self = [super init];
     if (self) {

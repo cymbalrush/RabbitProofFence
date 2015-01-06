@@ -53,6 +53,8 @@ extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
 
 @property (strong, nonatomic) NSMutableDictionary *DF_connections;
 
+@property (readonly, nonatomic) NSDictionary *connections;
+
 + (Execution_Class *)DF_executionObjFromBlock:(id)block;
 
 + (NSOperationQueue *)operationQueue;
@@ -98,6 +100,8 @@ extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
 - (BOOL)DF_setType:(Class)type forPort:(NSString *)port;
 
 - (void)DF_populateTypesFromBlock:(id)block ports:(NSArray *)ports;
+
+- (void)DF_addPortTypes:(NSDictionary *)portTypes;
 
 - (id)DF_correctedValue:(id)value forPort:(NSString *)port;
 

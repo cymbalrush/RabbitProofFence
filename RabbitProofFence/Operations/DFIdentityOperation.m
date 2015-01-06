@@ -11,6 +11,17 @@
 
 @implementation DFIdentityOperation
 
++ (instancetype)operationFromBlock:(id)block ports:(NSArray *)ports
+{
+    methodNotSupported();
+    return nil;
+}
+
++ (instancetype)identityOperation
+{
+    return [self new];
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -24,6 +35,19 @@
         [self DF_populateTypesFromBlock:block ports:self.DF_inputPorts];
     }
     return self;
+}
+
+- (Class)portType:(NSString *)port
+{
+    __block Class type = nil;
+    dispatch_block_t block = ^(void) {
+        type = [super portType:port];
+        if ([port isEqualToString:@keypath(self.DF_output)] || [port isEqualToString:@keypath(self.output)]) {
+            type = [super portType:@keypath(self.input)];
+        }
+    };
+    [self DF_safelyExecuteBlock:block];
+    return type;
 }
 
 @end
