@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+//Inspired from https://github.com/krzysztofzablocki/KZNodes
+
 @class DFNode;
 
 typedef NS_ENUM(NSUInteger, DFPortType) {
