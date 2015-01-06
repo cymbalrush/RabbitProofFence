@@ -230,7 +230,7 @@
 		921CB4C81A5B2BE100FC4493 /* DFBufferOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFBufferOperation.m; path = Operations/DFBufferOperation.m; sourceTree = "<group>"; };
 		924ABE521A0D2FE900EF97F5 /* NSArray+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Utility.h"; sourceTree = "<group>"; };
 		924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Utility.m"; sourceTree = "<group>"; };
-		927E12851A0C6D8B002DC6FB /* RabbitProofFence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RabbitProofFence.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		927E12851A0C6D8B002DC6FB /* FBP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FBP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		927E12891A0C6D8B002DC6FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		927E128A1A0C6D8B002DC6FB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		927E128C1A0C6D8B002DC6FB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 		927E12901A0C6D8B002DC6FB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		927E12931A0C6D8B002DC6FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		927E12981A0C6D8B002DC6FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		927E129E1A0C6D8B002DC6FB /* RabbitProofFenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RabbitProofFenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		927E129E1A0C6D8B002DC6FB /* FBPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FBPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		927E12A31A0C6D8B002DC6FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		927E12A41A0C6D8B002DC6FB /* RabbitProofFenceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RabbitProofFenceTests.m; sourceTree = "<group>"; };
 		928E1EEE1A16E2050055D2AD /* OperationAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = OperationAssets.xcassets; sourceTree = "<group>"; };
@@ -267,8 +267,8 @@
 		927E127C1A0C6D8B002DC6FB = {
 			isa = PBXGroup;
 			children = (
-				927E12871A0C6D8B002DC6FB /* RabbitProofFence */,
-				927E12A11A0C6D8B002DC6FB /* RabbitProofFenceTests */,
+				927E12871A0C6D8B002DC6FB /* FBP */,
+				927E12A11A0C6D8B002DC6FB /* FBPTests */,
 				927E12861A0C6D8B002DC6FB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -276,13 +276,13 @@
 		927E12861A0C6D8B002DC6FB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				927E12851A0C6D8B002DC6FB /* RabbitProofFence.app */,
-				927E129E1A0C6D8B002DC6FB /* RabbitProofFenceTests.xctest */,
+				927E12851A0C6D8B002DC6FB /* FBP.app */,
+				927E129E1A0C6D8B002DC6FB /* FBPTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		927E12871A0C6D8B002DC6FB /* RabbitProofFence */ = {
+		927E12871A0C6D8B002DC6FB /* FBP */ = {
 			isa = PBXGroup;
 			children = (
 				928E1E691A16E0C50055D2AD /* Operations */,
@@ -299,6 +299,7 @@
 				928E1EF01A16E23C0055D2AD /* Images.xcassets */,
 				927E12881A0C6D8B002DC6FB /* Supporting Files */,
 			);
+			name = FBP;
 			path = RabbitProofFence;
 			sourceTree = "<group>";
 		};
@@ -311,12 +312,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		927E12A11A0C6D8B002DC6FB /* RabbitProofFenceTests */ = {
+		927E12A11A0C6D8B002DC6FB /* FBPTests */ = {
 			isa = PBXGroup;
 			children = (
 				927E12A41A0C6D8B002DC6FB /* RabbitProofFenceTests.m */,
 				927E12A21A0C6D8B002DC6FB /* Supporting Files */,
 			);
+			name = FBPTests;
 			path = RabbitProofFenceTests;
 			sourceTree = "<group>";
 		};
@@ -504,9 +506,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		927E12841A0C6D8B002DC6FB /* RabbitProofFence */ = {
+		927E12841A0C6D8B002DC6FB /* FBP */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 927E12A81A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "RabbitProofFence" */;
+			buildConfigurationList = 927E12A81A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "FBP" */;
 			buildPhases = (
 				927E12811A0C6D8B002DC6FB /* Sources */,
 				927E12821A0C6D8B002DC6FB /* Frameworks */,
@@ -516,14 +518,14 @@
 			);
 			dependencies = (
 			);
-			name = RabbitProofFence;
+			name = FBP;
 			productName = RabbitProofFence;
-			productReference = 927E12851A0C6D8B002DC6FB /* RabbitProofFence.app */;
+			productReference = 927E12851A0C6D8B002DC6FB /* FBP.app */;
 			productType = "com.apple.product-type.application";
 		};
-		927E129D1A0C6D8B002DC6FB /* RabbitProofFenceTests */ = {
+		927E129D1A0C6D8B002DC6FB /* FBPTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 927E12AB1A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "RabbitProofFenceTests" */;
+			buildConfigurationList = 927E12AB1A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "FBPTests" */;
 			buildPhases = (
 				927E129A1A0C6D8B002DC6FB /* Sources */,
 				927E129B1A0C6D8B002DC6FB /* Frameworks */,
@@ -534,9 +536,9 @@
 			dependencies = (
 				927E12A01A0C6D8B002DC6FB /* PBXTargetDependency */,
 			);
-			name = RabbitProofFenceTests;
+			name = FBPTests;
 			productName = RabbitProofFenceTests;
-			productReference = 927E129E1A0C6D8B002DC6FB /* RabbitProofFenceTests.xctest */;
+			productReference = 927E129E1A0C6D8B002DC6FB /* FBPTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -558,7 +560,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 927E12801A0C6D8B002DC6FB /* Build configuration list for PBXProject "RabbitProofFence" */;
+			buildConfigurationList = 927E12801A0C6D8B002DC6FB /* Build configuration list for PBXProject "FBP" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -571,8 +573,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				927E12841A0C6D8B002DC6FB /* RabbitProofFence */,
-				927E129D1A0C6D8B002DC6FB /* RabbitProofFenceTests */,
+				927E12841A0C6D8B002DC6FB /* FBP */,
+				927E129D1A0C6D8B002DC6FB /* FBPTests */,
 			);
 		};
 /* End PBXProject section */
@@ -687,7 +689,7 @@
 /* Begin PBXTargetDependency section */
 		927E12A01A0C6D8B002DC6FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 927E12841A0C6D8B002DC6FB /* RabbitProofFence */;
+			target = 927E12841A0C6D8B002DC6FB /* FBP */;
 			targetProxy = 927E129F1A0C6D8B002DC6FB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -798,7 +800,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = RabbitProofFence/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FBP;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -811,7 +813,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = RabbitProofFence/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FBP;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -830,7 +832,7 @@
 				);
 				INFOPLIST_FILE = RabbitProofFenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FBPTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RabbitProofFence.app/RabbitProofFence";
 			};
 			name = Debug;
@@ -845,7 +847,7 @@
 				);
 				INFOPLIST_FILE = RabbitProofFenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FBPTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RabbitProofFence.app/RabbitProofFence";
 			};
 			name = Release;
@@ -853,7 +855,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		927E12801A0C6D8B002DC6FB /* Build configuration list for PBXProject "RabbitProofFence" */ = {
+		927E12801A0C6D8B002DC6FB /* Build configuration list for PBXProject "FBP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				927E12A61A0C6D8B002DC6FB /* Debug */,
@@ -862,7 +864,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		927E12A81A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "RabbitProofFence" */ = {
+		927E12A81A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "FBP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				927E12A91A0C6D8B002DC6FB /* Debug */,
@@ -871,7 +873,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		927E12AB1A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "RabbitProofFenceTests" */ = {
+		927E12AB1A0C6D8B002DC6FB /* Build configuration list for PBXNativeTarget "FBPTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				927E12AC1A0C6D8B002DC6FB /* Debug */,

@@ -134,6 +134,12 @@
         return selector;
     } forName:@"Selector"];
     
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        ForeverGenerator *forever =  [ForeverGenerator generator];
+        NameOperation(forever);
+        return forever;
+    } forName:@"Forever"];
+    
     DFWorkspace *ws = [DFWorkspace workspaceWithBounds:self.view.bounds];
 
     [self.view addSubview:ws];
