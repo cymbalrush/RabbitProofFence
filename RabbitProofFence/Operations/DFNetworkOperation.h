@@ -14,6 +14,6 @@
 
 @property (readonly, nonatomic) NSString *output;
 
-+ (instancetype)networkOperation;
++ (instancetype)operation;
 
 @end

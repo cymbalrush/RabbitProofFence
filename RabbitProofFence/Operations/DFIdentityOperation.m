@@ -17,7 +17,7 @@
     return nil;
 }
 
-+ (instancetype)identityOperation
++ (instancetype)operation
 {
     return [self new];
 }

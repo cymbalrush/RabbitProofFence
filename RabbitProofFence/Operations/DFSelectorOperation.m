@@ -17,7 +17,7 @@
     return nil;
 }
 
-+ (instancetype)selectorOperation
++ (instancetype)operation
 {
     return [self new];
 }

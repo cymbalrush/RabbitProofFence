@@ -10,7 +10,7 @@
 
 @interface DFSelectorOperation : DFOperation
 
-+ (instancetype)selectorOperation;
++ (instancetype)operation;
 
 @property (strong, nonatomic) id object;
 

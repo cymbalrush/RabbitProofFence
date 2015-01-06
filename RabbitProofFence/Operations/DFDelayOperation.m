@@ -17,7 +17,7 @@
     return nil;
 }
 
-+ (instancetype)delayOperation
++ (instancetype)operation
 {
     return [self new];
 }

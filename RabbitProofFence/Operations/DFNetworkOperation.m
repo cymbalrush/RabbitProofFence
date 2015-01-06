@@ -38,7 +38,7 @@ NSString * const DFNetworkOperationQueueName = @"com.operations.networkQueue";
     return nil;
 }
 
-+ (instancetype)networkOperation
++ (instancetype)operation
 {
     return [self new];
 }
