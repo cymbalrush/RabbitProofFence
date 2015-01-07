@@ -328,7 +328,7 @@ NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState t
     static dispatch_queue_t queue = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        queue = dispatch_queue_create(OPERATION_START_QUEUE, DISPATCH_QUEUE_SERIAL);
+        queue = dispatch_queue_create(OPERATION_START_QUEUE, DISPATCH_QUEUE_CONCURRENT);
     });
     return queue;
 }
