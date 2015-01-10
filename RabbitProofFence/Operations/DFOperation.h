@@ -39,10 +39,6 @@ NSArray *portNamesFromBlockArgs(const char *blockBody);
 //queue which runs this operation
 @property (strong, nonatomic) NSOperationQueue *queue;
 
-@property (copy, nonatomic) id(^portErrorResolutionBlock)(NSError *error, NSString *port, DFOperation *operation);
-
-@property (copy, nonatomic) id(^outputErrorResolutionBlock)(NSError *error, DFOperation *operation);
-
 - (BOOL)canConnectPort:(NSString *)port ofOperation:(DFOperation *)operation toPort:(NSString *)toPort;
 
 //start queue

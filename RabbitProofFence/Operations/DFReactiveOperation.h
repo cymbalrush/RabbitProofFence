@@ -12,6 +12,8 @@
 
 @property (assign, nonatomic) int connectionCapacity;
 
+@property (assign, nonatomic) BOOL hot;
+
 - (NSDictionary *)addReactiveDependency:(DFOperation *)operation withBindings:(NSDictionary *)bindings;
 
 - (BOOL)connectPortReactively:(NSString *)port toOutputOfOperation:(id<Operation>)operation;

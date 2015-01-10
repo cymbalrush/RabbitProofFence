@@ -17,7 +17,7 @@
 
 - (instancetype)initWithGeneratorBlock:(id)generatorBlock ports:(NSArray *)ports;
 
-- (void)next;
+- (BOOL)next;
 
 - (void)stop;
 

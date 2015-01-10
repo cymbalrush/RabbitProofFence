@@ -71,7 +71,7 @@
     else if (self.DF_state == OperationStateExecuting) {
         __block BOOL done = (self.DF_executionCount > 0);
         [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ReactiveConnectionInfo *info = obj;
+            ReactiveConnection *info = obj;
             done = (info.operationState == OperationStateDone && info.inputs.count == 0);
             if (!done) {
                 *stop = YES;
@@ -88,7 +88,7 @@
     if (self.DF_state == OperationStateExecuting) {
         result = (self.DF_reactiveConnections.count > 0) ? NO : result;
         [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ReactiveConnectionInfo *info = obj;
+            ReactiveConnection *info = obj;
             if ([info.inputs count] > 0){
                 result = YES;
                 *stop = YES;
@@ -109,7 +109,7 @@
     __block BOOL result = NO;
     [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *port = obj;
-        ReactiveConnectionInfo *info = self.DF_reactiveConnections[port];
+        ReactiveConnection *info = self.DF_reactiveConnections[port];
         if (info.inputs.count > 0) {
             result = YES;
             id output = info.inputs[0];

@@ -18,12 +18,7 @@
         [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSString *port = obj;
             NSSet *operations = mapping[port];
-            id value = [self valueForKey:port];
-            if (isDFErrorObject(value) && self.portErrorResolutionBlock) {
-                DFErrorObject *errorObj = value;
-                value = self.portErrorResolutionBlock(errorObj.error, port, self);
-            }
-            value = (value == [EXTNil null]) ? nil : value;
+            id value = [self DF_portValue:port];
             [operations enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
                 DFOperation *operation = obj;
                 [operation setValue:value forKey:port];

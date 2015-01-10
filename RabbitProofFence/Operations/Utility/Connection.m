@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Conde Nast. All rights reserved.
 //
 
-#import "ConnectionInfo.h"
+#import "Connection.h"
 #import "DFOperation_SubclassingHooks.h"
 
-@implementation ConnectionInfo
+@implementation Connection
 
 @end

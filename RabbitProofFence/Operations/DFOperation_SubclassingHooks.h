@@ -55,6 +55,8 @@ extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
 
 @property (readonly, nonatomic) NSDictionary *connections;
 
+@property (weak, nonatomic) DFOperation *monitoringOperation;
+
 + (Execution_Class *)DF_executionObjFromBlock:(id)block;
 
 + (NSOperationQueue *)operationQueue;
@@ -103,7 +105,7 @@ extern NSError *createErrorFromPortErrors(NSDictionary *portErrors);
 
 - (void)DF_addPortTypes:(NSDictionary *)portTypes;
 
-- (id)DF_correctedValue:(id)value forPort:(NSString *)port;
+- (id)DF_portValue:(NSString *)port;
 
 - (void)DF_executeBindings;
 

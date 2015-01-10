@@ -63,8 +63,8 @@ static char const * const OPERATION_INDEX_KEY = "com.operations.DF_operationInde
         operationsToStart = self.maxConcurrentOperations - [self.DF_operationsInProgress count];
         if ([self.DF_reactiveConnections count] > 0) {
             [self.DF_reactiveConnections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                ReactiveConnectionInfo *info = obj;
-                operationsToStart = MIN(operationsToStart, [info.inputs count]);
+                ReactiveConnection *connection = obj;
+                operationsToStart = MIN(operationsToStart, connection.inputs.count);
             }];
         }
     };
@@ -105,8 +105,7 @@ static char const * const OPERATION_INDEX_KEY = "com.operations.DF_operationInde
 {
     BOOL result = NO;
     if ([self isExecuting] &&
-        self.DF_operationsInProgress &&
-        [self.DF_operationsInProgress count] < self.maxConcurrentOperations) {
+        self.DF_operationsInProgress && self.DF_operationsInProgress.count < self.maxConcurrentOperations) {
         result = [self DF_isReadyToExecute];
     }
     return result;

@@ -140,6 +140,18 @@
         return forever;
     } forName:@"Forever"];
     
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFLatestOperation *latest =  [DFLatestOperation new];
+        NameOperation(latest);
+        return latest;
+    } forName:@"Latest"];
+  
+    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+        DFBufferOperation *buffer =  [DFBufferOperation new];
+        NameOperation(buffer);
+        return buffer;
+    } forName:@"Buffer"];
+    
     DFWorkspace *ws = [DFWorkspace workspaceWithBounds:self.view.bounds];
 
     [self.view addSubview:ws];

@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Conde Nast. All rights reserved.
 //
 
-#import "ReactiveConnectionInfo.h"
+#import "ReactiveConnection.h"
 #import "DFOperation_SubclassingHooks.h"
 #import "EXTNil.h"
 
-@implementation ReactiveConnectionInfo
+@implementation ReactiveConnection
 
 - (instancetype)init
 {

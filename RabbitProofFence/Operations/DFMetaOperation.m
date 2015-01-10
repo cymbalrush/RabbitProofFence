@@ -183,15 +183,10 @@
 
 - (void)DF_prepareOperation:(DFOperation *)operation
 {
+    operation.monitoringOperation = self;
     [self.DF_inputPorts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *port = obj;
-        id value = [self valueForKey:port];
-        if (isDFErrorObject(value) && self.portErrorResolutionBlock) {
-            DFErrorObject *errorObj = value;
-            value = self.portErrorResolutionBlock(errorObj.error, port, self);
-        }
-        value = (value == [EXTNil null]) ? nil : value;
-        [operation setValue:value forKey:port];
+        [operation setValue:[self DF_portValue:port] forKey:port];
     }];
 }
 
@@ -261,10 +256,7 @@
         if (self.DF_state != OperationStateExecuting) {
             return;
         }
-        NSError *error = nil;
-        if (!self.portErrorResolutionBlock) {
-            error = [self DF_incomingPortErrors];
-        }
+        NSError *error = [self DF_incomingPortErrors];
         if (error) {
             self.DF_error = error;
             self.DF_output = errorObject(error);

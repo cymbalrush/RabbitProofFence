@@ -7,7 +7,7 @@
 //
 
 #import "DFReactiveOperation.h"
-#import "ReactiveConnectionInfo.h"
+#import "ReactiveConnection.h"
 #import "DFLoopOperation_SubclassingHooks.h"
 
 @interface DFReactiveOperation ()
@@ -22,7 +22,7 @@
 
 - (BOOL)DF_canExecute;
 
-- (ReactiveConnectionInfo *)DF_reactiveConnectionInfo;
+- (ReactiveConnection *)DF_newReactiveConnection;
 
 - (BOOL)DF_isDone;
 
@@ -35,5 +35,7 @@
 - (NSDictionary *)DF_reactiveBindingsForOperation:(DFOperation *)operation;
 
 - (void)DF_addPortToInputPorts:(NSString *)port;
+
+- (void)next;
 
 @end

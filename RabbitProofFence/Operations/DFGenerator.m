@@ -61,10 +61,7 @@
 {
     __block id output = nil;
     __block BOOL result = NO;
-    NSError *error = nil;
-    if (!self.portErrorResolutionBlock) {
-        error = [self DF_incomingPortErrors];
-    }
+    NSError *error = [self DF_incomingPortErrors];
     if (!error) {
         Execution_Class *executionObj = self.DF_executionObj;
         [self DF_prepareExecutionObj:executionObj];
@@ -98,19 +95,18 @@
     self.DF_terminate = YES;
 }
 
-- (void)next
+- (BOOL)next
 {
+    __block BOOL result = NO;
     dispatch_block_t block = ^(void) {
         if (self.DF_state == OperationStateExecuting) {
-            if (self.DF_terminate) {
-                self.DF_state = OperationStateDone;
-            }
-            else if (![self DF_execute]) {
-                self.DF_state = OperationStateDone;
+            if (!self.DF_terminate && [self DF_execute]) {
+                result = YES;
             }
         }
     };
     [self DF_safelyExecuteBlock:block];
+    return result;
 }
 
 - (void)main

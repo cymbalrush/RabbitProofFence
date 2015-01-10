@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		92174BB71A56FD9A00E89343 /* BlockDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BA81A56FD9A00E89343 /* BlockDescription.m */; };
-		92174BB81A56FD9A00E89343 /* ConnectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BAA1A56FD9A00E89343 /* ConnectionInfo.m */; };
+		92174BB81A56FD9A00E89343 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BAA1A56FD9A00E89343 /* Connection.m */; };
 		92174BB91A56FD9A00E89343 /* Execution_Class.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BAC1A56FD9A00E89343 /* Execution_Class.m */; };
 		92174BBA1A56FD9A00E89343 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BAE1A56FD9A00E89343 /* NSObject+BlockObservation.m */; };
 		92174BBB1A56FD9A00E89343 /* OperationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB01A56FD9A00E89343 /* OperationInfo.m */; };
-		92174BBC1A56FD9A00E89343 /* ReactiveConnectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB21A56FD9A00E89343 /* ReactiveConnectionInfo.m */; };
+		92174BBC1A56FD9A00E89343 /* ReactiveConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB21A56FD9A00E89343 /* ReactiveConnection.m */; };
 		92174BBD1A56FD9A00E89343 /* UIColor+Crayola.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB41A56FD9A00E89343 /* UIColor+Crayola.m */; };
 		92174BBE1A56FD9A00E89343 /* UIView+DebugObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BB61A56FD9A00E89343 /* UIView+DebugObject.m */; };
 		92174BD11A56FDB000E89343 /* DFGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174BC01A56FDB000E89343 /* DFGridView.m */; };
@@ -71,6 +71,8 @@
 		92174C6A1A57233800E89343 /* DFErrorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 92174C691A57233800E89343 /* DFErrorObject.m */; };
 		921CB4C61A5AF57700FC4493 /* DFSelectorOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB4C51A5AF57700FC4493 /* DFSelectorOperation.m */; };
 		921CB4C91A5B2BE100FC4493 /* DFBufferOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB4C81A5B2BE100FC4493 /* DFBufferOperation.m */; };
+		921CB4CC1A5D9DB500FC4493 /* DFLatestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB4CB1A5D9DB500FC4493 /* DFLatestOperation.m */; };
+		921CB4CF1A5EEA7D00FC4493 /* PortInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 921CB4CE1A5EEA7D00FC4493 /* PortInfo.m */; };
 		924ABE541A0D2FE900EF97F5 /* NSArray+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */; };
 		927E128B1A0C6D8B002DC6FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128A1A0C6D8B002DC6FB /* main.m */; };
 		927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 927E128D1A0C6D8B002DC6FB /* AppDelegate.m */; };
@@ -94,16 +96,16 @@
 /* Begin PBXFileReference section */
 		92174BA71A56FD9A00E89343 /* BlockDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockDescription.h; path = Operations/Utility/BlockDescription.h; sourceTree = "<group>"; };
 		92174BA81A56FD9A00E89343 /* BlockDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlockDescription.m; path = Operations/Utility/BlockDescription.m; sourceTree = "<group>"; };
-		92174BA91A56FD9A00E89343 /* ConnectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectionInfo.h; path = Operations/Utility/ConnectionInfo.h; sourceTree = "<group>"; };
-		92174BAA1A56FD9A00E89343 /* ConnectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectionInfo.m; path = Operations/Utility/ConnectionInfo.m; sourceTree = "<group>"; };
+		92174BA91A56FD9A00E89343 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Connection.h; path = Operations/Utility/Connection.h; sourceTree = "<group>"; };
+		92174BAA1A56FD9A00E89343 /* Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Connection.m; path = Operations/Utility/Connection.m; sourceTree = "<group>"; };
 		92174BAB1A56FD9A00E89343 /* Execution_Class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Execution_Class.h; path = Operations/Utility/Execution_Class.h; sourceTree = "<group>"; };
 		92174BAC1A56FD9A00E89343 /* Execution_Class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Execution_Class.m; path = Operations/Utility/Execution_Class.m; sourceTree = "<group>"; };
 		92174BAD1A56FD9A00E89343 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+BlockObservation.h"; path = "Operations/Utility/NSObject+BlockObservation.h"; sourceTree = "<group>"; };
 		92174BAE1A56FD9A00E89343 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+BlockObservation.m"; path = "Operations/Utility/NSObject+BlockObservation.m"; sourceTree = "<group>"; };
 		92174BAF1A56FD9A00E89343 /* OperationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OperationInfo.h; path = Operations/Utility/OperationInfo.h; sourceTree = "<group>"; };
 		92174BB01A56FD9A00E89343 /* OperationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OperationInfo.m; path = Operations/Utility/OperationInfo.m; sourceTree = "<group>"; };
-		92174BB11A56FD9A00E89343 /* ReactiveConnectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReactiveConnectionInfo.h; path = Operations/Utility/ReactiveConnectionInfo.h; sourceTree = "<group>"; };
-		92174BB21A56FD9A00E89343 /* ReactiveConnectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReactiveConnectionInfo.m; path = Operations/Utility/ReactiveConnectionInfo.m; sourceTree = "<group>"; };
+		92174BB11A56FD9A00E89343 /* ReactiveConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReactiveConnection.h; path = Operations/Utility/ReactiveConnection.h; sourceTree = "<group>"; };
+		92174BB21A56FD9A00E89343 /* ReactiveConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReactiveConnection.m; path = Operations/Utility/ReactiveConnection.m; sourceTree = "<group>"; };
 		92174BB31A56FD9A00E89343 /* UIColor+Crayola.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Crayola.h"; path = "Operations/Utility/UIColor+Crayola.h"; sourceTree = "<group>"; };
 		92174BB41A56FD9A00E89343 /* UIColor+Crayola.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Crayola.m"; path = "Operations/Utility/UIColor+Crayola.m"; sourceTree = "<group>"; };
 		92174BB51A56FD9A00E89343 /* UIView+DebugObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+DebugObject.h"; path = "Operations/Utility/UIView+DebugObject.h"; sourceTree = "<group>"; };
@@ -227,6 +229,10 @@
 		921CB4C51A5AF57700FC4493 /* DFSelectorOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFSelectorOperation.m; path = Operations/DFSelectorOperation.m; sourceTree = "<group>"; };
 		921CB4C71A5B2BE100FC4493 /* DFBufferOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFBufferOperation.h; path = Operations/DFBufferOperation.h; sourceTree = "<group>"; };
 		921CB4C81A5B2BE100FC4493 /* DFBufferOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFBufferOperation.m; path = Operations/DFBufferOperation.m; sourceTree = "<group>"; };
+		921CB4CA1A5D9DB500FC4493 /* DFLatestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFLatestOperation.h; path = Operations/DFLatestOperation.h; sourceTree = "<group>"; };
+		921CB4CB1A5D9DB500FC4493 /* DFLatestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFLatestOperation.m; path = Operations/DFLatestOperation.m; sourceTree = "<group>"; };
+		921CB4CD1A5EEA7D00FC4493 /* PortInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PortInfo.h; path = Operations/Utility/PortInfo.h; sourceTree = "<group>"; };
+		921CB4CE1A5EEA7D00FC4493 /* PortInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PortInfo.m; path = Operations/Utility/PortInfo.m; sourceTree = "<group>"; };
 		924ABE521A0D2FE900EF97F5 /* NSArray+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Utility.h"; sourceTree = "<group>"; };
 		924ABE531A0D2FE900EF97F5 /* NSArray+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Utility.m"; sourceTree = "<group>"; };
 		927E12851A0C6D8B002DC6FB /* FBP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FBP.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -427,6 +433,8 @@
 				92174C221A56FDF000E89343 /* DFTakeWhileOperation.m */,
 				921CB4C71A5B2BE100FC4493 /* DFBufferOperation.h */,
 				921CB4C81A5B2BE100FC4493 /* DFBufferOperation.m */,
+				921CB4CA1A5D9DB500FC4493 /* DFLatestOperation.h */,
+				921CB4CB1A5D9DB500FC4493 /* DFLatestOperation.m */,
 				92174C481A56FDF900E89343 /* StreamOperation.h */,
 				92174C261A56FDF000E89343 /* DFVoidObject.h */,
 				92174C271A56FDF000E89343 /* DFVoidObject.m */,
@@ -469,16 +477,18 @@
 			children = (
 				92174BA71A56FD9A00E89343 /* BlockDescription.h */,
 				92174BA81A56FD9A00E89343 /* BlockDescription.m */,
-				92174BA91A56FD9A00E89343 /* ConnectionInfo.h */,
-				92174BAA1A56FD9A00E89343 /* ConnectionInfo.m */,
+				92174BA91A56FD9A00E89343 /* Connection.h */,
+				92174BAA1A56FD9A00E89343 /* Connection.m */,
+				92174BB11A56FD9A00E89343 /* ReactiveConnection.h */,
+				92174BB21A56FD9A00E89343 /* ReactiveConnection.m */,
 				92174BAB1A56FD9A00E89343 /* Execution_Class.h */,
 				92174BAC1A56FD9A00E89343 /* Execution_Class.m */,
 				92174BAD1A56FD9A00E89343 /* NSObject+BlockObservation.h */,
 				92174BAE1A56FD9A00E89343 /* NSObject+BlockObservation.m */,
+				921CB4CD1A5EEA7D00FC4493 /* PortInfo.h */,
+				921CB4CE1A5EEA7D00FC4493 /* PortInfo.m */,
 				92174BAF1A56FD9A00E89343 /* OperationInfo.h */,
 				92174BB01A56FD9A00E89343 /* OperationInfo.m */,
-				92174BB11A56FD9A00E89343 /* ReactiveConnectionInfo.h */,
-				92174BB21A56FD9A00E89343 /* ReactiveConnectionInfo.m */,
 				92174BB31A56FD9A00E89343 /* UIColor+Crayola.h */,
 				92174BB41A56FD9A00E89343 /* UIColor+Crayola.m */,
 				92174BB51A56FD9A00E89343 /* UIView+DebugObject.h */,
@@ -628,9 +638,10 @@
 				92174C2D1A56FDF000E89343 /* DFBackgroundOperation.m in Sources */,
 				92174C3D1A56FDF000E89343 /* DFNetworkOperation.m in Sources */,
 				92174BD21A56FDB000E89343 /* DFNode.m in Sources */,
-				92174BB81A56FD9A00E89343 /* ConnectionInfo.m in Sources */,
+				92174BB81A56FD9A00E89343 /* Connection.m in Sources */,
 				92174C2C1A56FDF000E89343 /* DFAnyOperation.m in Sources */,
-				92174BBC1A56FD9A00E89343 /* ReactiveConnectionInfo.m in Sources */,
+				921CB4CF1A5EEA7D00FC4493 /* PortInfo.m in Sources */,
+				92174BBC1A56FD9A00E89343 /* ReactiveConnection.m in Sources */,
 				92174BD81A56FDB000E89343 /* DFValueNode.m in Sources */,
 				92174BB71A56FD9A00E89343 /* BlockDescription.m in Sources */,
 				92174C641A56FE1B00E89343 /* EXTScope.m in Sources */,
@@ -651,6 +662,7 @@
 				92174C321A56FDF000E89343 /* DFDropOperation.m in Sources */,
 				92174C451A56FDF000E89343 /* DFTakeWhileOperation.m in Sources */,
 				92174C611A56FE1B00E89343 /* EXTNil.m in Sources */,
+				921CB4CC1A5D9DB500FC4493 /* DFLatestOperation.m in Sources */,
 				92174C311A56FDF000E89343 /* DFDelayOperation.m in Sources */,
 				924ABE541A0D2FE900EF97F5 /* NSArray+Utility.m in Sources */,
 				927E128E1A0C6D8B002DC6FB /* AppDelegate.m in Sources */,

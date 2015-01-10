@@ -11,7 +11,7 @@
 
 @class DFOperation;
 
-@interface ConnectionInfo : NSObject
+@interface Connection : NSObject
 
 @property (strong, nonatomic) DFOperation *operation;
 

@@ -100,15 +100,7 @@
         if (self.DF_state != OperationStateExecuting) {
             return;
         }
-        NSError *error = nil;
-        if (!self.portErrorResolutionBlock) {
-            error = [self DF_incomingPortErrors];
-        }
-        if (error) {
-            self.DF_error = error;
-            self.DF_output = errorObject(error);
-        }
-        else if (self.DF_predicate) {
+        if (self.DF_predicate) {
             BOOL result = [self.DF_predicate evaluateWithObject:self];
             if (result && self.DF_ifOperation) {
                 [self DF_startOperation:self.DF_ifOperation];

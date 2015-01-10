@@ -27,7 +27,7 @@
             }
         }
         else {
-            if (selfRef.DF_buffer.count  > -n.integerValue) {
+            if (selfRef.DF_buffer.count > -n.integerValue) {
                 [selfRef.DF_buffer removeObjectAtIndex:0];
                 [selfRef.DF_buffer addObject:input];
             }
@@ -36,7 +36,7 @@
             }
         }
         return input;
-    } ports:@[@keypath(self.input), @keypath(self.n)]];
+    } ports:@[@keypath(self.input), @keypath(self.n), @keypath(self.selfRef)]];
     if (self) {
         self.DF_buffer = [NSMutableArray new];
     }

@@ -9,11 +9,11 @@
 #import "DFFlattenOperation.h"
 #import "DFReactiveOperation_SubclassingHooks.h"
 
-@interface FlattenInputInfo : ReactiveConnectionInfo
+@interface SplitConnectionInfo : ReactiveConnection
 
 @end
 
-@implementation FlattenInputInfo
+@implementation SplitConnectionInfo
 
 - (void)addInput:(id)input
 {
@@ -71,9 +71,9 @@
     return self;
 }
 
-- (ReactiveConnectionInfo *)DF_reactiveConnectionInfo
+- (ReactiveConnection *)DF_newReactiveConnection
 {
-    return [FlattenInputInfo new];
+    return [SplitConnectionInfo new];
 }
 
 @end

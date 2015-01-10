@@ -163,10 +163,7 @@
 
 - (BOOL)DF_next
 {
-    NSError *error = nil;
-    if (!self.portErrorResolutionBlock) {
-        error = [self DF_incomingPortErrors];
-    }
+    NSError *error = [self DF_incomingPortErrors];
     if (error) {
         self.DF_error = error;
         self.DF_output = errorObject(error);
@@ -185,18 +182,8 @@
         if (self.DF_state != OperationStateExecuting) {
             return;
         }
-        NSError *error = nil;
-        if (!self.portErrorResolutionBlock) {
-            error = [self DF_incomingPortErrors];
-        }
-        if (error) {
-            self.DF_error = error;
-            self.DF_output = errorObject(error);
-        }
-        else {
-            if ([self DF_next]) {
-                return;
-            }
+        if ([self DF_next]) {
+            return;
         }
         [self DF_done];
     };

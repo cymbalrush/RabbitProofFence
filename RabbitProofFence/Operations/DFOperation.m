@@ -9,7 +9,7 @@
 #import "DFOperation.h"
 #import "BlockDescription.h"
 #import "Execution_Class.h"
-#import "ConnectionInfo.h"
+#import "Connection.h"
 #import "NSObject+BlockObservation.h"
 #import "EXTScope.h"
 #import "EXTKeyPathCoding.h"
@@ -195,6 +195,8 @@ NSError *createErrorFromPortErrors(NSDictionary *portErrors)
 @property (strong, nonatomic) NSMutableArray *DF_outputConnections;
 
 @property (strong, nonatomic) NSMutableDictionary *DF_portTypes;
+
+@property (weak, nonatomic) DFOperation *monitoringOperation;
 
 - (void)DF_safelyRemoveObserver:(AMBlockToken *)token;
 
@@ -539,10 +541,10 @@ NS_INLINE BOOL StateTransitionIsValid(OperationState fromState, OperationState t
         _DF_connections = [NSMutableDictionary new];
         _DF_propertiesSet = [NSMutableSet new];
         _DF_outputConnections = [NSMutableArray array];
-        _queue = [[self class] operationQueue];
         _DF_excludedPorts = [NSMutableSet setWithObject:@keypath(self.selfRef)];
         _DF_output = [DFVoidObject new];
         _DF_portTypes = [NSMutableDictionary new];
+        _queue = [[self class] operationQueue];
     }
     return self;
 }
@@ -758,7 +760,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             NSString *toPort = obj;
             NSString *fromPort = bindings[toPort];
             //create info for operation
-            ConnectionInfo *info = [ConnectionInfo new];
+            Connection *info = [Connection new];
             info.operation = operation;
             info.fromPort = fromPort;
             info.toPort = toPort;
@@ -794,7 +796,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
         if ([operation isKindOfClass:[DFOperation class]]) {
             NSMutableArray *connectionsToRemove = [NSMutableArray array];
             [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                ConnectionInfo *info = obj;
+                Connection *info = obj;
                 if ([info.operation isEqual:operation]) {
                     [connectionsToRemove addObject:key];
                 }
@@ -810,7 +812,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     __block NSMutableDictionary *bindings = [NSMutableDictionary dictionary];
     dispatch_block_t block = ^(void) {
         [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ConnectionInfo *info = obj;
+            Connection *info = obj;
             DFOperation *connectedOperation = info.operation;
             if (connectedOperation == operation) {
                 NSString *connectedToProperty = key;
@@ -855,7 +857,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 {
     //loop through dependent operation bindings
     [self.DF_connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        ConnectionInfo *info = obj;
+        Connection *info = obj;
         DFOperation *operation = info.operation;
         [self setValue:[operation valueForKey:info.fromPort] forKey:info.toPort];
     }];
@@ -872,12 +874,9 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     [self DF_executeBindings];
 }
 
-- (id)DF_correctedValue:(id)value forPort:(NSString *)port
+- (id)DF_portValue:(NSString *)port
 {
-    if (isDFErrorObject(value) && self.portErrorResolutionBlock) {
-        DFErrorObject *errorObj = value;
-        value = self.portErrorResolutionBlock(errorObj.error, port, self);
-    }
+    id value = [self valueForKey:port];
     value = (value == [EXTNil null]) ? nil : value;
     return value;
 }
@@ -890,8 +889,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
             return;
         }
         NSString *port = obj;
-        id value = [self valueForKey:port];
-        [executionObj setValue:[self DF_correctedValue:value forPort:port] atArgIndex:idx];
+        [executionObj setValue:[self DF_portValue:port] atArgIndex:idx];
     }];
 }
 
@@ -980,7 +978,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
     dispatch_block_t block = ^() {
         freePorts = [self.DF_inputPorts mutableCopy];
         [self.connections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            ConnectionInfo *info = obj;
+            Connection *info = obj;
             [freePorts removeObject:info.toPort];
         }];
         if (self.DF_excludedPorts.count > 0) {
@@ -995,7 +993,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 {
     __block Class type = nil;
     dispatch_block_t block = ^(void) {
-        ConnectionInfo *info = self.connections[port];
+        Connection *info = self.connections[port];
         if (info.inferredType) {
             type = info.inferredType;
         }
@@ -1354,10 +1352,7 @@ NS_INLINE DFOperation *copyOperation(DFOperation *operation)
 {
     __block id output = nil;
     __block BOOL result = NO;
-    NSError *error = nil;
-    if (!self.portErrorResolutionBlock) {
-        error = [self DF_incomingPortErrors];
-    }
+    NSError *error = [self DF_incomingPortErrors];
     if (!error) {
         __block Execution_Class *executionObj = nil;
         dispatch_block_t block = ^(void) {

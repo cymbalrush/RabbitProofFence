@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "NSObject+BlockObservation.h"
 #import "DFOperation.h"
-#import "ConnectionInfo.h"
+#import "Connection.h"
 
 @class DFOperation;
 
-@interface ReactiveConnectionInfo : ConnectionInfo
+@interface ReactiveConnection : Connection
 
 @property (assign, nonatomic) OperationState operationState;
 
