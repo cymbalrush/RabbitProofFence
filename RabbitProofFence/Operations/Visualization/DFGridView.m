@@ -70,7 +70,7 @@
 - (void)setupLinePropertiesForLayer:(CAShapeLayer *)connectionLayer
 {
     connectionLayer.frame = self.bounds;
-    connectionLayer.zPosition = 2;
+    connectionLayer.zPosition = 1;
     connectionLayer.lineWidth = 2;
     connectionLayer.fillColor = UIColor.clearColor.CGColor;
     connectionLayer.strokeColor = [UIColor crayolaBrickRedColor].CGColor;

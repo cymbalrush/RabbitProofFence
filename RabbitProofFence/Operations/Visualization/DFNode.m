@@ -110,12 +110,12 @@ NS_INLINE void addPortToNode(DFPortInfo *portInfo, DFNode *node)
     self.info = [info copy];
     self.label.text = [NSString stringWithFormat:@" %@", [info.name uppercaseString]];
     [self sizeToFit];
-    self.containerView.backgroundColor = info.nodeColor;
+    self.containerView.backgroundColor = [info.nodeColor colorWithAlphaComponent:0.7];
     //set up layer
     self.layer.shadowOpacity = 0.75;
     self.layer.shadowColor = info.nodeColor.CGColor;
     self.layer.shadowOffset = CGSizeMake(0, 1);
-    
+    self.layer.zPosition = 2;
     
     //add recognizer
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nodeTapped:)];

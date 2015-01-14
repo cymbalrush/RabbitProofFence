@@ -17,7 +17,7 @@
 
 @interface DFWorkspace : UIView
 
-+ (void)registerOpertaionCreationBlock:(DFOperation *(^)(void))creationBlock forName:(NSString *)name;
++ (void)registerOperationCreationBlock:(DFOperation *(^)(void))creationBlock forName:(NSString *)name;
 
 + (void)removeOperationCreationBlockForName:(NSString *)name;
 

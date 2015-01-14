@@ -20,6 +20,8 @@
 
 @property (strong, nonatomic) AMBlockToken *stateObservationToken;
 
+@property (strong, nonatomic) AMBlockToken *outputObservationToken;
+
 - (void)clean;
 
 @end

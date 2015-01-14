@@ -19,10 +19,12 @@
 {
     input = (input == nil) ? [EXTNil null] : input;
     [self.inputs insertObject:input atIndex:0];
-    int itemsToRemove = (int)([self.inputs count] + 1) - self.connectionCapacity;
-    if (itemsToRemove > 0) {
-        NSRange range = NSMakeRange(self.inputs.count - itemsToRemove, itemsToRemove);
-        [self.inputs removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
+    if (self.connectionCapacity > -1) {
+        NSInteger itemsToRemove = self.inputs.count - self.connectionCapacity;
+        if (itemsToRemove > 0) {
+            NSRange range = NSMakeRange(self.inputs.count - itemsToRemove, itemsToRemove);
+            [self.inputs removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
+        }
     }
 }
 

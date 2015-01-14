@@ -17,6 +17,10 @@
         [self.operation DF_safelyRemoveObserver:self.stateObservationToken];
         self.stateObservationToken = nil;
     }
+    if (self.outputObservationToken) {
+        [self.operation DF_safelyRemoveObserver:self.outputObservationToken];
+        self.outputObservationToken = nil;
+    }
 }
 
 - (void)dealloc

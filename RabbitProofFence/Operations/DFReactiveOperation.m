@@ -423,13 +423,15 @@
 {
     __block NSDictionary *result = nil;
     dispatch_block_t block = ^(void) {
-    NSDictionary *bindings = [super bindingsForOperation:operation];
+        NSDictionary *bindings = [super bindingsForOperation:operation];
         NSDictionary *reactiveBindings = [self DF_reactiveBindingsForOperation:operation];
         if (!bindings) {
             bindings = reactiveBindings;
         }
         else {
-            [[bindings mutableCopy] addEntriesFromDictionary:reactiveBindings];
+            NSMutableDictionary *dict = [bindings mutableCopy];
+            [dict addEntriesFromDictionary:reactiveBindings];
+            bindings = dict;
         }
         result = bindings;
     };

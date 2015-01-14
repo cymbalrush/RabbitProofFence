@@ -149,9 +149,9 @@ NSString *setterFromProperty(NSString *property)
 NSDictionary *portErrors(NSError *error)
 {
     if ([error.domain isEqualToString:DFOperationExceptionName] && error.code == DFOperationInComingPortErrorCode) {
-        return nil;
+        return error.userInfo[DFErrorKeyName];
     }
-    return error.userInfo[DFErrorKeyName];
+    return nil;
 }
 
 NSError *createErrorFromPortErrors(NSDictionary *portErrors)

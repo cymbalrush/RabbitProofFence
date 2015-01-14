@@ -82,7 +82,7 @@ NSString * const DFWorkSpaceExceptionOperationAlreadyRegistered = @"OperationAlr
     }];
 }
 
-+ (void)registerOpertaionCreationBlock:(DFOperation *(^)(void))creationBlock forName:(NSString *)name
++ (void)registerOperationCreationBlock:(DFOperation *(^)(void))creationBlock forName:(NSString *)name
 {
     if ([self creationBlocks][name]) {
         NSString *reason = [NSString stringWithFormat:@"Block already registered for name"];

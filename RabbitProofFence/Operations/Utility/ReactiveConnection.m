@@ -29,7 +29,7 @@
         [self.inputs addObject:input];
     }
     else {
-        int itemsToRemove = (int)([self.inputs count] + 1) - self.connectionCapacity;
+        NSInteger itemsToRemove = self.inputs.count - self.connectionCapacity;
         if (itemsToRemove > 0) {
             NSRange range = NSMakeRange(0, itemsToRemove);
             [self.inputs removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];

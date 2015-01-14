@@ -14,7 +14,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
   
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFOperation *add = OperationFromBlock([DFBackgroundOperation class], ^(NSNumber *x1, NSNumber *x2) {
             return @([x1 intValue] + [x2 intValue]);
         });
@@ -22,7 +22,7 @@
         return add;
     } forName:@"Add"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFOperation *sub = OperationFromBlock([DFBackgroundOperation class], ^(NSNumber *x1, NSNumber *x2) {
             return @([x1 intValue] - [x2 intValue]) ;
             
@@ -32,14 +32,14 @@
     } forName:@"Subtract"];
     
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFIdentityOperation *value = [DFIdentityOperation new];
         NameOperation(value);
         return value;
     } forName:@"Input"];
     
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFOperation *splitter = OperationFromBlock([DFBackgroundOperation class], ^(NSString *text, NSString *separator) {
             return [text componentsSeparatedByString:separator] ;
         });
@@ -48,7 +48,7 @@
         return splitter;
     } forName:@"TextSplitter"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFOperation *intConverter = OperationFromBlock([DFBackgroundOperation class], ^(NSString *text) {
             return @([text integerValue]) ;
         });
@@ -56,37 +56,37 @@
         return intConverter;
     } forName:@"IntConverter"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         ArrayGenerator *seq = [ArrayGenerator generator];
         NameOperation(seq);
         return seq;
     } forName:@"ArraySequence"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFAggregatorOperation *agg = [DFAggregatorOperation new];
         NameOperation(agg);
         return agg;
     } forName:@"Accumulator"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFAnyOperation *any = [DFAnyOperation anyOperation:@[@"x1", @"x2"]];
         NameOperation(any);
         return any;
     } forName:@"Any"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFAndOperation *and = [DFAndOperation andOperation:@[@"x1", @"x2"]];
         NameOperation(and);
         return and;
     } forName:@"And"];
    
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFNetworkOperation *network = [DFNetworkOperation new];
         NameOperation(network);
         return network;
     } forName:@"Network"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFOperation *urlConverter = OperationFromBlock([DFBackgroundOperation class], ^(NSString *text) {
             return [NSURLRequest requestWithURL:[NSURL URLWithString:text]] ;
         });
@@ -94,7 +94,7 @@
         return urlConverter;
     } forName:@"URLConverter"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFOperation *arraySelector = OperationFromBlock([DFBackgroundOperation class], ^(NSArray *array, NSNumber *index) {
             NSUInteger idx = [index integerValue];
             return array[idx] ;
@@ -103,50 +103,50 @@
         return arraySelector;
     } forName:@"ArraySelector"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFOperation *flattenInput = [DFFlattenOperation new];
         NameOperation(flattenInput);
         return flattenInput;
     } forName:@"Flatten"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFDelayOperation *delay = [DFDelayOperation new];
         NameOperation(delay);
         return delay;
     } forName:@"Delay"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         SequenceGenerator *forSeq =  [SequenceGenerator generator];
         [forSeq setValue:@(1) forKey:@"inc"];
         NameOperation(forSeq);
         return forSeq;
     } forName:@"For"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         RepeatGenerator *repeat =  [RepeatGenerator generator];
         NameOperation(repeat);
         return repeat;
     } forName:@"Repeat"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFSelectorOperation *selector =  [DFSelectorOperation new];
         NameOperation(selector);
         return selector;
     } forName:@"Selector"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         ForeverGenerator *forever =  [ForeverGenerator generator];
         NameOperation(forever);
         return forever;
     } forName:@"Forever"];
     
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFLatestOperation *latest =  [DFLatestOperation new];
         NameOperation(latest);
         return latest;
     } forName:@"Latest"];
   
-    [DFWorkspace registerOpertaionCreationBlock:^DFOperation *{
+    [DFWorkspace registerOperationCreationBlock:^DFOperation *{
         DFBufferOperation *buffer =  [DFBufferOperation new];
         NameOperation(buffer);
         return buffer;
