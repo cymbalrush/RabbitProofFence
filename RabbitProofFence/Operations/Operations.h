@@ -1,10 +1,7 @@
 //
 //  Operations.h
-//  vf-hollywood
-//
 //  Created by Sinha, Gyanendra on 6/25/14.
-//  Copyright (c) 2014 Conde Nast. All rights reserved.
-//
+
 
 #import "DFOperation.h"
 #import "DFBackgroundOperation.h"

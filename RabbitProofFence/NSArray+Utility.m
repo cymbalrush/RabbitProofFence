@@ -1,9 +1,9 @@
 //
 //  NSArray+Number.m
-//  vf-hollywood
+
 //
 //  Created by Henry Tsang on 9/10/14.
-//  Copyright (c) 2014 Conde Nast. All rights reserved.
+
 //
 
 #import "NSArray+Utility.h"
